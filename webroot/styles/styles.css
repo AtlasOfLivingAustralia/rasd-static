@@ -1,0 +1,182 @@
+
+
+ul {
+    list-style: none;
+    }
+
+
+
+.link {
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    color: #028d64;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+
+.hub {
+    max-width: 1200px;
+    justify-content: center;
+}
+
+
+.hub-header__container {
+    
+    background-color: #0c6c4f;
+    padding-top: 120px;
+    padding-bottom: 20px;
+    padding-right: 100px;
+}
+
+
+
+.header-3 {
+    font-size: 16px;
+    color: #1a3d4d;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+
+}
+
+.hub-header__title {
+    color: white;
+    background-color: #0c6c4f;
+    max-width: 850px;
+    padding-left: 120px;
+    font-size: 40px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.hub-intro__container {
+    padding-top: 20px;
+    padding-bottom: 100px;
+    padding-left: 120px;
+    padding-right: 120px;
+    background-color: #c2e4da;
+    background-image: url("../images/cockatoo.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    
+}
+
+.hub-tagline__text {
+
+    color: #1a3d4d;
+    background-color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+    max-width: 780px;
+    padding: 20px;
+    
+}
+
+
+.hub-intro__content-text {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 60px;
+    max-width: 291px;
+
+}
+
+.hub-intro__content-list {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+
+.image-credit-container {
+    justify-content: right;
+    padding-top: 120px;
+    display: flex;
+    justify-content: right;
+
+}
+
+.image-credit {
+    color: white;
+    font-size: 12px;
+    background-color: #1a3d4d;
+    padding: 10 20 2 20px;
+    max-width: 290px;
+  
+}
+
+
+
+.hub-links__container {
+    padding-left: 120px;
+    padding-right: 120px;
+    padding-top: 20px;
+}
+
+.hub-links__framework, .hub-links__service, .hub-links__about {
+    align-content: center;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
+
+
+.icon-button {
+    height: 200px;
+    padding-top: 20px;
+}
+
+.icon-button:hover {
+    height: 210px;
+}
+  
+
+.hub-about__container {
+    padding-left: 120px;
+    padding-right: 120px;
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+
+
+.hub-partners__container {
+    padding-left: 120px;
+    padding-right: 120px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    align-items: center;
+}
+
+.logo {
+    padding-bottom: 30px;
+    padding-right: 20px;
+    max-height: fit-content;
+ 
+}
+
+
+.logos {
+   justify-content: center;
+   align-items: baseline;
+}
+
+
+.hub-footer__container {
+    background-color: #c5e3ef;
+    padding-top: 30px;
+    padding-left: 120px;
+    padding-right: 120px;
+    padding-bottom: 60px;
+}
+
+
+.tou {
+    padding-right: 35px;
+}
