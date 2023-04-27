@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "RASD Framework",
+    "section": "",
+    "text": "National Framework for the Sharing of Restricted Access Species Data in Australia\nTO LINK View or download as PDF (xx MB) TO LINK"
+  },
+  {
+    "objectID": "index.html#for-bibliographic-purposes-this-publication-may-be-cited-as",
+    "href": "index.html#for-bibliographic-purposes-this-publication-may-be-cited-as",
+    "title": "RASD Framework",
+    "section": "For bibliographic purposes, this publication may be cited as:",
+    "text": "For bibliographic purposes, this publication may be cited as:\nNational Framework for the Sharing of Restricted Access Species Data in Australia 2023, Atlas of Living Australia, Publication Series No. 6, Canberra, Australia. https://doi.org/10.54102/ala.94894."
+  },
+  {
+    "objectID": "index.html#supplements-of-this-publications-are-regularly-updated-and-may-be-cited-as",
+    "href": "index.html#supplements-of-this-publications-are-regularly-updated-and-may-be-cited-as",
+    "title": "RASD Framework",
+    "section": "Supplements of this publications are regularly updated and may be cited as:",
+    "text": "Supplements of this publications are regularly updated and may be cited as:\nNational Framework for the Sharing of Restricted Access Species Data in Australia 2023, Supplement Recognising Indigenous Data Sovereignty 20/2/2023, Atlas of Living Australia, Publication Series No. 6, Canberra Australia. https://doi.org/10.54102/ala.94894\n\n\nOwnership of intellectual property rights\nUnless otherwise noted, copyright (and any other intellectual property rights, if any) in this publication is owned by the CSIRO.\n\nCreative Commons licence\nAttribution CC BY\nAll material in this publication is licensed under a Creative Commons Attribution 3.0 Australia Licence, save for content supplied by third parties, logos, any material protected by trademark or otherwise noted in this publication, and the Commonwealth Coat of Arms.\nCreative Commons Attribution 3.0 Australia Licence is a standard form licence agreement that allows you to copy, distribute, transmit and adapt this publication provided you attribute the work. A summary of the licence terms is available from http://creativecommons.org/licenses/by/3.0/au/. The full licence terms are available from http://creativecommons.org/licenses/by/3.0/au/legalcode.\nThe views and opinions expressed in this publication do not necessarily reflect those of CSIRO, the Commonwealth, State, Territories, or the members of the RASDP Project Working Group.\nCSIRO has exercised due care and skill in the preparation and compilation of the information set out in this publication and the information provided in this publication is considered to be correct at the time of publication. However, changes in circumstances after the time of publication may impact on the accuracy of this information. CSIRO therefore disclaims all representations and warranties regarding the currency, completeness, accuracy, and suitability of the content of this publication and, disclaims all legal liability for any loss, damage, expense and / or costs incurred by any person arising out of use of or reliance on this publication.\nCSIRO recommends that users exercise their own skill and care with respect to their use of this publication and that users carefully evaluate the accuracy, currency, completeness, and relevance of the material in this publication for their purposes.\n\n\nSecretariat for the National Framework for the Sharing of Restricted Access Species Data in Australia\nc/- Atlas of Living Australia (ALA)\nGPO Box 1700\nCSIRO Black Mountain\nCanberra, ACT, 2601\nMore information is available at: www.rasd.org.au\nThe development of this Framework was supported by the Australian Research Data Commons (ARDC) and the Atlas of Living Australia (ALA). The ARDC and ALA are funded by the Australian Government’s National Collaborative Research Infrastructure Strategy (NCRIS)."
+  },
+  {
+    "objectID": "acronyms.html",
+    "href": "acronyms.html",
+    "title": "1  Acronyms",
+    "section": "",
+    "text": "ABRS\nAustralian Biological Resources Study\n\n\nAIMS\nAustralian Institute of Marine Science\n\n\nALA\nAtlas of Living Australia\n\n\nauNSL\nNational Species List\n\n\nAusBIGG\nAustralian Biodiversity Information Governance Group\n\n\nCARE\nCARE principles for Indigenous data governance (Collective Benefit, Authority to Control, Responsibility and Ethics)\n\n\nDwC\nDarwin CORE\n\n\nDOI\nDigital Object Identifier\n\n\nFAIR\nFAIR data (findability, accessibility, interoperability, and reusability)\n\n\nHISCOM\nHerbarium Information Systems Committee\n\n\nNCRIS\nNational Collaborative Research Infrastructure Strategy\n\n\nRASD\nRestricted Access Species Data\n\n\nRASL\nRestricted Access Species List\n\n\nTDWG\nBiodiversity Information Standards Group (also known by the abbreviation TDWG, previously known as the Taxonomic Databases Working Group)\n\n\nTERN\nTerrestrial Ecosystem Research Network"
+  },
+  {
+    "objectID": "statement-of-intent.html",
+    "href": "statement-of-intent.html",
+    "title": "2  Statement of Intent",
+    "section": "",
+    "text": "This framework is intended to enable consistent, effective sharing and management of Restricted Access Species Data (RASD) nationally in Australia. This includes:\n\npromoting responsible data sharing practices\ngiving data custodians the confidence to safely share restricted access species data\nassisting data custodians to maintain the consistency and quality of data"
+  },
+  {
+    "objectID": "what-is-rasd.html",
+    "href": "what-is-rasd.html",
+    "title": "3  What is Restricted Access Species Data?",
+    "section": "",
+    "text": "Restricted Access Species Data (RASD) - often known as “sensitive species data” – are data about biodiversity that have features that mean there are reasons for withholding the data from public view or modifying the data before it is made public.\nThis can include, for example:\n\nFlora and fauna where knowledge about their exact locations make them sensitive to disturbance. This can be because they are extremely rare, attractive to poachers, their nest sites are highly sensitive to disturbance or simply because they are newly discovered and there is insufficient information known about them.\nSpecies locations where knowledge about the species can be seriously misinterpreted or cause damage without context. Examples include records of weed or pest control that the landowner might not be comfortable making publicly available. An important example is records of an invasive species that has been eradicated from Australia but whose historical records might cause confusion over Australia’s pest-free status.\nData that have been supplied under conditions that constrain what can be given to third parties or where the data can threaten research or an economic outcome.\nData that include personal identifiable information, where the person has not given approval for that data to be shared.\nData that has been gathered by or otherwise belongs to First Nations people and permission needs to be granted before the data are shared.\n\nThis data is needed for conservation management, decision-making and research.\nAn excellent overview of many types of sensitive data, the current state of play internationally, as well as the issues inherent in using these data are provided by the Global Biodiversity Information Facility’s Current Best Practices for Generalizing Sensitive Species Occurrence Data by Arthur Chapman."
+  },
+  {
+    "objectID": "who-is-this-framework-for.html",
+    "href": "who-is-this-framework-for.html",
+    "title": "4  Who is this Framework For?",
+    "section": "",
+    "text": "This framework is intended for use by any organisation that wants to gather, display, share or receive RASD (data custodians and data users). It provides a set of shared principles that are intended to guide users in sharing RASD responsibly and appropriately. It also provides specific guidance on procedures, formats and methodologies and is necessarily technical at some points.\nWhile it is not intended for the general user, members of the public can use the framework to better understand how desensitised publicly accessible RASD that they are interested in may have been modified."
+  },
+  {
+    "objectID": "who-manages-this-framework.html",
+    "href": "who-manages-this-framework.html",
+    "title": "5  Who Manages this Framework?",
+    "section": "",
+    "text": "This framework is maintained by the Atlas of Living Australia in consultation with the national community of practice, the Australian Biodiversity Information Governance Group (AusBIGG), which includes representatives from the jurisdictions around Australia as well as the Terrestrial Ecosystem Research Network, the Atlas of Living Australia, the Council of Heads of Australasian Herbaria, and the Council of Heads of Australian Fauna Collections.\nThe framework will be reviewed after 12 months and then updated every three years following consultation processes.\nA high-level view of how this framework interacts with data custodians and users is shown in Figure 5.1.\n\n\n\n\n\nFigure 5.1: Restricted Access Species Data Governance\n\n\nOrganisations and individuals interested in commenting on the framework may address their comments to the Secretariat for the National Framework for the Sharing of Restricted Access Species Data in Australia:\nc/- Atlas of Living Australia (ALA)\nGPO Box 1700\nCSIRO Black Mountain\nCanberra, ACT, 2601"
+  },
+  {
+    "objectID": "who-produced-the-framework.html",
+    "href": "who-produced-the-framework.html",
+    "title": "6  Who Produced this Framework?",
+    "section": "",
+    "text": "The framework is the result of an agreed program of work by all the organisations listed in the section Organisations Involved in the Production of this Framework. Including the Australian Government, State and Territory conservation agencies, the Atlas of Living Australia, Australian Research Data Commons, Council of Heads of Australasian Herbaria, Council of Heads of Australian Faunal Collections, and the Western Australian Biodiversity Science Institute to improve the national handling of RASD.\nThe framework was also circulated nationally around a wide range of government and non- government stakeholders for comment during its development.\nThis framework relies on the principle that data custodians retain data sovereignty over their data."
+  },
+  {
+    "objectID": "consistency.html",
+    "href": "consistency.html",
+    "title": "7  Consistency",
+    "section": "",
+    "text": "The framework draws upon the sensitive species policies of all Australian jurisdictions as well as the sensitive species position papers prepared by the Global Biodiversity Information Facility (2020) and the Atlas of Living Australia (2009).\nThe framework follows the Australian Government’s Best Practice Guide to Applying Data Sharing Principles and is consistent with the principles of FAIR data (findability, accessibility, interoperability, and reusability), CARE (Collective benefit, Authority to control, Responsibility, Ethics) principles, the Research Data Alliance’s Principles and Guidelines for Legal Interoperability of Research Data, and the Australian Research Data Common’s Guide to Publishing Sensitive Data while also acknowledging the sensitive nature of the data covered.\nCurrently the framework does not fully cover restricted access Indigenous ecological data and knowledge. Many of the principles and best practices outlined in this framework could, however, be applied when handling access requests for these data. The framework is intended to operate within the CARE principles for Indigenous data governance to recognise Indigenous data sovereignty."
+  },
+  {
+    "objectID": "purpose-of-the-framework.html",
+    "href": "purpose-of-the-framework.html",
+    "title": "9  Purpose of the Framework - A Single Way of Handling Restricted Access Species Data for Australia",
+    "section": "",
+    "text": "A single agreed way of sharing RASD aims to make data sharing between organisations easier and make the form of desensitised data that is made public consistent.\nThe advantages of this framework are:\n\nStandardised methods and processes for handling RASD\nStream-lined access to and sharing of RASD\nStandardised methods of transforming RASD when displayed publicly\n\nAll the organisations involved in the development of this framework agreed that a more holistic approach to handling data sensitivities associated with species data was required. It was also agreed that a move away from the use of the term “sensitive” was helpful in understanding all the types of restrictions that influence data custodian decisions on sharing data as well as avoiding confusion with formal Australian government security classifications.\nThe purpose of this framework is to:\na) provide principles to facilitate a consistent national approach to RASD\nb) provide overarching principles and best practice guidance to data custodians on identifying, managing, and sharing RASD\nc) provide technical guidance on how to operationally deal with RASD\nd) emphasise the principle that data custodians retain sovereignty over their data\nThe framework provides a national, structured, best-practice flow for:\na) the sharing of all RASD\nb) the release of data to approved data requestors\nc) the release of desensitised and modified datasets for use by the general community\nd) agreed best-practice processes enabling a)-c)"
+  },
+  {
+    "objectID": "my-organisation.html",
+    "href": "my-organisation.html",
+    "title": "8  How Does My Organisation Show it is Consistent with the Framework?",
+    "section": "",
+    "text": "The framework is voluntary and promotes consistency and transparency.\nOrganisations wishing to demonstrate that they are acting consistently with this framework should make their restricted access species data policy publicly available to demonstrate commitment to transparency and accessibility."
+  }
+]
