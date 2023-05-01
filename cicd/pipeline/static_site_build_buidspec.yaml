@@ -1,0 +1,26 @@
+version: 0.2
+###
+# This build project builds the staic site files ready for upload to s3. There's very little thats
+# done here but keeping it as a build stage for consistency with other projects and for when we
+# inevitably want to make some change before sending this up to S3
+
+env:
+  shell: bash
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+      # Not much going on here
+  pre_build:
+    commands:
+      # it would be great to have tests here
+      - #echo running tests...
+  build:
+    commands:
+      # Still not much going on
+
+artifacts:
+  base-directory: ./webroot
+  files:
+    - '**/*'
