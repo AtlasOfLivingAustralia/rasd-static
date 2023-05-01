@@ -1,0 +1,164 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: RASD static site
+
+Parameters:
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
+  pBucketName:
+    Type: String
+    Description: The bucket name for the site
+  pBucketPath:
+    Type: String
+    Description: Optional path that the files are stored under in the bucket
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pHostedZone:
+    Type: String
+    Description: The hosted zone the site is accessed under
+  pSubDomain:
+    Type: String
+    Description: The subdomain the site is accessed on
+  pSslCertificate:
+    Type: String
+    Description: The arn of the SSL certificate to be used 
+
+Conditions:
+  IsDev: !Equals 
+    - !Ref pEnvironment
+    - development
+
+Resources:
+  
+  RasdStaticBucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub ${pBucketName}
+      LifecycleConfiguration:
+        Rules:
+          - Id: delete incomplete uploads
+            AbortIncompleteMultipartUpload:
+               DaysAfterInitiation: 1
+            Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: TRUE
+        BlockPublicPolicy: TRUE
+        IgnorePublicAcls: TRUE
+        RestrictPublicBuckets: TRUE
+      Tags:
+        - Key: Name
+          Value: !Sub rasd-static-${pEnvironment}
+
+  RasdStaticBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref RasdStaticBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Resource: !Join [ '', ['arn:aws:s3:::', !Ref RasdStaticBucket ,'/*' ]]
+            Principal: 
+              AWS: !Join [ '', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ', !Ref RasdStaticCloudFrontOai ]]
+
+  RasdStaticDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "${pSubDomain}.${pHostedZone}"
+      Comment: !Sub RASD static domain for the ${pEnvironment} environment
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt RasdStaticCloudFrontDistro.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneName: !Sub "${pHostedZone}."
+
+  RootRasdStaticDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Ref pHostedZone
+      Comment: !Sub RASD static domain for the ${pEnvironment} environment
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt RasdStaticCloudFrontDistro.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneName: !Sub "${pHostedZone}."
+
+  RasdStaticCloudFrontDistro:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: RasdStaticBucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Sub "${pSubDomain}.${pHostedZone}"
+          - !Ref pHostedZone
+        Comment: !Sub RASD static site ${pEnvironment}
+        DefaultCacheBehavior:
+          AllowedMethods: 
+            - GET
+            - HEAD
+          CachedMethods: 
+            - GET
+            - HEAD
+          CachePolicyId: !Ref RasdStaticCachePolicy 
+          Compress: true
+          TargetOriginId: rasd-static-s3
+          ViewerProtocolPolicy: redirect-to-https 
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: false
+        Origins:
+          - DomainName: !Sub "${pBucketName}.s3.${AWS::Region}.amazonaws.com"
+            Id: rasd-static-s3
+            S3OriginConfig:
+              OriginAccessIdentity: !Join ['', ['origin-access-identity/cloudfront/', !Ref RasdStaticCloudFrontOai ]]
+            OriginPath: !Sub "/${pBucketPath}"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref pSslCertificate
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
+      Tags:
+        - Key: component
+          Value: cdn
+
+  RasdStaticCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties: 
+      CachePolicyConfig: 
+        Comment: !Sub CF Cache Policy for the RASD static site ${pEnvironment}
+        DefaultTTL: 300
+        MaxTTL: 86400
+        MinTTL: 1
+        Name: !Sub
+                - "RasdStatic-cache-Policy-${ResourceName}"
+                - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+        ParametersInCacheKeyAndForwardedToOrigin: 
+          CookiesConfig: 
+            CookieBehavior: none
+          EnableAcceptEncodingBrotli: true
+          EnableAcceptEncodingGzip: true
+          HeadersConfig: 
+            HeaderBehavior: none
+          QueryStringsConfig: 
+            QueryStringBehavior: whitelist
+            QueryStrings: 
+              - cb
+
+  RasdStaticCloudFrontOai:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub CF Origin Access Identity for the RASD static ${pEnvironment}
+
+Outputs:
+  RasdStaticBucketName:
+    Value: !Ref RasdStaticBucket
+  RasdStaticBucketArn:
+    Value: !GetAtt RasdStaticBucket.Arn
+  RasdStaticCloudFrontDistributionId:
+    Value: !Ref RasdStaticCloudFrontDistro
