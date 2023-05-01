@@ -37,7 +37,7 @@ Parameters:
     Description: GitHub owner
   pProductComponent:
     Type: String
-    Description: The name of the product
+    Description: The name of the product component
   pProductName:
     Type: String
     Description: The name of the product
