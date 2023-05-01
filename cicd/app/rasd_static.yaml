@@ -94,9 +94,6 @@ Resources:
             - HEAD
           CachePolicyId: !Ref RasdStaticCachePolicy 
           Compress: true
-          FunctionAssociations:
-            - EventType: viewer-request
-              FunctionARN: !GetAtt RasdStaticCloudFrontFunction.FunctionMetadata.FunctionARN
           TargetOriginId: rasd-static-s3
           ViewerProtocolPolicy: redirect-to-https 
         DefaultRootObject: index.html
