@@ -60,6 +60,5 @@ aws cloudformation deploy \
         pGitHubBranch=$branch \
         pGitHubOwner=$GITHUB_OWNER \
         pGitHubRepositoryName=$GITHUB_REPO_NAME \
-        pLambdaStackName=$LAMBDA_STACK_NAME \
         pProductName=$PRODUCT_NAME
 
