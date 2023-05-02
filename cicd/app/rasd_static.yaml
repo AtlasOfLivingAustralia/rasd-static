@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: RASD static site
+Description: The RASD static site
 
 Parameters:
   pEnvironment:
