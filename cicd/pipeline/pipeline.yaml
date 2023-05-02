@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Code pipeline for docsportal pkce
+Description: Code pipeline for RASD static site
 
 Parameters:
   pAppStackName:
@@ -8,6 +8,9 @@ Parameters:
   pArtifactsBucket:
     Type: String
     Description: Common artifacts bucket used by CodePipeline and CodeBuild
+  pAutoDeploy:
+    Type: String
+    Description: Sets the pipeline to autodeploy on repo changes
   pCleanBranch:
     Type: String
     Description: The clean branch, can be used in resource names
@@ -145,7 +148,7 @@ Resources:
               FullRepositoryId: !Sub ${pGitHubOwner}/${pGitHubRepositoryName}
               BranchName: !Ref pGitHubBranch
               OutputArtifactFormat: CODE_ZIP
-              DetectChanges: false
+              DetectChanges: !Ref pAutoDeploy
             Namespace: CheckoutSrcNS
             OutputArtifacts:
               - Name: 'SourceArtifact'

@@ -135,6 +135,7 @@ ul {
 
 .icon-button:hover {
     height: 210px;
+    margin-bottom: -10px;
 }
   
 

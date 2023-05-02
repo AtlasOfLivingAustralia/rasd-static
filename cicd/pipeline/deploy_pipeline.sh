@@ -51,6 +51,7 @@ aws cloudformation deploy \
     --parameter-overrides \
         pAppStackName=$APP_STACK_NAME \
         pArtifactsBucket=$ARTIFACTS_BUCKET \
+        pAutoDeploy=$AUTO_DEPLOY \
         pCloudFormationServiceRole=$CLOUDFORMATION_SERVICE_ROLE \
         pCodeBuildServiceRole=$CODEBUILD_SERVICE_ROLE \
         pCodePipelineServiceRole=$CODEPIPELINE_SERVICE_ROLE \
