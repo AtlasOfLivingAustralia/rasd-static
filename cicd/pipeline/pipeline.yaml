@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Code pipeline for docsportal pkce
+Description: Code pipeline for RASD static site
 
 Parameters:
   pAppStackName:
