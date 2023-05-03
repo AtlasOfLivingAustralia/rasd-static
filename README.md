@@ -5,14 +5,14 @@ Welcome! This project contains the infrastructure, code and the deployment pipel
 ## Environments
 There are 2 environments: testing, and production. the CICD framework also allows for development and staging environments, these are not currently used in this project. The environment is determined by the branch.
 
-|git branch|environment |
+|git branch|environment|
 |--|--|
 |main|production|
 |main|staging ( not used ) |
 |testing|testing|
 |feature* (e.g. feature/issue-121-new-logo) |development ( not used )|
 
-The production environment runs in our production AWS account and is available on https://rasd.org.au/. testing runs in the testing account and is available on http://testing.rasd.org.au/
+The production environment runs in our production AWS account and is available on https://rasd.org.au/. Testing runs in the testing account and is available on https://testing.rasd.org.au/
 
 ## Configuration
 All configuration for the project is handled in the `config.ini` file. The file format is of a standard ini file with different sections corresponding to the different environments. there is a [default] section that includes values common to all environments such as the code repo details. Default values can be overridden in an environment section
