@@ -106,6 +106,9 @@ Resources:
             - HEAD
           CachePolicyId: !Ref RasdStaticCachePolicy 
           Compress: true
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt RasdStaticCloudFrontFunction.FunctionMetadata.FunctionARN
           TargetOriginId: rasd-static-s3
           ViewerProtocolPolicy: redirect-to-https 
         DefaultRootObject: index.html
@@ -154,6 +157,33 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Sub CF Origin Access Identity for the RASD static ${pEnvironment}
+
+  RasdStaticCloudFrontFunction:
+    Type: AWS::CloudFront::Function
+    Properties: 
+      AutoPublish: true
+      FunctionCode: |
+                      function handler(event) {
+                        var request = event.request;
+                        var uri = request.uri;
+
+                        // Check whether the URI is missing a file name.
+                        if (uri.endsWith('/')) {
+                            request.uri += 'index.html';
+                        }
+                        // Check whether the URI is missing a file extension.
+                        else if (!uri.includes('.')) {
+                            request.uri += '/index.html';
+                        }
+
+                        return request;
+                      }
+      FunctionConfig: 
+        Comment: Rewrite any request ending in a directory to append index.html on the end
+        Runtime: cloudfront-js-1.0
+      Name: !Sub
+              - "rasd-static-site-rewrite-${ResourceName}"
+              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
 
 Outputs:
   RasdStaticBucketName:
