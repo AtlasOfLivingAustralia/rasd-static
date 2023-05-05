@@ -172,8 +172,18 @@ Resources:
                             request.uri += 'index.html';
                         }
                         // Check whether the URI is missing a file extension.
+                        // Redirect in this case otherwise relative links will
+                        // be broken
                         else if (!uri.includes('.')) {
                             request.uri += '/index.html';
+                            var response = {
+                                  statusCode: 301,
+                                  statusDescription: 'Moved Permanently',
+                                  headers:
+                                    { "location": { "value": request.uri } }
+                                }
+
+                            return response;
                         }
 
                         return request;
