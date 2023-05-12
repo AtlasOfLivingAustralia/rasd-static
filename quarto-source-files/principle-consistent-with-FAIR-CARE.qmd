@@ -1,0 +1,30 @@
+# Principle: Handling of Restricted Access Species Data Should be Consistent with Government Requirements and the FAIR and CARE Principles
+
+The Australian Government Best Practice Guide to Applying Data Sharing Principles encourages the use of a data-sharing purpose test. For the purposes of this framework, access to RASD shouldn't be considered automatic but governed by an access process (see [Principle: Restricted Access Species Data requests should follow a structured, transparent process](/principle-structured-transparent-process.html)). Generally speaking, access to RASD should be dependent on a purpose test based on the following principles, where the purpose is to inform one or more of the following:
+
+-   government policy\
+-   research and development with a public benefit\
+-   conservation and management activities with a public benefit\
+-   program design, implementation, and evaluation\
+-   delivery of government services.\
+
+It is best practice to follow the CARE principles when dealing with Indigenous data or knowledge (see [Supplement 1](supplements.html))
+
+Availability of RASD is often dependent on regulatory and legislative controls. Data custodians must observe the requirements in force in their jurisdiction and where this framework conflicts with those requirements, those requirements hold sway. Freedom of Information and environmental approval legislation frequently legally require the publishing of raw data in particular circumstances. This may mean datasets that would otherwise be publicly available must be withheld or, conversely, datasets that a stakeholder may wish to be withheld or embargoed must be made available. Data custodians remain responsible for ensuring that any data that they are providing is consistent with the legislative requirements in the jurisdiction in which they operate.
+
+This framework provides best practice guidance on sharing restricted access data relating to species. [Table 1](principle-consistently-classified.html#table-1---risk-matrix-for-rasd) provides a risk impact matrix for the assessed risk of sharing data according to this framework. The high-level process for handling RASD data is shown in [Figure 2](principle-consistently-classified.html#figure-2---rasd-data-handling-process-see-also-table-restricted-access-treatments-and-metadata). Further detail on the differences between requests from Full Access Users, Approved Data Requestors and Public Access is in the [Principle: Restricted Access Species datasets should be transformed consistently if made public or be as complete as possible if provided to approved data requestors](/principle-transformed-consistently.html). Individual steps in the process of handling RASD are provided in [Supplement 6](supplements.html): Process for Release of Restricted Access Data, [Supplement 7](supplements.html): Withheld Data, and [Supplement 8](supplements.html): Process for Handling Embargoed Data. A best practice example of a request form is available from [Supplement 9](supplements.html).
+
+Because best practice implies a paradigm shift in the handling of such data, the framework distinguishes between:
+
+a)  existing data -- these are data containing RASD already held in repositories as at the date of a data custodian deciding to operate consistently with this framework\
+b)  new data -- these are data acquired after the data custodian decides to operate consistently with this framework\
+
+## Existing Data
+
+It is recognised that there are subsets of existing restricted access data held by most data custodians that are difficult to share with third parties because of formal or informal commitments with original suppliers.
+
+Consistent with the Australian Government's Best Practice Guide to Applying Data Sharing Principles, this framework encourages data custodians to make best efforts to work towards minimising the practice of withholding datasets and information on this is available in [Supplement 7](supplements.html): Withheld Data and Restricted Access Species Data. Recognising that some datasets need to be withheld, data custodians are encouraged to provide metadata on withheld datasets to provide transparency on what datasets exist nationally.
+
+## New Data
+
+Data custodians should work towards the acquisition of and provision of data using the principles outlined in this framework. This is agreed best practice intended to promote FAIR and CARE principles, be consistent with the [Research Data Alliance Principles and Guidelines for Legal Interoperability of Research Data](https://rd-alliance.org/sites/default/files/attachment/Legal%20Interoperability%20Principles%20and%20Implementation%20Guidelines_Final.pdf) and commitment to more efficient data-sharing.

@@ -1,0 +1,7 @@
+# Consistency {.unnumbered}
+
+The framework draws upon the sensitive species policies of all Australian jurisdictions as well as the sensitive species position papers prepared by the [Global Biodiversity Information Facility](https://docs.gbif.org/sensitive-species-best-practices/master/en/) (2020) and the [Atlas of Living Australia](https://www.ala.org.au/wp-content/uploads/2010/07/ALA-sensitive-data-report-and-proposed-policy-v1.1.pdf) (2009).
+
+The framework follows the Australian Government's Best Practice Guide to Applying Data Sharing Principles and is consistent with the principles of FAIR data (findability, accessibility, interoperability, and reusability), [CARE (Collective benefit, Authority to control, Responsibility, Ethics) principles](https://www.gida-global.org/care), the Research Data Alliance's Principles and Guidelines for Legal Interoperability of Research Data, and [the Australian Research Data Common's Guide to Publishing Sensitive Data](https://zenodo.org/record/7259742#.ZEjG_-xBxBx) while also acknowledging the sensitive nature of the data covered.
+
+Currently the framework does not fully cover restricted access Indigenous ecological data and knowledge. Many of the principles and best practices outlined in this framework could, however, be applied when handling access requests for these data. The framework is intended to operate within the CARE principles for Indigenous data governance to recognise Indigenous data sovereignty.

@@ -1,0 +1,65 @@
+project:
+  type: book
+
+book:
+  title: "RASD Framework"
+  author: "Atlas of Living Australia"
+  date: "5/2/2023"
+  search: true
+  page-navigation: true
+  
+  chapters:
+    - index.qmd
+
+    - part: "Introduction"
+      chapters:
+      - acronyms.qmd
+      - statement-of-intent.qmd
+      - what-is-rasd.qmd
+      - who-is-this-framework-for.qmd
+      - who-manages-this-framework.qmd
+      - who-produced-the-framework.qmd
+      - consistency.qmd
+      - my-organisation.qmd
+      - purpose-of-the-framework.qmd
+      - national-principles.qmd
+      - explanation-important-terms.qmd
+    
+    - part: "Principles"
+      chapters:
+      - principle-consistent-with-FAIR-CARE.qmd
+      - principle-consistently-classified.qmd
+      - principle-discoverable.qmd
+      - principle-structured-transparent-process.qmd
+      - principle-transformed-consistently.qmd
+      - principle-negotiated-legal-agreement.qmd
+      
+    - part: "Agreement & Definitions"
+      chapters:
+      - definitions.qmd
+      - organisations.qmd
+      
+    - part: "Supplements"
+      chapters:
+      - supplements.qmd
+        #- supplement1.qmd
+        #- supplement2.qmd
+        #- supplement3.qmd
+        #- supplement4.qmd
+        #- supplement5.qmd
+        #- supplement6.qmd
+        #- supplement7.qmd
+        #- supplement8.qmd
+        #- supplement9.qmd
+      
+
+format:
+  html:
+    theme: 
+    - cerulean
+    - custom.scss
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+

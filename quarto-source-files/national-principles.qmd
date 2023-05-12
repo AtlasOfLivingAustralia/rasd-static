@@ -1,0 +1,15 @@
+# National Principles for Restricted Access Species Data {.unnumbered}
+
+RASD is invaluable for environmental and conservation management, decision-making, and research.
+
+The national principles of Restricted Access Species Data are that:
+
+-   Handling of Restricted Access Species Data should be consistent with government requirements and FAIR and CARE principles
+-   Restricted Access Species Data should be consistently classified
+-   Restricted Access Species Data should be discoverable
+-   Restricted Access Species Data requests should follow a structured, transparent process
+-   Restricted Access Species Datasets provided in response to approved requests for Restricted Access Species Data should be as complete as possible
+-   Restricted Access Species datasets should be transformed consistently if made public or be as complete as possible if provided to approved data requestors
+-   Sharing of Restricted Access Species Data should be through negotiated legal agreement
+
+More detail on each of the principles is detailed later in the framework.

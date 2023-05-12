@@ -1,0 +1,7 @@
+# Who Produced this Framework? {.unnumbered}
+
+The framework is the result of an agreed program of work by all the organisations listed in the section [Organisations Involved in the Production of this Framework](/organisations.html). Including the Australian Government, State and Territory conservation agencies, the Atlas of Living Australia, Australian Research Data Commons, Council of Heads of Australasian Herbaria, Council of Heads of Australian Faunal Collections, and the Western Australian Biodiversity Science Institute to improve the national handling of RASD.
+
+The framework was also circulated nationally around a wide range of government and non- government stakeholders for comment during its development.
+
+This framework relies on the principle that data custodians retain data sovereignty over their data.

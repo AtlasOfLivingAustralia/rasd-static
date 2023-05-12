@@ -1,0 +1,47 @@
+# Principle: Sharing of Restricted Access Species Data Should be Through Negotiated Legal Agreement
+
+RASD is not publicly available and often has many restrictions around its use. Because of this, it is best practice to let two overarching principles guide the mechanism by which RASD is shared:
+
+-   RASD should be shared under some form of legal agreement (either standard form data licence agreements or negotiated legal agreements)\
+-   Negotiated legal agreements are recommended rather than standard form data licence agreements. Negotiation allows the terms and conditions to be tailored to the specific data and use requirements, and should promote compliance by enhancing awareness of the terms\
+
+Most data custodians currently make use of standard form data licence agreements when sharing data. The difference between the two types of agreements is:
+
+a)  *Standard Form Data Licence Agreement* -- This is a license used between most data custodians and repositories, which uses standard (non-negotiable) terms and conditions to stipulate management of data including to control end user use of data.\
+b)  *Negotiated Legal Agreement* -- for the purposes of this framework, this is a legal agreement between data custodians and Approved Data Requestors, the terms of which are negotiated by the parties.\
+
+It is recognised that data custodians with existing processes that do not involve negotiated legal agreements may require time to transition but will ideally be working towards implementing a new process.
+
+## What Should be Included in a Negotiated Legal Agreement?
+
+A guide to what should be covered in a negotiated legal agreement about data sharing is provided in [Supplement 2](supplements.html): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement?
+
+Once approval has been provided by data custodians, the intention of the negotiated legal agreement is to define between the data custodian and the entity requesting third-party data access what the expectations are about data use and to ensure that data are cited appropriately and removed after use.
+
+Approval can only be granted by the custodian, either directly or as specified in a negotiated legal agreement.
+
+The agreement should specify:
+
+-   the duration of the agreement\
+-   citation of the dataset\
+-   third-party Intellectual Property (IP)\
+-   the requirement that data are held in a secure environment with role-based access controls where necessary\
+-   whether data can be passed onto third parties with or without consent of the data custodian\
+-   that data to be used for the purposes outlined in the agreements only and not for any other purpose\
+-   the consequences if a breach of agreement conditions occurs including suspension of current and future access requests\
+
+## What Happens if a Breach Occurs?
+
+Breaches vary in seriousness. Some breaches may occur inadvertently and have at most, minor consequences (or potential consequences). Others may be more serious -- for example they may result from the deliberate actions or negligence of the data recipient, and/or have significant actual or potential consequences. It is the responsibility of data custodians and users to familiarise themselves with any relevant breach reporting requirements in their jurisdiction, and for custodians to determine what constitutes a serious breach.
+
+Data requestors that have been assessed consistently with the principles of this framework as Approved Data Requestors may, on occasion, breach the conditions of their negotiated legal agreement for data use. Breaches should be dealt with by the data custodian responsible for the agreement consistent with the conditions of the agreement.
+
+Where serious or multiple breaches occur, it is in the interests of data custodians to warn other data custodians of known offenders and take this into consideration in approving new data requests. In the case of a current negotiated legal agreement, the agreement should be cancelled immediately.
+
+An appeals process should be set up by the data custodian for approved data requestors to appeal any breaches or rejections of data access requests.
+
+## New data Acquisition and New Licence Agreements
+
+Data custodians operating consistent with and referencing this framework are committing to improve RASD access in future. A critical component of this should be to aim for future creation or acquisition of data to be consistent with the principles of this framework.
+
+Data custodians should work towards new data acquisition or third-party data access negotiated to consistent with the Principle: Sharing of Restricted Access Species Data Should be Through a Negotiated Legal Agreement and the suggestions in [Supplement 2](supplements.html): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement? are recommended as best practice. This is to ensure transparency about data access and flow.
