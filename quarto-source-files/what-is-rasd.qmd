@@ -1,0 +1,19 @@
+# What is Restricted Access Species Data? {.unnumbered}
+
+Restricted Access Species Data (RASD) - often known as "sensitive species data" -- are data about biodiversity that have features that mean there are reasons for withholding the data from public view or modifying the data before it is made public.
+
+This can include, for example:
+
+-   Flora and fauna where knowledge about their exact locations make them sensitive to disturbance. This can be because they are extremely rare, attractive to poachers, their nest sites are highly sensitive to disturbance or simply because they are newly discovered and there is insufficient information known about them.
+
+-   Species locations where knowledge about the species can be seriously misinterpreted or cause damage without context. Examples include records of weed or pest control that the landowner might not be comfortable making publicly available. An important example is records of an invasive species that has been eradicated from Australia but whose historical records might cause confusion over Australia's pest-free status.
+
+-   Data that have been supplied under conditions that constrain what can be given to third parties or where the data can threaten research or an economic outcome.
+
+-   Data that include personal identifiable information, where the person has not given approval for that data to be shared.
+
+-   Data that has been gathered by or otherwise belongs to First Nations people and permission needs to be granted before the data are shared.
+
+This data is needed for conservation management, decision-making and research.
+
+An excellent overview of many types of sensitive data, the current state of play internationally, as well as the issues inherent in using these data are provided by the Global Biodiversity Information Facility's [Current Best Practices for Generalizing Sensitive Species Occurrence Data](https://docs.gbif.org/sensitive-species-best-practices/master/en/) by Arthur Chapman.

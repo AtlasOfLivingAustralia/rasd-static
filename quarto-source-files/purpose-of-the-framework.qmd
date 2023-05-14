@@ -1,0 +1,32 @@
+# Purpose of the Framework - A Single Way of Handling Restricted Access Species Data for Australia {.unnumbered}
+
+A single agreed way of sharing RASD aims to make data sharing between organisations easier and make the form of desensitised data that is made public consistent.
+
+The advantages of this framework are:
+
+-   Standardised methods and processes for handling RASD
+
+-   Stream-lined access to and sharing of RASD
+
+-   Standardised methods of transforming RASD when displayed publicly
+
+
+All the organisations involved in the development of this framework agreed that a more holistic approach to handling data sensitivities associated with species data was required. It was also agreed that a move away from the use of the term "sensitive" was helpful in understanding all the types of restrictions that influence data custodian decisions on sharing data as well as avoiding confusion with formal Australian government security classifications.
+
+
+
+The purpose of this framework is to:
+
+a) provide principles to facilitate a consistent national approach to RASD \
+b) provide overarching principles and best practice guidance to data custodians on identifying, managing, and sharing RASD \
+c) provide technical guidance on how to operationally deal with RASD \
+d) emphasise the principle that data custodians retain sovereignty over their data
+
+
+
+The framework provides a national, structured, best-practice flow for: \
+
+a) the sharing of all RASD \
+b) the release of data to approved data requestors \
+c) the release of desensitised and modified datasets for use by the general community \
+d) agreed best-practice processes enabling a)-c)
