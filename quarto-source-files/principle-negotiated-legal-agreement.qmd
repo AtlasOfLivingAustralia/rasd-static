@@ -14,7 +14,7 @@ It is recognised that data custodians with existing processes that do not involv
 
 ## What Should be Included in a Negotiated Legal Agreement?
 
-A guide to what should be covered in a negotiated legal agreement about data sharing is provided in [Supplement 2](supplements.html): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement?
+A guide to what should be covered in a negotiated legal agreement about data sharing is provided in [Supplement 2](supplement2.qmd): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement?
 
 Once approval has been provided by data custodians, the intention of the negotiated legal agreement is to define between the data custodian and the entity requesting third-party data access what the expectations are about data use and to ensure that data are cited appropriately and removed after use.
 
@@ -44,4 +44,4 @@ An appeals process should be set up by the data custodian for approved data requ
 
 Data custodians operating consistent with and referencing this framework are committing to improve RASD access in future. A critical component of this should be to aim for future creation or acquisition of data to be consistent with the principles of this framework.
 
-Data custodians should work towards new data acquisition or third-party data access negotiated to consistent with the Principle: Sharing of Restricted Access Species Data Should be Through a Negotiated Legal Agreement and the suggestions in [Supplement 2](supplements.html): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement? are recommended as best practice. This is to ensure transparency about data access and flow.
+Data custodians should work towards new data acquisition or third-party data access negotiated to consistent with the Principle: Sharing of Restricted Access Species Data Should be Through a Negotiated Legal Agreement and the suggestions in [Supplement 2](supplement2.qmd): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement? are recommended as best practice. This is to ensure transparency about data access and flow.

@@ -6,7 +6,7 @@ The Australian Government Best Practice Guide to Applying Data Sharing Principle
 
 Recognising the limited resources available to most data custodians, working towards a publicly available catalogue of all Restricted Access Species Data (RASD) datasets, with metadata, to enable users to understand what datasets are accessible and not accessible, is strongly encouraged.
 
-Metadata statements need to conform to the standards set out in the best practice metadata sample available in [Supplement 4](supplements.html): Restricted Access Species Data Metadata Statement Template and row level metadata to conform to Darwin Core.
+Metadata statements need to conform to the standards set out in the best practice metadata sample available in [Supplement 4](supplement4.qmd): Restricted Access Species Data Metadata Statement Template and row level metadata to conform to Darwin Core.
 
 ## Provision of Data Catalogue
 

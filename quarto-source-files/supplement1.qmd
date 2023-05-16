@@ -1,0 +1,29 @@
+# Supplement 1: Recognising Indigenous Data Sovereignty in Restricted Access Species Data {.unnumbered}
+
+*(Version 1/12/2022)*
+
+The CARE principles for Indigenous data governance (Collective Benefit, Authority to Control, Responsibility and Ethics) are intended to recognise Indigenous data sovereignty.
+
+Suggestions on how biodiversity data may be treated or gathered using these principles are contained in [Robinson et al (2021)](https://doi.org/10.1007/s00267-021-01485-8).
+
+The CARE principles apply to Indigenous data and knowledge generally, but for the purposes of the current framework, this attachment specifically references species point data, including knowledge about those species or data points gathered by or about Indigenous peoples.
+
+Data Custodians are encouraged to adopt the following principles:
+
+a)  Existing Data\
+    \
+    All species point data, including knowledge about those species or data points gathered by or about Indigenous peoples should carry an attribute field that defines a record as this type of data. The attribute field should indicate what individual or organisation should be contacted to discuss data release.\
+    \
+    The consultation should cover whether data can be released, whether derived products may be produced from the released data and how long the data may be shared. If data are not to be released, agreement should be sought to a metadata statement that describes, but does not contain, the withheld data.\
+    \
+    Negotiated legal agreements on data to be released should stipulate any conditions requested in Indigenous consultation.
+
+    \
+
+b)  New Data\
+    \
+    New species point data should be gathered with full consultation with Indigenous communities. This consultation should cover whether data can be released, whether derived products may be produced from the released data and how long the data may be shared. If data are not to be released, agreement should be sought to a metadata statement that describes, but does not contain, the withheld data. Ideally this information should be included in the attribute field relating to Indigenous data.\
+    \
+    The result of consultation may well be that communities still wish to be consulted before data are released, in which case the attribute field should indicate what individual or organisation should be contacted to discuss data release.
+
+</br> Negotiated legal agreements on data to be released should stipulate any conditions requested in Indigenous consultation.

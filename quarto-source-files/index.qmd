@@ -1,10 +1,12 @@
 # National Framework for the Sharing of Restricted Access Species Data in Australia {.unnumbered}
 
-![](images/RASD-cover.png "Title: RASD Framework cover"){fig-alt="Cover of the RASD Framework document" fig-align="left" width="60%"}
-
-[**View as PDF**](../pdf/RASD-Framework.pdf) (4.2 MB)
-
 <br/>
+ [**View as PDF**](../pdf/RASD-Framework.pdf) (4.2 MB)
+<br/>
+
+![](images/RASD-cover.png "Title: RASD Framework cover"){fig-alt="Cover of the RASD Framework document" fig-align="left" height="600px"}
+
+
 
 ## For bibliographic purposes, this publication may be cited as:
 

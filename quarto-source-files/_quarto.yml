@@ -5,9 +5,22 @@ book:
   title: "RASD Framework"
   author: "Atlas of Living Australia"
   date: "5/2/2023"
-  search: true
-  page-navigation: true
-  
+  search: 
+    location: navbar
+    type: textbox
+  page-navigation: false
+  sidebar:
+    style: floating
+    font: Roboto
+  navbar:
+    background: primary
+    title: "RASD Framework"
+    href: "https://rasd.org.au"
+  page-footer:
+    background: info
+    center: 
+      - text: "rasd.org.au"
+        href: "https://rasd.org.au"
   chapters:
     - index.qmd
 
@@ -41,16 +54,15 @@ book:
       
     - part: "Supplements"
       chapters:
-      - supplements.qmd
-        #- supplement1.qmd
-        #- supplement2.qmd
-        #- supplement3.qmd
-        #- supplement4.qmd
-        #- supplement5.qmd
-        #- supplement6.qmd
-        #- supplement7.qmd
-        #- supplement8.qmd
-        #- supplement9.qmd
+      - supplement1.qmd
+      - supplement2.qmd
+      - supplement3.qmd
+      - supplement4.qmd
+      - supplement5.qmd
+      - supplement6.qmd
+      - supplement7.qmd
+      - supplement8.qmd
+      - supplement9.qmd
       
 
 format:
@@ -58,6 +70,10 @@ format:
     theme: 
     - cerulean
     - custom.scss
+    fontsize: 1em
+    linestretch: 1.7
+    toc-title: "On this page"
+    tbl-colwidths: [30,50,60,40]
   pdf:
     documentclass: scrreprt
 
