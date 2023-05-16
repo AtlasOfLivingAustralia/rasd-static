@@ -1,0 +1,57 @@
+# Supplement 9: Example Restricted Access Species Data Access Request Form Template {.unnumbered}
+
+*(Version 1/12/2022)*
+
+### Organisation / Research Institution Name
+
+-   Address
+
+-   Indigenous Body / Organisation? Y/N
+
+### Requester (must be an accountable representative of the organisation)
+
+-   First Name
+
+-   Last Name
+
+-   Email
+
+-   OrcID
+
+### Project
+
+-   Project Title
+
+-   What is the purpose of the data request? (Choose an item)
+
+-   Topic of Research (if applicable): (Choose an item) OR Industry Type: (Choose an item)
+
+-   Is the data to be used for commercial purposes? Y/N
+
+-   Public Benefit Statement (is there a public interest in the outputs and outcomes of this project?)
+
+### Data
+
+-   Data Requested (provide exact name of dataset if known, otherwise describe the data you need)
+
+-   Relevance of data to project
+
+-   How often do you require this data? Single once off? / Defined period? / Ongoing?
+
+-   Date required from: (date)
+
+-   Date required to: (date)
+
+-   What frequency and time period do you need the data for (if ongoing provide reasons to support this)?
+
+-   Area: Whole Dataset / Specific Area(provide bounding box -- i.e. max and minimum latitudes and longitudes in decimal degrees using datum GDA94)
+
+-   What physical and IT controls will you use to ensure that the data are safe and secure during storage and use?
+
+-   Who will be able to access the data? (Choose an item)
+
+-   Name the group of people accessing the data (may be a business / organisational group / project team etc)
+
+-   Does your proposed use of the data involve distribution of products (including publications) created from the data outside your organisation -- describe how and to whom these products will be distributed and / or presented including any data transformations
+
+-   If your access to full resolution data is not approved, would you like to receive a transformed dataset? Y/N

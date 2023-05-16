@@ -1,0 +1,39 @@
+# Supplement 3: Personal Identifiable Information in Restricted Access Species Data {.unnumbered}
+
+*(Version 1/12/2022)*
+
+The Australian Privacy Principles (APP) usefully define Personal Identifiable Information (PII) as a broad range of information, or an opinion, that could identify an individual, including an individual's name, signature, address, phone number or date of birth. PII may be included in a biodiversity dataset for a variety of reasons -- for instance, property information collected for operational purposes, or a record of the individual who sighted or identified an organism.
+
+Use and on-sharing of PII may be restricted by legislation, particularly when collected by a government agency. These restrictions are detailed in the privacy legislation and instruments that apply in different Australian jurisdictions, which are listed in [Personal Identifiable Information -- legislative and regulatory instruments that affect RASD](#p-i-d-legislative-and-regulatory){#p-i-d-legislative-and-regulatory} (current at date of publication). The legality of sharing PII may also vary depending on the date a record was collected; for example, a government agency may only have started to obtain informed consent from individuals to on-share their PII after privacy legislation was introduced in its jurisdiction. Additionally, use and on-sharing of PII in a dataset may be restricted by contractual arrangements -- for example, an agreement between the owner of the dataset, and individuals engaged to undertake surveys or identifications on their behalf.
+
+Any organisation that shares data is responsible for understanding and fully complying with relevant legislative or contractual obligations relating to PII, noting that these obligations may vary considerably from case to case (for instance between government and non-government entities, or between organisations that collect data and those that operate data aggregation services).
+
+Where a data custodian cannot be certain that they are legally or contractually permitted to share PII, it is best practice to remove PII fields from a dataset before sharing that dataset with third parties. If the PII provides additional utility (for instance, where there is value in knowing that the individual named in one record is the same individual named in another), this may be preserved by substituting a unique identifier (e.g. 'Contractor001' rather than 'Jane Smith'). [Data custodians required to comply with the APPs](https://www.oaic.gov.au/privacy/privacy-legislation/the-privacy-act/rights-and-responsibilities#WhoHasResponsibilitiesUnderPrivacyAct) should note that restrictions may also apply to the sharing of unique identifiers and should consult the APPs to understand these limitations.
+
+Data custodians should include metadata to indicate that PII fields have been removed and/or that an identifier code field has been substituted. A sample metadata statement is available in [Supplement 9](supplement9.qmd).
+
+Data custodians should also be aware that Personal Identifiable Information may appear in attribute fields not intended to contain such information, such as comment fields or similar. These fields are often essential to the integrity of the dataset. Recognising that these constitute a small number of records, it is the responsibility of data custodians to remove these references where they are encountered, on a case-by-case basis, rather than withholding these fields altogether.
+
+## Personal Identifiable Information -- legislative and regulatory instruments that affect RASD
+
+The following list relates to the legislation and instruments within which this framework must operate (as at February 2023):
+
+*Data Availability and Transparency Act* 2022 (Commonwealth)
+
+*Privacy Act* 1988 (Commonwealth)
+
+*Information Privacy Act* 2009 (Qld)
+
+*Privacy and Personal Information Protection Act* 1998 (NSW)
+
+*Victorian Charter of Human Rights and Responsibilities Act* 2006 (Vic)
+
+*Information Act* 2002 (NT)
+
+*Information Privacy Act* 2014 (ACT)
+
+*Personal Information Protection Act* 2004 (Tas)
+
+*Cabinet Administrative Instruction (Information Privacy Principles Instruction)* Reissued 2020 (SA)
+
+*Freedom of Information Act* 1992 (WA) (includes privacy principles relating to sharing of data with third parties)

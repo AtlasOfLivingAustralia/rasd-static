@@ -1,0 +1,83 @@
+# Supplement 6: Process for Release of Restricted Access Species Data Publicly {.unnumbered}
+
+*(Version 1/12/2022)*
+
+This document provides guidance to data custodians on the best practice process flow for making Restricted Access Species Data suitable for public release. It outlines the data transformations that need to be performed on datasets before making them public.
+
+Data custodians should generally retain responsibility for applying the following process, except where that has been delegated under a negotiated legal agreement. The process in the Figure below is recommended.\
+
+## Figure: Public Data Release Process
+
+![flowchart showing public data release process](images/RASD-fig-supp-6-public-release.png)\
+
+## Data Removal
+
+Data custodians are responsible for applying rulesets removing data prior to sharing data. If data are removed, it is important that data custodians provide a metadata statement covering the ruleset used to remove data and the fields that have been removed.
+
+## Standard Taxonomy
+
+The Australian National Species List, maintained by the Australian Biological Resources Study, provides agreed national accepted taxonomic concepts for all key organism groups.
+
+Data custodians should consider using this taxonomic framework when sharing their data to standardise taxonomy.
+
+## Restricted Access Species (Currently Known as Sensitive Species) Lists
+
+*Defines Restricted Access Species and provides best practice advise on sharing restricted access species lists and data transformations to be applied to them.\
+*
+
+### a) Newly Described Species
+
+These are species which have been recently described, have very high levels of uncertainty about their vulnerability to disturbance, and have not yet been assessed for inclusion on a RASL. In the rare event where a species meets these criteria, they may be dealt with consistently with the processes outlined for RASL species below.
+
+### b) Definition of Restricted Access Species (Currently Known as Sensitive Species)
+
+Restricted Access Species are species identified by a jurisdiction or a third-party data custodian in Australia as requiring restricted access to geolocational or identity information on the species. These are described in the [Principle Restricted Access Species Data (RASD) Should be Consistently Classified](principle-consistently-classified.qmd) and are generally species that have undergone expert assessment according to a defined process and are held as lists (RASLs). RASLs may relate to either conservation-related species or biosecurity-risk related species. This framework currently only covers conservation-related RASLs.
+
+### c) Management of Jurisdictional Restricted Access Species Lists (RASLs)
+
+RASLs are maintained by each jurisdiction in Australia. A RASL is a [publicly available list](https://lists.ala.org.au/public/speciesLists?q=sensitive) that delineates which species should have their geographic locations obfuscated or withheld to prevent disturbance of the species or for management reasons. Users and data custodians should always check with the originating data custodian that the list is up to date. RASLs serve an essential purpose in ensuring that data from all sources relating to a restricted access species are treated in a similar fashion in that jurisdiction. This is essential, firstly to ensure the management intent behind the RASL is achieved and secondly to ensure that a particular observation that may enter an aggregated data source from several sources, when obfuscated, appears as the same point.
+
+### d) Management of Third-party RASLs
+
+In some instances, non-government data custodians may maintain a RASL with similar intent to jurisdictional RASLs but at variance to jurisdictional lists. An example might be a bird dataset where nest tree locations must be withheld, location obfuscated, or the species identity obfuscated. An alternative might be the records of a local orchid society, where obfuscation of all records is a prerequisite of access.
+
+Third-party RASLs are the prerogative of an organisation, however, organisations intending to create or maintain these lists should be cognisant of the risks:
+
+a\) The effectiveness of independent third-party RASLs may be compromised where such lists are at odds with jurisdictional lists. A mixture of obfuscated and unobfuscated records may allow a user to identify a locality by triangulation or data linkage. \
+b) Because third-party datasets are frequently sought by many aggregators or projects, there is an implicitly higher risk of third-party RASLs resulting in a particular observation entering an aggregated data source from several sources, and when obfuscated, appearing at a different point, confusing analysis.
+
+Nevertheless, third-party RASLs serve an important purpose in giving organisations sufficient reassurance to share data. The importance of third-party RASLs are recognised as an important mechanism for ensuring that the maximum amount of data are included in management and research. Third-party data custodians who work consistently with the principles in this framework are strongly encouraged to seek amendments to jurisdictional RASLs rather than maintaining separate RASLs.
+
+Where third-party RASLs are inevitable, either
+
+a\) these lists are provided to other data custodians so that the best-practice rules identified under this framework are applied consistently but are flagged so that users can discern that obfuscation of this data may divert from other data\
+b) the third-party data custodian applies the best-practice rules identified under this framework but are similarly flagged so that users can discern that obfuscation of this data may divert from other data
+
+### e) Location generalisation (Obfuscation) on Jurisdictional RASLs
+
+All states and territories in Australia manage data on species in RASLs by obfuscation of locality information or by preventing queries on data below a minimum radius of 1km.
+
+Where RASD needs to be transformed spatially as per jurisdictional or third-party RASLs it should be transformed via obfuscation. Obfuscation ideally needs to be conducted so that the same observation point, regardless of source, is spatially moved to a consistent spot to avoid confusion.
+
+Best practice for obfuscation, therefore, needs to:
+
+a\) be deterministic and repeatable so that a transformed point, regardless of source, will end up at the same point \
+b) minimise the flow-on risk of double obfuscation \
+c) allow modellers to use the obfuscated data with confidence, provided that their grid cell is larger than the obfuscation algorithm
+
+There are two levels.
+
+**Level 1 -- round latitude and longitude to nearest 1 decimal place \
+Level 2 -- round latitude and longitude to nearest 2 decimal places**
+
+Where possible, it is desirable to represent obfuscated records as polygons rather than points i.e.. a 0.01 x 0.01 degree square or a 0.1 x 0.1 degree square with the centroid defined by the obfuscation treatment above. For example: where the RASL dictates that location coordinates should be obfuscated to 1 decimal place, and returns a value of latitude -30.5 longitude 148.7 this would be represented by a 0.1 x 0.1 degree square with centroid at -30.5, 148.7. Accordingly, the polygon would have minimum Latitude -30.55, maximum Latitude - 30.45, minimum Longitude 148.65, maximum Longitude 148.75. Jurisdictions should advise whether Level 1 or Level 2 is required for each species via RASLs. The instances where obfuscations are applied are outlined in [Supplement 5](supplement5.qmd).
+
+### f) Attribute Generalisation on Jurisdictional RASLs
+
+The rulesets which apply to RASLs may include generalisation / withholding of some attributes for particular species as outlined under Species-related categories in [Principle Restricted Access Species Data (RASD) Should be Consistently Classified](principle-consistently-classified.qmd). Where information for a particular attribute has been removed, row level metadata should reflect that this has occurred and the ruleset for this change. Reasons should be standardised and align with the species-related categories in [Principle Restricted Access Species Data (RASD) Should be Consistently Classified](principle-consistently-classified.qmd). The instances where generalisations are applied are outlined in [Supplement 5](supplement5.qmd).
+
+### g) Generalisation on Third-Party RASLs
+
+Generalisation rulesets which apply to Third-Party RASLs should follow the same methodologies as outlined in e) and f) for jurisdictional RASLs above.
+
+Data custodians are expected to apply a third-party RASL ruleset to that third-party's dataset.
