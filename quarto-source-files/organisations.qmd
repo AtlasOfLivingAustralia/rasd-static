@@ -1,0 +1,18 @@
+# Organisations Involved in the Development of this Framework {.unnumbered}
+
+Organisations overseeing the compilation of this framework:
+
+- Atlas of Living Australia, CSIRO \
+- Council of Heads of Australian Faunal Collections \
+- Council of Heads of Australasian Herbaria \
+- Department of Climate Change, Environment, Energy and Water (the Commonwealth) \
+- Department of Biodiversity, Conservation and Attractions (WA) \
+- Department of Energy, Environment and Climate Action (VIC) \
+- Department of Environment and Natural Resources (NT) \
+- Department of Environment and Science (QLD) \
+- Department of Environment and Water (SA) \
+- Department of Planning and Environment (NSW) \
+- Department of Natural Resources and Environment (Tas) \
+- EcoCommons Australia \
+- The Environment, Planning and Sustainable Development Directorate (ACT) \
+- Western Australian Biodiversity Science Institute \

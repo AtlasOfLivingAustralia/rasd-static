@@ -1,0 +1,27 @@
+# Supplement 8: Process for Handling Embargoed Restricted Access Species Data {.unnumbered}
+
+*(Version 1/12/2022)*
+
+This supplement outlines the best practice process for handling requests for embargoed Restricted Access Species Data and provides some common scenarios for illustration purposes.
+
+The figure below provides a high-level process for handing embargoed data.
+
+## Figure: Process for Handling Requests for Embargoed RASD
+
+![](images/RASD-figure-supp-8-embargoed.png)
+
+## Example scenarios
+
+A data custodian may wish to embargo either an entire dataset or a subset of records within a dataset for a variety of reasons. These may include, but are not limited to:
+
+-   Embargoing data for a specified period which identify a previously unknown population of a species or a previously undescribed species prior to the data custodian publishing a paper documenting these new findings
+
+-   Embargoing data that are commercial-in-confidence prior to the end of legal contract to develop an area of land
+
+-   Embargoing data which was part of a research project prior to researchers exclusively being able to analyse and publish their results/ findings
+
+-   Embargoing attributes in a dataset that may contain information on the dates and locations of questionably obtained specimens for collections e.g. items acquired from a deceased estate
+
+-   Embargoing data on species which may impact on trade e.g. for a period of 10 years
+
+-   Embargoing data on species which are undergoing assessment for threatened species listing

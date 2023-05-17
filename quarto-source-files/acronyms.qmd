@@ -1,0 +1,19 @@
+# Acronyms {.unnumbered}
+
+|         |                                                                                                                                           |
+|---------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| ABRS    | Australian Biological Resources Study                                                                                                     |
+| AIMS    | Australian Institute of Marine Science                                                                                                    |
+| ALA     | Atlas of Living Australia                                                                                                                 |
+| auNSL   | National Species List                                                                                                                     |
+| AusBIGG | Australian Biodiversity Information Governance Group                                                                                      |
+| CARE    | CARE principles for Indigenous data governance (Collective Benefit, Authority to Control, Responsibility and Ethics)                      |
+| DwC     | Darwin CORE                                                                                                                               |
+| DOI     | Digital Object Identifier                                                                                                                 |
+| FAIR    | FAIR data (findability, accessibility, interoperability, and reusability)                                                                 |
+| HISCOM  | Herbarium Information Systems Committee                                                                                                   |
+| NCRIS   | National Collaborative Research Infrastructure Strategy                                                                                   |
+| RASD    | Restricted Access Species Data                                                                                                            |
+| RASL    | Restricted Access Species List                                                                                                            |
+| TDWG    | Biodiversity Information Standards Group (also known by the abbreviation TDWG, previously known as the Taxonomic Databases Working Group) |
+| TERN    | Terrestrial Ecosystem Research Network                                                                                                    |

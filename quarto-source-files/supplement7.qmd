@@ -1,0 +1,25 @@
+# Supplement 7: Withheld Data and Restricted Access Species Data {.unnumbered}
+
+*(Version 1/12/2022)*
+
+The intent of this framework is specifically to encourage data custodians to maximise the sharing of higher risk data within a trusted environment by constraining access to that environment and ensuring that public access to all higher risk data are either obfuscated or withheld.
+
+There is a category of data -- or datasets -- that carries an implicitly higher risk of consequences when shared due to management, access concerns, policy, legal or financial requirements. This excludes Personal Identifiable Information, and information is available about PII in [Supplement 3](supplement3.qmd).
+
+This type of data are best handled by curtailing access and is therefore called withheld data.
+
+The Australian Government Best Practice Guide to Applying Data Sharing Principles notes that it is best practice for data custodians to explore how they can share data legally rather than simply dismissing a request to access data due to perceived legislative restrictions.
+
+There are four levels of withheld data recognised by this framework and [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd) (referred to below) is available in the [Principle Restricted Access Species Data (RASD) Should be Consistently Classified](principle-consistently-classified.qmd).
+
+a)  cannot be shared at all with third parties, even other jurisdictions -- typically this should be data relating to a small subset of species under extreme risk of exploitation or harm whose distribution is so restricted or sensitive that knowledge shared unnecessarily places the species at risk (Category 3.1 (b) in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd))
+
+b)  can be shared with jurisdictions and approved data requestors under negotiated Legal Agreement but not with other users. Typically this should be Legal Contact or Financial issue datasets (Category 2.1 and 2.2 in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd)), non-Legal Third-party issue datasets (Category 2.3 in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd)), data relating to "sensitive" species (Category 3.1 (a) in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd)), where the implications of sharing species data has ramifications at a national scale such as an incursion of an extreme biosecurity risk species (Category 3.2 in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd)), or where the attribute of a species record makes a record sensitive (Category 3.3 in [Table 1](principle-consistently-classified.qmd#table-1---risk-matrix-for-rasd))
+
+c)  can be shared with approved data requestors under negotiated Legal Agreement provided the source data are not duplicated and not accessible by general users. This is the same as (b) but access to the data are constrained to allow analysis but not data downloading or transfer
+
+d)  can be viewed by the public. This data has had all possible data transformations applied including systematically obscured geolocations
+
+There is a 5th category of withheld data, Embargoed Data, being data that has a timestamp preventing its release before a certain date. As the intention is to release this data in due course, it is dealt with by providing metadata reflecting this (see [Supplement 8](supplement8.qmd)). Levels a), b) and embargoed data fall within the definition of usage-restricted data.
+
+Data custodians are encouraged to work towards the provision of full resolution data (comprising all data except (a) above) when providing data under negotiated legal agreements and the application of data transformations consistent with this framework when providing public data.

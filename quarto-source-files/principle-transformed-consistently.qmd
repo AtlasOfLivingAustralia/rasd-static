@@ -1,0 +1,25 @@
+# Principle: Restricted Access Species datasets should be transformed consistently if made public or be as complete as possible if provided to approved data requestors
+
+It is good practice to recognise that there are different classes of data user making requests and the following provides guidance.
+
+## Full Access Users
+
+Full Access Users are those requesting access to the full dataset with a minimum of withheld information. These are nominally likely to be data custodians operating consistently with and referencing this framework exchanging data with one another for the purposes of conservation, administration, research, or environmental decision-making. Data custodians sharing data between themselves should have signed a negotiated legal agreement for access to full resolution RASD.
+
+## Approved Data Requestors
+
+Approved Data Requestors are users whose request has been assessed and granted. There are several levels of access for these users:
+
+1.  access to the entire dataset for a specified period -- this normally covers high-level use such as contractors working for government on a specific project or research institutions conducting extended studies who need access either to the entire dataset or all data from a particular jurisdiction. Usage terminates at the end of the specified period\
+2.  access to a subset of the dataset (e.g. a specified local area or all data relating to a species or group of species for a specified period) -- this covers most use cases from research and commercial end users\
+3.  access to a protected environment where data can be queried but not copied -- this covers the alternative to level two, where commercial interests or research users wanting relatively fast access to large datasets can enter a protected environment, interrogate data, but not download a copy. Derived products such as models may be downloaded (this option is currently not widely available)\
+
+Generally speaking, individuals should not be recognised as Approved Data Requestors because of the legal complexities surrounding data access. This means a university school, rather than a PhD student, would be signatory, with the expectation that the university will take responsibility for ensuring that the student uses the data legally and responsibly. All Approved Data Requestors should preferably only be able to acquire data if they sign a negotiated legal agreement (not a standard form data licence agreement) controlling data use ([Supplement 2](supplement2.qmd) and [Principle: Sharing or Restricted Access Species Data Should be Through Negotiated Legal Agreement](/principle-negotiated-legal-agreement.html).
+
+Instances where Approved Data Requestors breach legal agreement conditions may result in the Requestor having their agreement revoked. The breach should be considered in new data requests. Both the data custodian and the requesting organisation must comply with any jurisdictional breach reporting requirements.
+
+## Public Access
+
+It is recognised that many data custodians provide publicly available data in various forms to the general public.
+
+It is best practice to work towards transforming RASD that is exposed publicly following the process in [Supplement 6](supplement6.qmd). This ensures that data are transformed consistently, and the users understand how the data they are using has been transformed.

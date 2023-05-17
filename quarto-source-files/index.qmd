@@ -1,0 +1,48 @@
+# National Framework for the Sharing of Restricted Access Species Data in Australia {.unnumbered}
+
+<br/>
+ [**View as PDF**](../pdf/RASD-Framework.pdf) (4.2 MB)
+<br/>
+
+![](images/RASD-cover.png "Title: RASD Framework cover"){fig-alt="Cover of the RASD Framework document" fig-align="left" height="600px"}
+
+
+
+## For bibliographic purposes, this publication may be cited as:
+
+National Framework for the Sharing of Restricted Access Species Data in Australia 2023, Atlas of Living Australia, Publication Series No. 6, Canberra, Australia. <https://doi.org/10.54102/ala.94894>.
+
+## Supplements of this publications are regularly updated and may be cited as:
+
+National Framework for the Sharing of Restricted Access Species Data in Australia 2023, Supplement Recognising Indigenous Data Sovereignty 20/2/2023, Atlas of Living Australia, Publication Series No. 6, Canberra Australia. <https://doi.org/10.54102/ala.94894>
+
+<br/>
+
+### Ownership of intellectual property rights
+
+Unless otherwise noted, copyright (and any other intellectual property rights, if any) in this publication is owned by the CSIRO.
+
+![](images/cc-by.png "CC-BY badge"){fig-alt="Creative Commons badge for CC-BY attribution" fig-align="left" width="20%"}\
+Creative Commons licence\
+Attribution CC BY
+
+All material in this publication is licensed under a Creative Commons Attribution 3.0 Australia Licence, save for content supplied by third parties, logos, any material protected by trademark or otherwise noted in this publication, and the Commonwealth Coat of Arms.
+
+Creative Commons Attribution 3.0 Australia Licence is a standard form licence agreement that allows you to copy, distribute, transmit and adapt this publication provided you attribute the work. A summary of the licence terms is available from <http://creativecommons.org/licenses/by/3.0/au/>. The full licence terms are available from <http://creativecommons.org/licenses/by/3.0/au/legalcode>.
+
+The views and opinions expressed in this publication do not necessarily reflect those of CSIRO, the Commonwealth, State, Territories, or the members of the RASDP Project Working Group.
+
+CSIRO has exercised due care and skill in the preparation and compilation of the information set out in this publication and the information provided in this publication is considered to be correct at the time of publication. However, changes in circumstances after the time of publication may impact on the accuracy of this information. CSIRO therefore disclaims all representations and warranties regarding the currency, completeness, accuracy, and suitability of the content of this publication and, disclaims all legal liability for any loss, damage, expense and / or costs incurred by any person arising out of use of or reliance on this publication.
+
+CSIRO recommends that users exercise their own skill and care with respect to their use of this publication and that users carefully evaluate the accuracy, currency, completeness, and relevance of the material in this publication for their purposes.
+
+### Secretariat for the National Framework for the Sharing of Restricted Access Species Data in Australia
+
+c/- Atlas of Living Australia (ALA)\
+GPO Box 1700\
+CSIRO Black Mountain\
+Canberra, ACT, 2601
+
+More information is available at: [rasd.org.au](https://rasd.org.au)
+
+The development of this Framework was supported by the Australian Research Data Commons (ARDC) and the Atlas of Living Australia (ALA). The ARDC and ALA are funded by the Australian Government's National Collaborative Research Infrastructure Strategy (NCRIS).

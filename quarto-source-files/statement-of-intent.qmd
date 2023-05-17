@@ -1,0 +1,9 @@
+# Statement of Intent {.unnumbered}
+
+This framework is intended to enable consistent, effective sharing and management of Restricted Access Species Data (RASD) nationally in Australia. This includes:
+
+-   promoting responsible data sharing practices
+
+-   giving data custodians the confidence to safely share restricted access species data
+
+-   assisting data custodians to maintain the consistency and quality of data

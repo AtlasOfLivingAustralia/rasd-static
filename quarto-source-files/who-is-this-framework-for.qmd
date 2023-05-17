@@ -1,0 +1,5 @@
+# Who is this Framework For? {.unnumbered}
+
+This framework is intended for use by any organisation that wants to gather, display, share or receive RASD (data custodians and data users). It provides a set of shared principles that are intended to guide users in sharing RASD responsibly and appropriately. It also provides specific guidance on procedures, formats and methodologies and is necessarily technical at some points.
+
+While it is not intended for the general user, members of the public can use the framework to better understand how desensitised publicly accessible RASD that they are interested in may have been modified.

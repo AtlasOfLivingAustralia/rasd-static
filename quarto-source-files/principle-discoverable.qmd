@@ -1,0 +1,13 @@
+# Principle: Restricted Access Species Data Should be Discoverable
+
+## Data Catalogue
+
+The Australian Government Best Practice Guide to Applying Data Sharing Principles specifies that a catalogue of held datasets is best practice, encourages transparency and enables decision-making on datasets to take place in an informed environment.
+
+Recognising the limited resources available to most data custodians, working towards a publicly available catalogue of all Restricted Access Species Data (RASD) datasets, with metadata, to enable users to understand what datasets are accessible and not accessible, is strongly encouraged.
+
+Metadata statements need to conform to the standards set out in the best practice metadata sample available in [Supplement 4](supplement4.qmd): Restricted Access Species Data Metadata Statement Template and row level metadata to conform to Darwin Core.
+
+## Provision of Data Catalogue
+
+Data custodians should provide a copy of their RASD catalogues for inclusion in a centralised metadata repository such as Research Data Australia.

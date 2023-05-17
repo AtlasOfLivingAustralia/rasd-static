@@ -1,0 +1,87 @@
+# Principle: Restricted Access Species Data requests should follow a structured, transparent process
+
+The suggested high-level data access request process is shown in [Figure 3](principle-structured-transparent-process.html#figure-3--rasd-data-access-request-assessment-process).
+
+## Classes of RASD Requests
+
+This framework proposes three classes of typical data access:
+
+1.  raw data, as held in the data custodian's system (access after negotiated legal agreement)\
+2.  structured full resolution data with Personal Identifiable Information data transformations and ability to download (access after negotiated legal agreement)\
+3.  structured data with all transformations and obfuscations applied (open access)\
+
+The decision on which class of access to provide a requestor remains with a data custodian, ideally, consistent with the principles set out in this framework.
+
+## Requests Between Data Custodians Operating Consistently with this Framework
+
+All reasonable access requests for internal use between data custodians who are operating consistently with the framework should be agreed and delivered.
+
+It is best practice that Personal Identifiable Information (see [Supplement 3](supplements.html): Personal Identifiable Information in Restricted Access Species Data) should be removed.
+
+## Providing Data to Approved Data Requestors
+
+Full resolution data (being a full dataset less those records / datasets specified in the supplements relating to Indigenous Data ([Supplement 1](supplements.html)), Withheld Data ([Supplement 7](supplements.html)) and Personal Identifiable Information ([Supplement 3](supplements.html)) to Approved Data Requestors who have a) successfully applied to a data custodian; b) been approved consistent with this framework should be supplied by data custodians who operate consistently with this framework.
+
+## Principles of Providing Data
+
+The central principles of this framework are to:
+
+1.  encourage data sharing between trusted parties so that the maximal amount of restricted data are available for important end-uses such as decision-making and research\
+2.  where data are made publicly available, they are provided in an appropriate and consistent form to support conservation in Australia\
+
+Data custodians are responsible for the provision of their data and should make best efforts to apply all data transformations consistent with this framework, or, if supplying raw or structured full resolution data, under negotiated legal agreement.
+
+## Receiving Access Requests
+
+The [Australian Best Practice Guide to Applying Data Sharing Principles](https://www.pmc.gov.au/sites/default/files/publications/data-sharing-principles-best-practice-guide-15-mar-2019.pdf) suggests the logical fields for a data request. Requests for RASD should meet the following criteria:
+
+-   define a geographic / taxonomic area of interest -- the request form should ask data requestors to define the geographic / taxonomic extent of their request.\
+-   demonstrate an appropriate aim -- the request should clearly articulate the aim of the intended use. For research, the aim should include a statement on the topic of the research; for industry use, the request should specify the type of activity data are being sought for.\
+-   demonstrate a public benefit -- the request should clearly articulate what public benefit is derived by accessing the data and the expected outputs and outcomes.\
+-   show that legal, ethical, and moral considerations (including CARE principles) have been addressed -- how should the request ensure that the data are not misused? Particularly, the data requestor has to make a statement on how they should protect the data from being accessed inappropriately.\
+-   state what data should be used and why it's required - the request should clearly articulate for what purpose RASD is required. For research, this should include a description of the project and expected outcomes; for industry use, the request should specify the type of activity and location.\
+-   state the timeframes for which the user needs the data\
+-   state who (both the entity requesting the data and nominated responsible individual within the entity) will be working on the project\
+-   demonstrate feasibility -- the data requestor needs to demonstrate that the requested data are suitable for answering the stated aims of the project.\
+
+Normally, requests meeting criteria and requesting access to a localised geographic area, or data for a single or small group of species should be approved. Requests for data at a jurisdictional or national level should receive greater scrutiny.
+
+An objective of data requests under the framework should be to prevent restricted data being passed to third parties or entering the public domain.
+
+A best practice guide to fields for an electronic form meeting these requirements is available in [Supplement 9](supplements.html).
+
+If a data requestor has identified as an Indigenous body or organisation on the data access request form, and they have not previously been subject to a breach, every effort should be made by the data custodians to facilitate the sharing of data with the requestor.
+
+## Assessment of Access Requests
+
+Responsibility for approving access requests and releasing data remains with data custodians, except where the negotiated legal agreement between data custodian and a third-party has delegated access request assessment and approval.
+
+Requests should be assessed according to the access request assessment process in [Figure 3](principle-structured-transparent-process.html#figure-3--rasd-data-access-request-assessment-process).
+
+Data Custodians should take best endeavours to ensure the following:
+
+a)  assessments are undertaken consistent with the criteria in this framework.\
+b)  reviews are undertaken in a timely manner.\
+c)  responses to data requestors are in written form and, where a data request is rejected, provide a reason consistent with this framework.\
+
+It is best practice to recognise that datasets containing Indigenous data or knowledge may have longer assessment timeframes due to the consultation necessary for ensuring Indigenous data sovereignty.
+
+## Denial of Access Requests and Right of Appeal
+
+Data custodians retain full rights to refuse a data request following an assessment using the processes outlined in this framework. For transparency, custodians should make best endeavours to provide a reason for a refusal to a data requestor in a written response.
+
+It is the responsibility of the individual data custodians to make best endeavours to develop a transparent right of appeal process.
+
+## Negotiating Legal Agreements
+
+Following the assessment of the data request, the data custodian is responsible for negotiating their own legal agreements. A guide to what should be covered in a negotiated legal agreement about data sharing is provided in [Supplement 2](supplements.html): What Legal Clauses Should be Included in a Restricted Access Species Data Negotiated Licence Agreement?
+
+## Releasing Data
+
+Following the successful negotiation of a legal agreement, data are released to the data requestor consistent with this legal agreement.
+
+It is best practice to enable tracking of data citations by minting a Digital Object Identifier (DOI) or equivalent for a dataset. DOIs linked to each data request mean that how the data are used can be reported back to the data custodian. Data custodians are strongly encouraged to apply similar techniques. Advice on citation and identifiers is available from the [Australian Research Data Commons](https://ardc.edu.au/resource/citation-and-identifiers/).
+
+## Figure 3- RASD Data Access Request Assessment Process
+
+![](images/RASD-fig-3-data-request-process.png){fig-alt="Flowchart showing the data access request process, through to if the request is approved or denied" width="91"}
