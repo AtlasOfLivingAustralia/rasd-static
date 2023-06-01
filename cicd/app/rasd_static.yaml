@@ -29,6 +29,7 @@ Conditions:
   IsDev: !Equals 
     - !Ref pEnvironment
     - development
+  NotDev: !Not [ IsDev ]
 
 Resources:
   
@@ -78,6 +79,7 @@ Resources:
       HostedZoneName: !Sub "${pHostedZone}."
 
   RootRasdStaticDnsRecord:
+    Condition: NotDev
     Type: AWS::Route53::RecordSet
     Properties:
       Name: !Ref pHostedZone
@@ -95,7 +97,7 @@ Resources:
       DistributionConfig:
         Aliases:
           - !Sub "${pSubDomain}.${pHostedZone}"
-          - !Ref pHostedZone
+          - !If [ NotDev, !Ref pHostedZone, !Ref "AWS::NoValue" ]
         Comment: !Sub RASD static site ${pEnvironment}
         DefaultCacheBehavior:
           AllowedMethods: 
