@@ -29,7 +29,7 @@ Conditions:
   IsDev: !Equals 
     - !Ref pEnvironment
     - development
-  NotDev: !Not [ IsDev ]
+  NotDev: !Not [ !Equals [ !Ref pEnvironment, development ] ]
 
 Resources:
   
