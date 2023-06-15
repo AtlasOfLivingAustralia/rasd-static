@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ###
-# Genarate the template configuration, used to pass in the parameters to the
+# Generate the template configuration, used to pass in the parameters to the
 # CloudFormation template and add aws resource tags
 # Usage: gen_template_config.py --template [/path/to/template_config.json]
 
@@ -35,8 +35,8 @@ template_vals = {
     "hosted_zone_id"              : os.environ['HOSTED_ZONE_ID'],
     "product_component"           : os.environ['PRODUCT_COMPONENT'],
     "product_name"                : os.environ['PRODUCT_NAME'],
-    "ssl_certificate"             : os.environ['SSL_CERTIFICATE']
-    "sub_domain"                  : os.environ['SUB_DOMAIN'],
+    "ssl_certificate"             : os.environ['SSL_CERTIFICATE'],
+    "sub_domain"                  : os.environ['SUB_DOMAIN']
 }
 
 # do the substitution
