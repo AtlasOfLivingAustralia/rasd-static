@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 ###
-# Genarate the template configuration, used to pass in the parameters to the
+# Generate the template configuration, used to pass in the parameters to the
 # CloudFormation template and add aws resource tags
 # Usage: gen_template_config.py --template [/path/to/template_config.json]
 
@@ -25,18 +25,18 @@ template = template_env.get_template(args.template)
 template_vals = {
     "artifacts_bucket"            : os.environ['ARTIFACTS_BUCKET'],
     "branch"                      : os.environ['SRC_BRANCH'],
-    "build"                       : os.environ['CODEBUILD_BUILD_NUMBER'],
     "bucket_name"                 : os.environ['SOURCE_BUCKET'],
     "bucket_path"                 : os.environ['BUCKET_PATH'],
-    "commit_id"                   : os.environ['COMMIT_ID'],
+    "build"                       : os.environ['CODEBUILD_BUILD_NUMBER'],
     "clean_branch"                : os.environ['CLEAN_BRANCH'],
+    "commit_id"                   : os.environ['COMMIT_ID'],
     "environment"                 : os.environ['ENVIRONMENT'],
     "hosted_zone"                 : os.environ['HOSTED_ZONE'],
     "hosted_zone_id"              : os.environ['HOSTED_ZONE_ID'],
     "product_component"           : os.environ['PRODUCT_COMPONENT'],
     "product_name"                : os.environ['PRODUCT_NAME'],
-    "sub_domain"                  : os.environ['SUB_DOMAIN'],
-    "ssl_certificate"             : os.environ['SSL_CERTIFICATE']
+    "ssl_certificate"             : os.environ['SSL_CERTIFICATE'],
+    "sub_domain"                  : os.environ['SUB_DOMAIN']
 }
 
 # do the substitution
