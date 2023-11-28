@@ -34,6 +34,4 @@ The `main` and `testing` branches are protected and cant be committed to directl
 
 
 ## Rollback
-Codepipeline is only able to release the latest commit on any branch. If you need to roll back a change you must either manually revert the change in the repo and commit it, or reset the head of the branch to point to a previous commit.
-
-using git revert [4], we can keep the previous commit and revert commit both as commit history
+To rollback to any previous revision go to CodePipeline and after selecting "Release Change" choose the commit to release. [Detailed instructions here](https://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-trigger-source-overrides.html#pipelines-trigger-source-overrides-console)
