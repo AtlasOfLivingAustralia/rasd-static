@@ -37,7 +37,7 @@ phases:
       - echo commit msg is $COMMIT_MSG
       - echo commit id is $COMMIT_ID
       - echo Repo is $REPO
-      - echo  "$AUTHOR has released a ${ENVIRONMENT} update to $PRODUCT_COMPONENT $PRODUCT_NAME. Now live at https://${SUB_DOMAIN}.${HOSTED_ZONE}
+      - echo  "$AUTHOR has released a ${ENVIRONMENT} update to $PRODUCT_COMPONENT $PRODUCT_NAME. Now live at https://${SUB_DOMAIN}.${HOSTED_ZONE}"
     finally:
       - #echo This always runs
 
