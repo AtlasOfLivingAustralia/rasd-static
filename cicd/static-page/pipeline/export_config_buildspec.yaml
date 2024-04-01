@@ -69,7 +69,7 @@ phases:
       - echo Entered the build phase...
       # rasd static cloudformation template config
       - echo Generating the RASD static site stack template config
-      - cicd/gen_template_config.py --template cicd/static-page/pipeline/rasd_static_template_config.j2 > cicd/app/rasd_static_template_config.json
+      - cicd/gen_template_config.py --template cicd/static-page/pipeline/rasd_static_template_config.j2 > cicd/static-page/app/rasd_static_template_config.json
     finally:
       - #echo This always runs
       - #notify Slack on failure
