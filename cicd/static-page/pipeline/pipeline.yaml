@@ -150,7 +150,7 @@ Resources:
             Value: !Ref pCleanBranch       
       Source:                             
         Type: CODEPIPELINE
-        BuildSpec: cicd/inat/pipeline/deploy_notification_buildspec.yaml
+        BuildSpec: cicd/static-page/pipeline/deploy_notification_buildspec.yaml
       TimeoutInMinutes: 5
 
 
@@ -307,10 +307,8 @@ Resources:
               ProjectName: !Ref DeployNotification
               EnvironmentVariables: !Sub |
                                           [
-                                           { "name":"ASSISTANT_ID", "value":"#{CreateAssistantNS.ASSISTANT_ID}" },
                                            { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
                                            { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
-                                           { "name":"ENDPOINT_URL", "value":"#{AssistantCloudFormationOutNS.EndpointUrl}" },
                                            { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
                                            { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
                                            { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },

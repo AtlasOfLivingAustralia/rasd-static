@@ -2,7 +2,7 @@
 set -ueo pipefail
 
 ###
-# Deploy the codepipeline for the iNat assistant
+# Deploy the codepipeline for the RASD static website
 # You must have AWS CLI authentication for this to run. 
 
 usage() {
