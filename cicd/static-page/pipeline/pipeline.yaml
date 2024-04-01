@@ -316,6 +316,8 @@ Resources:
                                            { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
                                            { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
                                            { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
+                                           { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
+                                           { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
                                            { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
                                           ]
             Namespace: DeployNotificationNS
