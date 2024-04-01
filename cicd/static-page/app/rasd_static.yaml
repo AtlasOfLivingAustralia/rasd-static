@@ -5,7 +5,7 @@ Parameters:
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
-  pBucketName:
+  pSourceBucket:
     Type: String
     Description: The bucket name for the site
   pBucketPath:
@@ -37,7 +37,7 @@ Resources:
     Type: "AWS::S3::Bucket"
     DeletionPolicy: Delete
     Properties:
-      BucketName: !Sub ${pBucketName}
+      BucketName: !Sub ${pSourceBucket}
       LifecycleConfiguration:
         Rules:
           - Id: delete incomplete uploads
@@ -118,7 +118,7 @@ Resources:
         HttpVersion: http2
         IPV6Enabled: false
         Origins:
-          - DomainName: !Sub "${pBucketName}.s3.${AWS::Region}.amazonaws.com"
+          - DomainName: !Sub "${pSourceBucket}.s3.${AWS::Region}.amazonaws.com"
             Id: rasd-static-s3
             S3OriginConfig:
               OriginAccessIdentity: !Join ['', ['origin-access-identity/cloudfront/', !Ref RasdStaticCloudFrontOai ]]
