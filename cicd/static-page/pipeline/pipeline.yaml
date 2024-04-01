@@ -214,7 +214,8 @@ Resources:
                 [
                   { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
                   { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
-                  { "name":"ENVIRONMENT", "value":"${pEnvironment}" }
+                  { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                  { "name":"PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" }
                 ]
             Namespace: ExportConfigNS
             InputArtifacts:
