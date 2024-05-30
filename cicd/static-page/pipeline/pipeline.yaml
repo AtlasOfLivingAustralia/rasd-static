@@ -8,6 +8,9 @@ Parameters:
   pAutoDeploy:
     Type: String
     Description: Sets the pipeline to autodeploy on repo changes
+    AllowedValues:
+       - true 
+       - false
   pBootstrapStackName:
     Type: String
     Description: the name of the bootstrap stack
@@ -46,6 +49,9 @@ Conditions:
   IsDev: !Equals
     - !Ref pEnvironment
     - development
+  AutoDeploy: !Equals
+    - !Ref pAutoDeploy
+    - true
 
 Resources:
  
@@ -57,8 +63,8 @@ Resources:
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Load the environment and build the CloudFormation template config file
       ServiceRole:
-              Fn::ImportValue:
-                 Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+        Fn::ImportValue:
+           Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
       Artifacts:
         Type: CODEPIPELINE
       Environment:
@@ -85,8 +91,8 @@ Resources:
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Build the site
       ServiceRole:
-              Fn::ImportValue:
-                 Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+        Fn::ImportValue:
+           Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
       Artifacts:
         Type: CODEPIPELINE
       Environment:
@@ -111,8 +117,8 @@ Resources:
               - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Empty the source s3 bucket before updating
       ServiceRole:
-              Fn::ImportValue:
-                 Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+        Fn::ImportValue:
+           Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
       Artifacts:
         Type: CODEPIPELINE
       Environment:
@@ -167,12 +173,23 @@ Resources:
       ArtifactStore:
         Type: S3
         Location:
-              Fn::ImportValue:
-                Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
+          Fn::ImportValue:
+            Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
       DisableInboundStageTransitions:
         - Reason: To prevent accidental teardown
           StageName: Teardown
       RestartExecutionOnUpdate: !Ref pRestartExecutionOnUpdate
+      Triggers:
+        - ProviderType: CodeStarSourceConnection
+          GitConfiguration:
+            Push:
+              - Branches:
+                  Includes:
+                    - !If [ AutoDeploy, !Ref pGitHubBranch, bogo-branch ]
+                FilePaths:
+                  Includes:
+                    - cicd/static-page/**
+            SourceActionName: CheckoutSrc
       Variables:
         - Name: SRC_BRANCH
           DefaultValue: !Ref pGitHubBranch
@@ -235,8 +252,8 @@ Resources:
               ActionMode: CREATE_UPDATE
               Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
               RoleArn:
-                   Fn::ImportValue:
-                     Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
+                Fn::ImportValue:
+                  Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
               StackName: !Ref pAppStackName
             InputArtifacts:
               - Name: 'ExportConfigArtifact'
@@ -307,19 +324,19 @@ Resources:
             Configuration:
               ProjectName: !Ref DeployNotification
               EnvironmentVariables: !Sub |
-                                          [
-                                           { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
-                                           { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
-                                           { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
-                                           { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
-                                           { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
-                                           { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
-                                           { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
-                                           { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
-                                           { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
-                                           { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
-                                           { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
-                                          ]
+                [
+                  { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
+                  { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                  { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                  { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
+                  { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
+                  { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
+                  { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
+                  { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
+                  { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
+                  { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
+                  { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
+                ]
             Namespace: DeployNotificationNS
             InputArtifacts:
               - Name: 'SourceArtifact'
@@ -363,8 +380,8 @@ Resources:
               ActionMode: DELETE_ONLY
               StackName: !Ref pAppStackName
               RoleArn:
-                   Fn::ImportValue:
-                     Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
+                Fn::ImportValue:
+                  Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
             RunOrder: 3
           - Name: ApprovalForPipelineTeardown
             ActionTypeId:
@@ -385,17 +402,15 @@ Resources:
               ActionMode: DELETE_ONLY
               StackName: !Ref AWS::StackName
               RoleArn:
-                   Fn::ImportValue:
-                     Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
+                Fn::ImportValue:
+                  Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
             RunOrder: 5
 
   CodeBuildLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref ExportConfig
+      LogGroupName: !Sub /aws/codebuild/${ExportConfig}
       RetentionInDays: 30
       Tags:
         - Key: Name
@@ -405,9 +420,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref BuildCode
+      LogGroupName: !Sub /aws/codebuild/${BuildCode}
       RetentionInDays: 30
       Tags:
         - Key: Name
@@ -417,9 +430,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                       - /aws/codebuild/${ProjectName}
-                       - ProjectName: !Ref EmptyBucket
+      LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
       RetentionInDays: 30
       Tags:
         - Key: Name
@@ -429,9 +440,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Delete
     Properties:
-      LogGroupName: !Sub
-                      - /aws/codebuild/${PipelineName}
-                      - PipelineName: !Ref DeployNotification
+      LogGroupName: !Sub /aws/codebuild/${DeployNotification}
       RetentionInDays: 30
       Tags:
         - Key: Name

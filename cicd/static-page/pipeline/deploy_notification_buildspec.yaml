@@ -37,18 +37,19 @@ phases:
       - echo commit msg is $COMMIT_MSG
       - echo commit id is $COMMIT_ID
       - echo Repo is $REPO
-      - echo  "$AUTHOR has released a ${ENVIRONMENT} update to $PRODUCT_COMPONENT $PRODUCT_NAME. Now live at https://${SUB_DOMAIN}.${HOSTED_ZONE}"
+      - export DEPLOY_MSG="$AUTHOR has released a ${ENVIRONMENT} update to $PRODUCT_NAME $PRODUCT_COMPONENT. Now live at https://${SUB_DOMAIN}.${HOSTED_ZONE}"
+      - echo $DEPLOY_MSG
     finally:
       - #echo This always runs
 
   build:
     commands:
       - echo Datadog deploy notification
-      - cicd/static-page/pipeline/dd_notification.sh
+      - cicd/dd_notification.sh
       - echo Slack Deploy notification
       - |
         if [ "$SLACK_DEPLOY_NOTIFICATION" == "true" ] ; then
-          cicd/static-page/pipeline/slack_notification.sh
+          cicd/slack_notification.sh
         fi
 
     finally:
