@@ -80,7 +80,7 @@ Resources:
             Value: !Ref pCleanBranch
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/static-page/pipeline/export_config_buildspec.yaml
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/export_config_buildspec.yaml
       TimeoutInMinutes: 5
 
   BuildCode:
@@ -106,7 +106,7 @@ Resources:
                 Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/static-page/pipeline/static_site_build_buildspec.yaml
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/static_site_build_buildspec.yaml
       TimeoutInMinutes: 10
 
   EmptyBucket:
@@ -132,7 +132,7 @@ Resources:
                 Fn::Sub: ${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName
       Source:
         Type: CODEPIPELINE
-        BuildSpec: cicd/static-page/pipeline/empty_bucket_buildspec.yaml
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/empty_bucket_buildspec.yaml
       TimeoutInMinutes: 5
 
   DeployNotification:
@@ -156,7 +156,7 @@ Resources:
             Value: !Ref pCleanBranch       
       Source:                             
         Type: CODEPIPELINE
-        BuildSpec: cicd/static-page/pipeline/deploy_notification_buildspec.yaml
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/deploy_notification_buildspec.yaml
       TimeoutInMinutes: 5
 
 
@@ -247,8 +247,8 @@ Resources:
               Version: 1
               Provider: CloudFormation
             Configuration:
-              TemplatePath: 'ExportConfigArtifact::cicd/static-page/app/#{ExportConfigNS.APP_STACK_FILE}'
-              TemplateConfiguration: 'ExportConfigArtifact::cicd/static-page/app/rasd_static_template_config.json'
+              TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}.yaml'
+              TemplateConfiguration: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}_template_config.json'
               ActionMode: CREATE_UPDATE
               Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
               RoleArn:
