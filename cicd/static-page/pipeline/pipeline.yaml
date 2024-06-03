@@ -156,7 +156,7 @@ Resources:
             Value: !Ref pCleanBranch       
       Source:                             
         Type: CODEPIPELINE
-        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/export_config_buildspec.yaml
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/deploy_notification_buildspec.yaml
       TimeoutInMinutes: 5
 
 
