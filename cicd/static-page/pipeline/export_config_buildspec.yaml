@@ -64,7 +64,6 @@ phases:
       - set -a ; source env.txt ; set +a
     finally:
       - #echo This always runs
-      - #notify Slack on failure
 
   build:
     commands:
@@ -74,13 +73,11 @@ phases:
       - cicd/gen_template_config.py --template cicd/static-page/pipeline/rasd_static_template_config.j2 > cicd/static-page/app/rasd_static_template_config.json
     finally:
       - #echo This always runs
-      - #notify Slack on failure
 
 
   post_build:
     commands:
       - echo all looking good 👍 Stack will be launched on https://${SUB_DOMAIN}.${HOSTED_ZONE}
-      - #notify Slack
 
 artifacts:
   files:

@@ -66,7 +66,7 @@ curl -X POST "https://slack.com/api/chat.postMessage" \
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "$AUTHOR has released a ${ENVIRONMENT} update to $PRODUCT_COMPONENT $PRODUCT_NAME. Now live at https://${SUB_DOMAIN}.${HOSTED_ZONE}"
+          "text": "$DEPLOY_MSG"
         }
       }
    ]
