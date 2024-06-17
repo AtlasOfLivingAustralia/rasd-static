@@ -9,9 +9,9 @@ env:
     DEBIAN_FRONTEND: "noninteractive"
   exported-variables:
     - APP_STACK_FILE_PFIX
+    - APP_STACK_NAME
     - BUCKET_PATH
     - CODEBUILD_BUILD_NUMBER
-    - LAMBDA_STACK_FILE
     - MAX_AGE
     - PRODUCT_COMPONENT
     - PRODUCT_NAME
@@ -77,6 +77,7 @@ phases:
                                        --s3-prefix $PRODUCT_NAME/$PRODUCT_COMPONENT/$CLEAN_BRANCH-$CODEBUILD_BUILD_NUMBER \
                                        --output-template-file ${stack}.yaml \
                                        --region $REGION
+
             echo Generating the template config for $stack
             cicd/gen_template_config.py  --template ${stack}_template_config.j2 > ${stack}_template_config.json
           done
