@@ -251,7 +251,7 @@ Resources:
               RoleArn:
                 Fn::ImportValue:
                   Fn::Sub: ${pBootstrapStackName}-CloudFormationServiceRoleArn
-              StackName: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_NAME}'
+              StackName: '#{ExportConfigNS.APP_STACK_NAME}'
             InputArtifacts:
               - Name: 'ExportConfigArtifact'
             Namespace: AppCloudFormationOutNS
@@ -375,7 +375,7 @@ Resources:
               Provider: CloudFormation
             Configuration:
               ActionMode: DELETE_ONLY
-              StackName: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_NAME}'
+              StackName: '#{ExportConfigNS.APP_STACK_NAME}'
               RoleArn:
                 Fn::ImportValue:
                   Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
