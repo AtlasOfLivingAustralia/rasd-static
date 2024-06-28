@@ -67,7 +67,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:5.0
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: AWS_ARTIFACTS_BUCKET
             Value:
@@ -95,7 +95,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:5.0
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: "AWS_ARTIFACTS_BUCKET"
             Value:
@@ -121,7 +121,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:5.0
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
           - Name: "AWS_ARTIFACTS_BUCKET"
             Value:
@@ -147,10 +147,10 @@ Resources:
       Environment:                         
         Type: LINUX_CONTAINER              
         ComputeType: BUILD_GENERAL1_SMALL  
-        Image: aws/codebuild/standard:5.0  
+        Image: aws/codebuild/standard:7.0
         EnvironmentVariables:              
           - Name: CLEAN_BRANCH             
-            Value: !Ref pCleanBranch       
+            Value: !Ref pCleanBranch
       Source:                             
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/deploy_notification_buildspec.yaml
