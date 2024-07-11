@@ -247,7 +247,7 @@ Resources:
             Configuration:
               TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}.yaml'
               TemplateConfiguration: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}_template_config.json'
-              ActionMode: CREATE_UPDATE
+              ActionMode: !If [ IsDev, REPLACE_ON_FAILURE, CREATE_UPDATE]
               Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
               RoleArn:
                 Fn::ImportValue:
