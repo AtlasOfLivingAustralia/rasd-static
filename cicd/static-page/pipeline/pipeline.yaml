@@ -185,7 +185,7 @@ Resources:
                     - !If [ AutoDeploy, !Ref pGitHubBranch, bogo-branch ]
                 FilePaths:
                   Includes:
-                    - cicd/${pProductComponent}/**
+                    - !Sub cicd/${pProductComponent}/**
             SourceActionName: CheckoutSrc
       Variables:
         - Name: SRC_BRANCH
@@ -226,10 +226,11 @@ Resources:
               ProjectName: !Ref ExportConfig
               EnvironmentVariables: !Sub |
                 [
-                  { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
                   { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
                   { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
-                  { "name":"PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" }
+                  { "name":"PIPELINE_FINGERPRINT", "value":"#{variables.PIPELINE_FINGERPRINT}" },
+                  { "name":"PRODUCT_COMPONENT ", "value":"${pProductComponent}" },
+                  { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" }
                 ]
             Namespace: ExportConfigNS
             InputArtifacts:
