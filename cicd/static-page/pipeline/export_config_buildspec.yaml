@@ -6,7 +6,7 @@ version: 0.2
 env:
   shell: bash
   variables:
-    DEBIAN_FRONTEND: "noninteractive"
+    DEBIAN_FRONTEND: noninteractive
   exported-variables:
     - APP_STACK_FILE_PFIX
     - APP_STACK_NAME
@@ -28,6 +28,7 @@ phases:
       - echo Running on $(lsb_release -d | cut -f2)
       - echo aws-cli version $(aws --version)
       - pip install jinja2
+      - env
       - export CUR_PIPELINE_FINGERPRINT=$(md5sum cicd/$PRODUCT_COMPONENT/pipeline/pipeline.yaml | awk '{print $1}')
       - # This next bit checks if the running pipeline is out of sync with the pipeline in the
       - # current code revision. If it is it re-launches itself! For a normal branch commit the
