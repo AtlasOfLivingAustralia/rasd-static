@@ -1,4 +1,4 @@
-# RASD static site and assets
+# RASD static site and backups
 
 Welcome! This project contains the infrastructure, code and the deployment pipeline to launch and develop the RASD static site and automated user pool backups.
 
