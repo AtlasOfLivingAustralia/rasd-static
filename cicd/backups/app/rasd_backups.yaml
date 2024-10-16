@@ -1,9 +1,6 @@
 Description: RASD backups and associated resources 
 
 Parameters:
-  pBucketsStackName:
-    Type: String
-    Description: The name of the artifacts bucket stack
   pBackupBucket:
     Type: String
     Description: The bucket where backups are stored
@@ -36,12 +33,6 @@ Parameters:
   pKeepWeeklyBackupsFor:
     Type: Number
     Description: Keep weekly backups for this long. In weeks
-  pLambdaDeployPackage:
-    Type: String
-    Description: The S3 key of the lambda code package
-  pLambdaDeployPath:
-    Type: String
-    Description: The path of the lambda deployment package
   pProductName:
     Type: String
     Description: The name of the product
@@ -102,7 +93,7 @@ Resources:
       Architectures: 
         - x86_64
       FunctionName: !Sub
-        - "rasd-backups-${ResourceName}"
+        - "${pProductName}-backups-${ResourceName}"
         - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Back up the rasd userpool 
       Environment:
@@ -115,11 +106,7 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: python3.10
       Timeout: 600
-      Code:
-        S3Bucket:
-             Fn::ImportValue:
-               Fn::Sub: "${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName"
-        S3Key: !Sub ${pLambdaDeployPath}${pLambdaDeployPackage}
+      Code: ../src/lambda/s3_copy/
       Tags:
         - Key: build
           Value: !Ref pBuild
