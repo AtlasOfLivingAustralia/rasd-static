@@ -301,7 +301,7 @@ Resources:
               Provider: CloudFormation
             Configuration:
               ActionMode: DELETE_ONLY
-              StackName: '#{ExportConfigNS.LAMBDA_STACK_NAME}'
+              StackName: '#{ExportConfigNS.STACK_NAME}'
               RoleArn:
                 Fn::ImportValue:
                   Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
