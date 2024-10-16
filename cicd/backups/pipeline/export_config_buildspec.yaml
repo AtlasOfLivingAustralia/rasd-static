@@ -5,21 +5,20 @@ version: 0.2
 
 env:
   shell: bash
+  git-credential-helper: yes
   variables:
     DEBIAN_FRONTEND: noninteractive
   exported-variables:
-    - APP_STACK_FILE_PFIX
-    - APP_STACK_NAME
-    - BUCKET_PATH
+    - ARTIFACTS_BUCKET
+    - BACKUP_BUCKET
     - CODEBUILD_BUILD_NUMBER
-    - MAX_AGE
     - PRODUCT_COMPONENT
     - PRODUCT_NAME
     - SLACK_ALERT_CHANNEL
     - SLACK_DEPLOY_NOTIFICATION
-    - SOURCE_BUCKET
-    - SUB_DOMAIN
-    - HOSTED_ZONE
+    - STACK_FILE_PFIX
+    - STACK_NAME
+    - USER_POOL_ID
 
 phases:
 
@@ -67,6 +66,13 @@ phases:
   build:
     commands:
       - echo Entered the build phase...
+      # lambda code packaging
+      - echo Creating the lambda code package
+      - cd cicd/$PRODUCT_COMPONENT/src/lambda/s3_copy/
+      - cp $CODEBUILD_SRC_DIR_ExporterSourceArtifact/*.py .
+      - pip install --target ./ awscli
+      - sed -i "1s/.*/\#\!\/var\/lang\/bin\/python/" bin/aws
+      - cd $CODEBUILD_SRC_DIR
       # package templates and generate the template configs
       - |
           for i in cicd/$PRODUCT_COMPONENT/app/*.yaml; do
@@ -86,7 +92,7 @@ phases:
 
   post_build:
     commands:
-      - echo all looking good 👍 Stack will be launched on https://${SUB_DOMAIN}.${HOSTED_ZONE}
+      - #echo Entered the post_build phase...
 
 artifacts:
   files:

@@ -24,6 +24,6 @@ phases:
       - #echo build complete
 
 artifacts:
-  base-directory: ./webroot
+  base-directory: ./cicd/$PRODUCT_COMPONENT/webroot
   files:
     - '**/*'
