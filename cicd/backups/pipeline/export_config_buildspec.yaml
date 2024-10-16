@@ -68,7 +68,7 @@ phases:
       - echo Entered the build phase...
       # lambda code packaging
       - echo Creating the lambda code package
-      - cd cicd/PRODUCT_COMPONENT/src/lambda/s3_copy/
+      - cd cicd/$PRODUCT_COMPONENT/src/lambda/s3_copy/
       - cp $CODEBUILD_SRC_DIR_ExporterSourceArtifact/*.py .
       - pip install --target ./ awscli
       - sed -i "1s/.*/\#\!\/var\/lang\/bin\/python/" bin/aws
