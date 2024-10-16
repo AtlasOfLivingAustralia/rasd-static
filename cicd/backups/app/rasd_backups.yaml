@@ -1,0 +1,189 @@
+Description: RASD backups and associated resources 
+
+Parameters:
+  pBucketsStackName:
+    Type: String
+    Description: The name of the artifacts bucket stack
+  pBackupBucket:
+    Type: String
+    Description: The bucket where backups are stored
+  pBackupFrequency:
+    Type: String
+    Description: How often to take a backup
+  pUserPoolId:
+    Type: String
+    Description: The Cognito user pool ID
+  pBuild:
+    Type: Number
+    Description: The build number
+    Default: 1
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pEnvironment:
+    Type: String
+    Description: The AWS environment we're launching into
+    AllowedValues:
+      - development
+      - testing
+      - staging
+      - production
+    Default: development
+  pKeepDailyBackupsFor:
+    Type: Number
+    Description: Keep all backups for this long. In Days
+  pKeepWeeklyBackupsFor:
+    Type: Number
+    Description: Keep weekly backups for this long. In weeks
+  pLambdaDeployPackage:
+    Type: String
+    Description: The S3 key of the lambda code package
+  pLambdaDeployPath:
+    Type: String
+    Description: The path of the lambda deployment package
+  pProductName:
+    Type: String
+    Description: The name of the product
+  pStorageClass:
+    Type: String
+    Description: The S3 storage class to use for backups
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+
+Resources:
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: Lambda-permissions
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+          - Effect: Allow
+            Action:
+              - cognito-idp:Get*
+              - cognito-idp:Describe*
+              - cognito-idp:List*
+            Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${pUserPoolId}
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject*
+              - s3:ListBucket
+            Resource:
+              - !Sub arn:aws:s3:::${pBackupBucket}
+              - !Sub arn:aws:s3:::${pBackupBucket}/*
+
+
+  RasdBackupsLambda: 
+    Type: AWS::Lambda::Function
+    Properties: 
+      Architectures: 
+        - x86_64
+      FunctionName: !Sub
+        - "rasd-backups-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: Back up the rasd userpool 
+      Environment:
+        Variables:
+          STORAGE_CLASS: !Ref pStorageClass
+          BACKUP_BUCKET: !Ref pBackupBucket
+          USER_POOL_ID: !Ref pUserPoolId
+      Handler: backup.handler
+      MemorySize: 512
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.10
+      Timeout: 600
+      Code:
+        S3Bucket:
+             Fn::ImportValue:
+               Fn::Sub: "${pBucketsStackName}-${AWS::Region}-CodePipelineArtifactBucketName"
+        S3Key: !Sub ${pLambdaDeployPath}${pLambdaDeployPackage}
+      Tags:
+        - Key: build
+          Value: !Ref pBuild
+
+  RasdBackupLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub
+                       - /aws/lambda/${FunctionName}
+                       - FunctionName: !Ref RasdBackupsLambda
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+        - Key: build 
+          Value: !Ref pBuild
+
+  TriggerLambdaEvent:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Trigger the rasd backup Lambda
+      ScheduleExpression: !Sub rate(${pBackupFrequency})
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt RasdBackupsLambda.Arn
+          Id: RasdBackupsFunctionTarget
+
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref RasdBackupsLambda
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt  TriggerLambdaEvent.Arn
+
+  BackupBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'aws:kms'
+      BucketName: !Sub ${pBackupBucket}
+      LifecycleConfiguration:
+        Rules:
+          - Id: incomplete uploads
+            AbortIncompleteMultipartUpload:
+               DaysAfterInitiation: 1
+            Status: Enabled
+          - Id: delete all
+            Status: Enabled
+            ExpirationInDays: !Ref pKeepWeeklyBackupsFor
+          - Id: delete weekly
+            Status: Enabled
+            Prefix: backup-daily
+            ExpirationInDays: !Ref pKeepDailyBackupsFor
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: TRUE
+        BlockPublicPolicy: TRUE
+        IgnorePublicAcls: TRUE
+        RestrictPublicBuckets: TRUE
+      Tags:
+        - Key: Name
+          Value: !Sub ${pBackupBucket}
+        - Key: component
+          Value: backup

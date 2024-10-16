@@ -1,0 +1,35 @@
+{
+  "Parameters" : {
+    "pBackupBucket"         : "{{ backup_bucket }}",
+    "pBucketsStackName"    : "{{ buckets_stack_name }}",
+    "pBackupFrequency"      : "{{ backup_frequency }}",
+    "pUserPoolId"           : "{{ user_pool_id }}",
+    "pBuild"                : "{{ codebuild_build_number }}",
+    "pCleanBranch"          : "{{ clean_branch }}",
+    "pEnvironment"          : "{{ environment }}",
+    "pKeepDailyBackupsFor"  : "{{ keep_daily_backups_for }}",
+    "pKeepWeeklyBackupsFor" : "{{ keep_weekly_backups_for }}",
+    "pLambdaDeployPackage"  : "{{ lambda_deploy_package }}",
+    "pLambdaDeployPath"     : "{{ lambda_deploy_path }}",
+    "pProductName"          : "{{ product_name }}",
+    "pStorageClass"         : "{{ storage_class }}"
+  },
+  "Tags" : {
+    "product"     : "{{ product_name }}",
+    "component"   : "{{ product_component }}",
+    "environment" : "{{ environment }}",
+    "branch"      : "{{ src_branch }}",
+    "version"     : "{{ commit_id }}",
+    "build"       : "{{ codebuild_build_number }}"
+  },
+  "StackPolicy" : {
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "Update:*",
+        "Principal": "*",
+        "Resource" : "*"
+      }
+    ]
+  }
+}
