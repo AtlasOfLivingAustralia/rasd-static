@@ -2,7 +2,7 @@
 
 ###
 # Script used to modify the footer website link and publish date in the quarto source files _quarto.yaml
-# Usage: gen_env_vars.py ../quarto-source-files/_quarto.yaml
+# Usage: modify_env.py ../quarto-source-files/_quarto.yaml
 
 from datetime import datetime
 import yaml
