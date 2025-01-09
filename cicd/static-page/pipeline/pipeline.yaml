@@ -262,8 +262,11 @@ Resources:
               EnvironmentVariables: !Sub |
                 [
                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                   { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" }
                    { "name":"PRODUCT_COMPONENT", "value":"${pProductComponent}" },
-                   { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" }
+                   { "name":"QUARTO_VERSION", "value":"#{ExportConfigNS.QUARTO_VERSION}" },
+                   { "name":"SRC_BRANCH", "value":"#{CheckoutSrcNS.BranchName}" },
+                   { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
                 ] 
             Namespace: BuildCodeNS
             InputArtifacts:
