@@ -13,7 +13,6 @@ phases:
     runtime-versions:
       python: 3.12
     commands:
-      - pip install PyYAML
       - apt-get update && apt-get install curl -y
       - curl -L "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-$(dpkg --print-architecture).deb" -o quarto-${QUARTO_VERSION}.deb
       - dpkg -i quarto-${QUARTO_VERSION}.deb
