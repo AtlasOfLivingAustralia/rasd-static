@@ -19,7 +19,7 @@ if __name__ == '__main__':
     html_url = f"https://{url}"
     env['book']['navbar']['href'] = html_url
     env['book']['page-footer']['center'][0]['text'] = url
-    env['book']['page-footer']['center'][0]['href'] = url
+    env['book']['page-footer']['center'][0]['href'] = html_url
     # branch_name = env['pCleanBranch']
 
 
