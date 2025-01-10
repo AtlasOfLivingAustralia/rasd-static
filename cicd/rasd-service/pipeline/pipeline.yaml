@@ -211,31 +211,31 @@ Resources:
         - Name: Deploy
           Actions:
             - Name: DeployNotification
-            ActionTypeId:
-              Owner: AWS
-              Category: Build
-              Version: 1
-              Provider: CodeBuild
-            Configuration:
-              ProjectName: !Ref DeployNotification
-              EnvironmentVariables: !Sub |
-                [
-                  { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
-                  { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
-                  { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
-                  { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
-                  { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
-                  { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
-                  { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
-                  { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
-                  { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
-                  { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
-                  { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
-                ]
-            Namespace: DeployNotificationNS
-            InputArtifacts:
-              - Name: 'SourceArtifact'
-            RunOrder: 1
+              ActionTypeId:
+                Owner: AWS
+                Category: Build
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref DeployNotification
+                EnvironmentVariables: !Sub |
+                  [
+                    { "name":"AUTHOR", "value":"#{CheckoutSrcNS.AuthorDisplayName}" },
+                    { "name":"COMMIT_ID", "value":"#{CheckoutSrcNS.CommitId}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"PRODUCT_COMPONENT", "value":"#{ExportConfigNS.PRODUCT_COMPONENT}" },
+                    { "name":"PRODUCT_NAME", "value":"#{ExportConfigNS.PRODUCT_NAME}" },
+                    { "name":"REPO", "value":"#{CheckoutSrcNS.FullRepositoryName}" },
+                    { "name":"SLACK_ALERT_CHANNEL", "value":"#{ExportConfigNS.SLACK_ALERT_CHANNEL}" },
+                    { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
+                    { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
+                    { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
+                    { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
+                  ]
+              Namespace: DeployNotificationNS
+              InputArtifacts:
+                - Name: 'SourceArtifact'
+              RunOrder: 1
 
         - Name: Teardown
           Actions:
