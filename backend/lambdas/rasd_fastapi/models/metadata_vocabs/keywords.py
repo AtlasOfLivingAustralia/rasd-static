@@ -1,0 +1,41 @@
+"""RASD FastAPI Keyword Restricted Vocabulary."""
+
+
+# Standard
+import enum
+
+
+class Keyword(str, enum.Enum):
+    """Keyword Restricted Vocabulary Enumeration."""
+    ECOLOGY = "Ecology"
+    ECOLOGY_COMMUNITY = "Ecology-Community"
+    ECOLOGY_ECOSYSTEM = "Ecology-Ecosystem"
+    ECOLOGY_HABITAT = "Ecology-Habitat"
+    ECOLOGY_LANDSCAPE = "Ecology-Landscape"
+    FAUNA = "Fauna"
+    FAUNA_EXOTIC = "Fauna-Exotic"
+    FAUNA_NATIVE = "Fauna-Native"
+    FAUNA_VERTEBRATES = "Fauna-Vertebrates"
+    FAUNA_INVERTEBRATES = "Fauna-Invertebrates"
+    FAUNA_INSECTS = "Fauna-Insects"
+    FLORA = "Flora"
+    FLORA_EXOTIC = "Flora-Exotic"
+    FLORA_NATIVE = "Flora-Native"
+    VEGETATION = "Vegetation"
+    VEGETATION_STRUCTURAL = "Vegetation-Structural"
+    VEGETATION_FLORISTIC = "Vegetation-Floristic"
+    MOLECULAR_BIOLOGY = "Molecular Biology"
+    MOLECULAR_BIOLOGY_GENETICS = "Molecular Biology-Genetics"
+    MARINE = "Marine"
+    MARINE_BIOLOGY = "Marine-Biology"
+    MARINE_COASTS = "Marine-Coasts"
+    MARINE_ESTUARIES = "Marine-Estuaries"
+    MARINE_GEOLOGY_AND_GEOPHYSICS = "Marine-Geology and Geophysics"
+    MARINE_HUMAN_IMPACTS = "Marine-Human Impacts"
+    MARINE_METEOROLOGY = "Marine-Meteorology"
+    MARINE_REEFS = "Marine-Reefs"
+    FISHERIES = "Fisheries"
+    FISHERIES_AQUACULTURE = "Fisheries-Aquaculture"
+    FISHERIES_FRESHWATER = "Fisheries-Freshwater"
+    FISHERIES_MARINE = "Fisheries-Marine"
+    FISHERIES_RECREATIONAL = "Fisheries-Recreational"
