@@ -47,7 +47,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [NotDev, true, false]
-      TableName: DataAccessRequests
+      TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -65,7 +65,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [NotDev, true, false]
-      TableName: Metadata
+      TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -83,7 +83,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [NotDev, true, false]
-      TableName: Organisations
+      TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -101,7 +101,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [NotDev, true, false]
-      TableName: Registrations
+      TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
