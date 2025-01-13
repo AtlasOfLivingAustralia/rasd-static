@@ -1,0 +1,183 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The RASD service stack
+
+Parameters:
+  pEnvironment:
+    Type: String
+    Description: The AWS environment this belongs to
+  pSourceBucket:
+    Type: String
+    Description: The bucket name for the site
+  pBucketPath:
+    Type: String
+    Description: Optional path that the files are stored under in the bucket
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pHostedZone:
+    Type: String
+    Description: The hosted zone the site is accessed under
+  pSubDomain:
+    Type: String
+    Description: The subdomain the site is accessed on
+  pSslCertificate:
+    Type: String
+    Description: The arn of the SSL certificate to be used
+
+Conditions:
+  IsDev: !Equals
+    - !Ref pEnvironment
+    - development
+  NotDev: !Not
+    - !Condition IsDev
+
+Resources:
+
+  DynamoDBTableDataAccessRequests:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeType: S
+          AttributeName: id
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: NotDev
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: DataAccessRequests
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  DynamoDBTableMetadata:
+    Properties:
+      AttributeDefinitions:
+        - AttributeType: S
+          AttributeName: id
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: NotDev
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: Metadata
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  DynamoDBTableOrganisations:
+    Properties:
+      AttributeDefinitions:
+        - AttributeType: S
+          AttributeName: id
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: NotDev
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: Organisations
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  DynamoDBTableRegistrations:
+    Properties:
+      AttributeDefinitions:
+        - AttributeType: S
+          AttributeName: id
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: NotDev
+      KeySchema:
+        - KeyType: HASH
+          AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: Registrations
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  IAMRoleiamRoleForLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - !GetAtt IAMManagedPolicyiamPolicyForRasdLambda.Arn
+      RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  IAMManagedPolicyiamPolicyForRasdLambda:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Created policy for RASD, allow Lambda to do various things.
+      ManagedPolicyName: !Sub ${AWS::StackName}-iamPolicyForRasdLambda
+      Path: /
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Resource:
+              - !GetAtt DynamoDBTableDataAccessRequests.Arn
+              - !GetAtt DynamoDBTableMetadata.Arn
+              - !GetAtt DynamoDBTableOrganisations.Arn
+              - !GetAtt DynamoDBTableRegistrations.Arn
+            Action:
+              - dynamodb:BatchGetItem
+              - dynamodb:GetItem
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+            Effect: Allow
+          - Resource: '*'
+            Action:
+              - s3:ListAllMyBuckets
+              - s3:ListBucket
+              - s3:HeadBucket
+              - s3:Get*
+              - s3:List*
+            Effect: Allow
+          - Resource: '*'
+            Action:
+              - cognito-identity:ListIdentityPools
+              - cognito-sync:ListRecords
+              - cognito-sync:UpdateRecords
+              - cognito-idp:Admin*
+              - cognito-idp:ChangePassword
+              - cognito-idp:ConfirmDevice
+              - cognito-idp:ConfirmForgotPassword
+              - cognito-idp:ConfirmSignUp
+              - cognito-idp:CreateGroup
+              - cognito-idp:DeleteGroup
+            Effect: Allow
+          - Resource: '*'
+            Action:
+              - logs:CreateLogGroup
+            Effect: Allow
+          - Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+            Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+          - Resource: '*'
+            Action:
+              - ses:SendEmail
+            Effect: Allow
+      Roles:
+        - !Ref IAMRoleiamRoleForLambda

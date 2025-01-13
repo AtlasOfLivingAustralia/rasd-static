@@ -208,6 +208,15 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
+            - Name: DeployCfStack
+                ActionTypeId:
+                  Owner: AWS
+                  Category: Deploy
+                  Version: 1
+                  Provider: CloudFormation
+                Configuration:
+                  TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}.yaml'
+        
         - Name: Deploy
           Actions:
             - Name: DeployNotification
