@@ -53,6 +53,7 @@ Resources:
           Value: !Ref AWS::StackName
 
   DynamoDBTableMetadata:
+    Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -70,6 +71,7 @@ Resources:
           Value: !Ref AWS::StackName
 
   DynamoDBTableOrganisations:
+    Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -87,6 +89,7 @@ Resources:
           Value: !Ref AWS::StackName
 
   DynamoDBTableRegistrations:
+    Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         - AttributeType: S
