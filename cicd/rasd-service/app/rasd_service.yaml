@@ -118,69 +118,61 @@ Resources:
               Service: lambda.amazonaws.com
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - !GetAtt IAMManagedPolicyiamPolicyForRasdLambda.Arn
+      Policies:
+        - PolicyName: PolicyForRASDLambda
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Resource:
+                - !GetAtt DynamoDBTableDataAccessRequests.Arn
+                - !GetAtt DynamoDBTableMetadata.Arn
+                - !GetAtt DynamoDBTableOrganisations.Arn
+                - !GetAtt DynamoDBTableRegistrations.Arn
+              Action:
+                - dynamodb:BatchGetItem
+                - dynamodb:GetItem
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:BatchWriteItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+              Effect: Allow
+            - Resource: '*'
+              Action:
+                - s3:ListAllMyBuckets
+                - s3:ListBucket
+                - s3:HeadBucket
+                - s3:Get*
+                - s3:List*
+              Effect: Allow
+            - Resource: '*'
+              Action:
+                - cognito-identity:ListIdentityPools
+                - cognito-sync:ListRecords
+                - cognito-sync:UpdateRecords
+                - cognito-idp:Admin*
+                - cognito-idp:ChangePassword
+                - cognito-idp:ConfirmDevice
+                - cognito-idp:ConfirmForgotPassword
+                - cognito-idp:ConfirmSignUp
+                - cognito-idp:CreateGroup
+                - cognito-idp:DeleteGroup
+              Effect: Allow
+            - Resource: '*'
+              Action:
+                - logs:CreateLogGroup
+              Effect: Allow
+            - Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+              Action:
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Effect: Allow
+            - Resource: '*'
+              Action:
+                - ses:SendEmail
+              Effect: Allow
       RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
-
-  IAMManagedPolicyiamPolicyForRasdLambda:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      Description: Created policy for RASD, allow Lambda to do various things.
-      ManagedPolicyName: !Sub ${AWS::StackName}-iamPolicyForRasdLambda
-      Path: /
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Resource:
-              - !GetAtt DynamoDBTableDataAccessRequests.Arn
-              - !GetAtt DynamoDBTableMetadata.Arn
-              - !GetAtt DynamoDBTableOrganisations.Arn
-              - !GetAtt DynamoDBTableRegistrations.Arn
-            Action:
-              - dynamodb:BatchGetItem
-              - dynamodb:GetItem
-              - dynamodb:Query
-              - dynamodb:Scan
-              - dynamodb:BatchWriteItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-            Effect: Allow
-          - Resource: '*'
-            Action:
-              - s3:ListAllMyBuckets
-              - s3:ListBucket
-              - s3:HeadBucket
-              - s3:Get*
-              - s3:List*
-            Effect: Allow
-          - Resource: '*'
-            Action:
-              - cognito-identity:ListIdentityPools
-              - cognito-sync:ListRecords
-              - cognito-sync:UpdateRecords
-              - cognito-idp:Admin*
-              - cognito-idp:ChangePassword
-              - cognito-idp:ConfirmDevice
-              - cognito-idp:ConfirmForgotPassword
-              - cognito-idp:ConfirmSignUp
-              - cognito-idp:CreateGroup
-              - cognito-idp:DeleteGroup
-            Effect: Allow
-          - Resource: '*'
-            Action:
-              - logs:CreateLogGroup
-            Effect: Allow
-          - Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
-            Action:
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Effect: Allow
-          - Resource: '*'
-            Action:
-              - ses:SendEmail
-            Effect: Allow
-      Roles:
-        - !Ref IAMRoleiamRoleForLambda
