@@ -59,7 +59,7 @@ Resources:
     Properties:
       Name: !Sub
         - "${pProductName}-${pProductComponent}-export-config-${ResourceName}"
-        - ResourceName: !If [IsDev, !Ref pCleanBranch, !Ref pEnvironment]
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Load the environment and build the CloudFormation template config file
       ServiceRole:
         Fn::ImportValue:
@@ -85,12 +85,12 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Sub
-              - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
-              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+        - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Empty the source s3 bucket before updating
       ServiceRole:
         Fn::ImportValue:
-           Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+          Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
       Artifacts:
         Type: CODEPIPELINE
       Environment:
@@ -104,34 +104,73 @@ Resources:
   DeployNotification:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub 
-              - ${pProductName}-${pProductComponent}-deploy-notification-${ResourceName}
-              - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Name: !Sub
+        - ${pProductName}-${pProductComponent}-deploy-notification-${ResourceName}
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       Description: Send out the deploy notifications
-      ServiceRole: 
+      ServiceRole:
         Fn::ImportValue:
           Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
-      Artifacts:                           
-        Type: CODEPIPELINE                 
-      Environment:                         
-        Type: LINUX_CONTAINER              
-        ComputeType: BUILD_GENERAL1_SMALL  
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:7.0
-        EnvironmentVariables:              
-          - Name: CLEAN_BRANCH             
+        EnvironmentVariables:
+          - Name: CLEAN_BRANCH
             Value: !Ref pCleanBranch
-      Source:                             
+      Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/deploy_notification_buildspec.yaml
       TimeoutInMinutes: 5
-  
+  LintBuildFrontend:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub
+        - "${pProductName}-${pProductComponent}-lint-frontend-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: Lint the frontend code
+      ServiceRole:
+        Fn::ImportValue:
+          Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/lint_build_frontend_buildspec.yaml
+      TimeoutInMinutes: 5
+  BuildBackend:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub
+        - "${pProductName}-${pProductComponent}-build-backend-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: Build the backend code
+      ServiceRole:
+        Fn::ImportValue:
+          Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/build_backend_buildspec.yaml
+      TimeoutInMinutes: 5
   ### Pipeline
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       Name: !Sub
         - "${pProductName}-${pProductComponent}-pipeline-${ResourceName}"
-        - ResourceName: !If [IsDev, !Ref pCleanBranch, !Ref pEnvironment]
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
       PipelineType: V2
       RoleArn:
         Fn::ImportValue:
@@ -183,6 +222,7 @@ Resources:
               Namespace: CheckoutSrcNS
               OutputArtifacts:
                 - Name: 'SourceArtifact'
+
         - Name: Deploy_Infrastructure
           Actions:
             - Name: ExportConfig
@@ -217,7 +257,7 @@ Resources:
               Configuration:
                 TemplatePath: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}.yaml'
                 TemplateConfiguration: !Sub 'ExportConfigArtifact::cicd/${pProductComponent}/app/#{ExportConfigNS.APP_STACK_FILE_PFIX}_template_config.json'
-                ActionMode: !If [ IsDev, REPLACE_ON_FAILURE, CREATE_UPDATE]
+                ActionMode: !If [ IsDev, REPLACE_ON_FAILURE, CREATE_UPDATE ]
                 Capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND,CAPABILITY_NAMED_IAM
                 RoleArn:
                   Fn::ImportValue:
@@ -228,7 +268,36 @@ Resources:
               Namespace: ServiceCloudFormationOutNS
               OutputArtifacts: []
               RunOrder: 2
-        
+
+        - Name: Build
+          Actions:
+            - Name: BuildFront
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref LintBuildFrontend
+              InputArtifacts:
+                - Name: SourceArtifact
+              OutputArtifacts:
+                - Name: BuildFrontendArtifact
+              RunOrder: 1
+            - Name: BuildBack
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref BuildBackend
+              InputArtifacts:
+                - Name: SourceArtifact
+              OutputArtifacts:
+                - Name: BuildBackendArtifact
+              RunOrder: 2
+
         - Name: Deploy
           Actions:
             - Name: DeployNotification
@@ -365,4 +434,3 @@ Resources:
 Outputs:
   PipelineUrl:
     Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}
-

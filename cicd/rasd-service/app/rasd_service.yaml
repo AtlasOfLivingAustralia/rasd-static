@@ -41,12 +41,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [NotDev, true, false]
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [NotDev, true, false]
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
@@ -59,12 +59,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [NotDev, true, false]
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [NotDev, true, false]
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
@@ -77,12 +77,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [NotDev, true, false]
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [NotDev, true, false]
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
@@ -95,12 +95,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [NotDev, true, false]
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [NotDev, true, false]
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
@@ -173,6 +173,33 @@ Resources:
                   - ses:SendEmail
                 Effect: Allow
       RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  ApiGatewayV2DomainNameRasdService:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      DomainNameConfigurations:
+        - CertificateArn: !Ref pSslCertificate
+          EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  ApiGatewayRestApiRasdService:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      BinaryMediaTypes:
+        - "*/*"
+      DisableExecuteApiEndpoint: false
+      EndpointConfiguration:
+        Types:
+          - EDGE
+      Name: !Sub ${AWS::StackName}-RestApi
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
