@@ -186,8 +186,7 @@ Resources:
           EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
       Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+        Name: !Ref AWS::StackName
 
   ApiGatewayRestApiRasdService:
     Type: AWS::ApiGateway::RestApi
