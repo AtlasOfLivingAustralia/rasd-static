@@ -18,6 +18,9 @@ Parameters:
   pHostedZone:
     Type: String
     Description: The hosted zone the site is accessed under
+  pHostedZoneID:
+    Type: String
+    Description: The hosted zone ID of the hosted zone
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
@@ -177,28 +180,48 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  ApiGatewayV2DomainNameRasdService:
-    Type: AWS::ApiGatewayV2::DomainName
-    Properties:
-      DomainName: !Sub ${pSubDomain}.${pHostedZone}
-      DomainNameConfigurations:
-        - CertificateArn: !Ref pSslCertificate
-          # EndpointType: REGIONAL
-          SecurityPolicy: TLS_1_2
-      Tags:
-        Name: !Ref AWS::StackName
+  # ApiGatewayV2DomainName:
+  #   Type: AWS::ApiGatewayV2::DomainName
+  #   Properties:
+  #     DomainName: !Sub ${pSubDomain}.${pHostedZone}
+  #     DomainNameConfigurations:
+  #       - CertificateArn: !Ref ApiGatewayCertificateRegional
+  #         EndpointType: REGIONAL
+  #         SecurityPolicy: TLS_1_2
+  #     Tags:
+  #       Name: !Ref AWS::StackName
 
-  ApiGatewayRestApiRasdService:
-    Type: AWS::ApiGateway::RestApi
+  ApiGatewayCustomDomainName:
+    Type: AWS::ApiGateway::DomainName
     Properties:
-      ApiKeySourceType: HEADER
-      BinaryMediaTypes:
-        - "*/*"
-      DisableExecuteApiEndpoint: false
-      EndpointConfiguration:
-        Types:
-          - EDGE
-      Name: !Sub ${AWS::StackName}-RestApi
+      CertificateArn: !Ref pSslCertificate
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      RegionalCertificateArn: !Ref ApiGatewayCertificateRegional
+      SecurityPolicy: TLS_1_2
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+
+  # ApiGatewayRestApiRasdService:
+  #   Type: AWS::ApiGateway::RestApi
+  #   Properties:
+  #     ApiKeySourceType: HEADER
+  #     BinaryMediaTypes:
+  #       - "*/*"
+  #     DisableExecuteApiEndpoint: false
+  #     EndpointConfiguration:
+  #       Types:
+  #         - EDGE
+  #     Name: !Sub ${AWS::StackName}-RestApi
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
+
+  ApiGatewayCertificateRegional:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      DomainValidationOptions:
+        - DomainName: !Sub ${pSubDomain}.${pHostedZone}
+          HostedZoneId: !Ref pHostedZoneID
+      ValidationMethod: DNS
