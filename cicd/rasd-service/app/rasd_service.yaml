@@ -18,7 +18,7 @@ Parameters:
   pHostedZone:
     Type: String
     Description: The hosted zone the site is accessed under
-  pHostedZoneID:
+  pHostedZoneId:
     Type: String
     Description: The hosted zone ID of the hosted zone
   pSubDomain:
@@ -223,5 +223,5 @@ Resources:
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainValidationOptions:
         - DomainName: !Sub ${pSubDomain}.${pHostedZone}
-          HostedZoneId: !Ref pHostedZoneID
+          HostedZoneId: !Ref pHostedZoneId
       ValidationMethod: DNS

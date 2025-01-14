@@ -320,6 +320,7 @@ Resources:
                     { "name":"SLACK_DEPLOY_NOTIFICATION", "value":"#{ExportConfigNS.SLACK_DEPLOY_NOTIFICATION}" },
                     { "name":"SUB_DOMAIN", "value":"#{ExportConfigNS.SUB_DOMAIN}" },
                     { "name":"HOSTED_ZONE", "value":"#{ExportConfigNS.HOSTED_ZONE}" },
+                    { "name":"HOSTED_ZONE_ID", "value":"#{ExportConfigNS.HOSTED_ZONE_ID}" },
                     { "name":"SRC_BRANCH", "value":"${pGitHubBranch}" }
                   ]
               Namespace: DeployNotificationNS
