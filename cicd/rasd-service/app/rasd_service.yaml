@@ -194,8 +194,10 @@ Resources:
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      CertificateArn: !Ref pSslCertificate
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
       RegionalCertificateArn: !Ref ApiGatewayCertificateRegional
       SecurityPolicy: TLS_1_2
       Tags:
