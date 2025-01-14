@@ -183,7 +183,7 @@ Resources:
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainNameConfigurations:
         - CertificateArn: !Ref pSslCertificate
-          EndpointType: REGIONAL
+          # EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
       Tags:
         Name: !Ref AWS::StackName
