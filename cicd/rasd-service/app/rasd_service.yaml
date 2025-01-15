@@ -288,9 +288,6 @@ Resources:
           StringAttributeConstraints:
             MaxLength: '2048'
             MinLength: '0'
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-CognitoUserPool
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
@@ -373,6 +370,3 @@ Resources:
         - updated_at
         - nickname
         - email
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-CognitoAppClientRasdbackend
