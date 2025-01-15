@@ -320,6 +320,10 @@ Resources:
       AccessTokenValidity: 180
       IdTokenValidity: 180
       RefreshTokenValidity: 30
+      TokenValidityUnits:
+        AccessToken: minutes
+        IdToken: minutes
+        RefreshToken: days
       ExplicitAuthFlows:
         - ALLOW_ADMIN_USER_PASSWORD_AUTH
         - ALLOW_CUSTOM_AUTH
