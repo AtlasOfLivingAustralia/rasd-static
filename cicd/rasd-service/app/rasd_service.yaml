@@ -8,12 +8,6 @@ Parameters:
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
-  pSourceBucket:
-    Type: String
-    Description: The bucket name for the site
-  pBucketPath:
-    Type: String
-    Description: Optional path that the files are stored under in the bucket
   pCleanBranch:
     Type: String
     Description: A cleaned version of the code branch name
@@ -24,6 +18,9 @@ Parameters:
   pHostedZoneId:
     Type: String
     Description: The hosted zone ID of the hosted zone
+  pSecretAbnTokenName:
+    Type: String
+    Description: The secret token name for ABN lookup
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
@@ -39,6 +36,11 @@ Conditions:
     - !Condition IsDev
 
 Resources:
+  ABNAppSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Ref pSecretAbnTokenName
+      Description: ABN Token for RASD Service
 
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
@@ -129,6 +131,11 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
+              - Resource:
+                  - !Ref ABNAppSecret
+                Action:
+                  - secretsmanager:GetSecretValue
+                Effect: Allow
               - Resource:
                   - !GetAtt DynamoDBTableDataAccessRequests.Arn
                   - !GetAtt DynamoDBTableMetadata.Arn
@@ -381,39 +388,39 @@ Resources:
         - updated_at
         - nickname
         - email
-  # LambdaBackendService:
-  #   Type: AWS::Lambda::Function
-  #   Properties:
-  #     # Architectures:
-  #     #   - String
-  #     Code:
-  #       S3Bucket: !Ref pArtifactsBucket
-  #       S3Key: !Ref pBucket
 
-  #     CodeSigningConfigArn: String
-  #     DeadLetterConfig: DeadLetterConfig
-  #     Description: String
-  #     Environment: Environment
-  #     EphemeralStorage: EphemeralStorage
-  #     FileSystemConfigs:
-  #       - FileSystemConfig
-  #     FunctionName: String
-  #     Handler: String
-  #     ImageConfig: ImageConfig
-  #     KmsKeyArn: String
-  #     Layers:
-  #       - String
-  #     LoggingConfig: LoggingConfig
-  #     MemorySize: Integer
-  #     PackageType: String
-  #     RecursiveLoop: String
-  #     ReservedConcurrentExecutions: Integer
-  #     Role: String
-  #     Runtime: String
-  #     RuntimeManagementConfig: RuntimeManagementConfig
-  #     SnapStart: SnapStart
-  #     Tags:
-  #       - Tag
-  #     Timeout: Integer
-  #     TracingConfig: TracingConfig
-  #     VpcConfig: VpcConfig
+  LambdaBackendService:
+    Type: AWS::Lambda::Function
+    Properties:
+      # Architectures:
+      #   - String
+      Code:
+        S3Bucket: !Ref pArtifactsBucket
+
+      CodeSigningConfigArn: String
+      DeadLetterConfig: DeadLetterConfig
+      Description: String
+      Environment: Environment
+      EphemeralStorage: EphemeralStorage
+      FileSystemConfigs:
+        - FileSystemConfig
+      FunctionName: String
+      Handler: String
+      ImageConfig: ImageConfig
+      KmsKeyArn: String
+      Layers:
+        - String
+      LoggingConfig: LoggingConfig
+      MemorySize: Integer
+      PackageType: String
+      RecursiveLoop: String
+      ReservedConcurrentExecutions: Integer
+      Role: String
+      Runtime: String
+      RuntimeManagementConfig: RuntimeManagementConfig
+      SnapStart: SnapStart
+      Tags:
+        - Tag
+      Timeout: Integer
+      TracingConfig: TracingConfig
+      VpcConfig: VpcConfig
