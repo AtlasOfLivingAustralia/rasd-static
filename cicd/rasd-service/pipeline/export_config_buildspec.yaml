@@ -8,16 +8,14 @@ env:
   variables:
     DEBIAN_FRONTEND: noninteractive
   exported-variables:
+    - ARTIFACTS_BUCKET
     - APP_STACK_FILE_PFIX
     - APP_STACK_NAME
-    - BUCKET_PATH
     - CODEBUILD_BUILD_NUMBER
-    - MAX_AGE
     - PRODUCT_COMPONENT
     - PRODUCT_NAME
     - SLACK_ALERT_CHANNEL
     - SLACK_DEPLOY_NOTIFICATION
-    - SOURCE_BUCKET
     - SUB_DOMAIN
     - HOSTED_ZONE
     - HOSTED_ZONE_ID
@@ -49,6 +47,7 @@ phases:
           echo existing pipeline is in sync with current code revision, proceeding with the deploy!
         fi
     finally:
+
       
       - 
         #echo This always runs even if the update or install command fails
@@ -65,7 +64,6 @@ phases:
       - echo loading config..
       - set -a ; source env.txt ; set +a
     finally:
-      
       - 
         #echo This always runs
 
@@ -86,7 +84,6 @@ phases:
           cicd/gen_template_config.py  --template ${stack}_template_config.j2 > ${stack}_template_config.json
         done
     finally:
-      
       - 
         #echo This always runs
 

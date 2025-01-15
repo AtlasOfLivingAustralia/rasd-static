@@ -2,6 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: The RASD service stack
 
 Parameters:
+  pArtifactsBucket:
+    Type: String
+    Description: The S3 artifact bucket path
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
@@ -204,6 +207,14 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  # ApiMapping:
+  #   Type: AWS::ApiGatewayV2::ApiMapping
+  #   Properties:
+  #     DomainName: !Ref ApiGatewayCustomDomainName
+  #     ApiId: !Ref ApiGatewayRestApiRasdService
+  #     Stage: '*'
+  #     ApiMappingKey: !If [ IsDev, 'dev', 'prod' ]
+
   # ApiGatewayRestApiRasdService:
   #   Type: AWS::ApiGateway::RestApi
   #   Properties:
@@ -370,3 +381,39 @@ Resources:
         - updated_at
         - nickname
         - email
+  # LambdaBackendService:
+  #   Type: AWS::Lambda::Function
+  #   Properties:
+  #     # Architectures:
+  #     #   - String
+  #     Code:
+  #       S3Bucket: !Ref pArtifactsBucket
+  #       S3Key: !Ref pBucket
+
+  #     CodeSigningConfigArn: String
+  #     DeadLetterConfig: DeadLetterConfig
+  #     Description: String
+  #     Environment: Environment
+  #     EphemeralStorage: EphemeralStorage
+  #     FileSystemConfigs:
+  #       - FileSystemConfig
+  #     FunctionName: String
+  #     Handler: String
+  #     ImageConfig: ImageConfig
+  #     KmsKeyArn: String
+  #     Layers:
+  #       - String
+  #     LoggingConfig: LoggingConfig
+  #     MemorySize: Integer
+  #     PackageType: String
+  #     RecursiveLoop: String
+  #     ReservedConcurrentExecutions: Integer
+  #     Role: String
+  #     Runtime: String
+  #     RuntimeManagementConfig: RuntimeManagementConfig
+  #     SnapStart: SnapStart
+  #     Tags:
+  #       - Tag
+  #     Timeout: Integer
+  #     TracingConfig: TracingConfig
+  #     VpcConfig: VpcConfig
