@@ -394,33 +394,27 @@ Resources:
     Properties:
       # Architectures:
       #   - String
-      Code:
-        S3Bucket: !Ref pArtifactsBucket
-
-      CodeSigningConfigArn: String
-      DeadLetterConfig: DeadLetterConfig
-      Description: String
-      Environment: Environment
-      EphemeralStorage: EphemeralStorage
-      FileSystemConfigs:
-        - FileSystemConfig
-      FunctionName: String
-      Handler: String
-      ImageConfig: ImageConfig
-      KmsKeyArn: String
-      Layers:
-        - String
-      LoggingConfig: LoggingConfig
-      MemorySize: Integer
-      PackageType: String
-      RecursiveLoop: String
-      ReservedConcurrentExecutions: Integer
-      Role: String
-      Runtime: String
-      RuntimeManagementConfig: RuntimeManagementConfig
-      SnapStart: SnapStart
+      Code: ../../../backend/dist/rasd_fastapi
+      # CodeSigningConfigArn: String
+      # DeadLetterConfig: DeadLetterConfig
+      Description: Rasd Service Lambda Function
+      Environment:
+        Variables:
+          ABN_LOOKUP_GUID: !Ref ABNAppSecret
+          # AWS_COGNITO_CLIENT_ID: !Ref cgn_AppClient_RasdBackend.id
+          # AWS_COGNITO_POOL_ID: !Ref CognitoPool
+          # AWS_COGNITO_CLIENT_SECRET_KEY: !Ref cgn_AppClient_RasdBackend.clientSecret
+          # AWS_COGNITO_CLIENT_SECRET_KEY:
+          # EMAIL_FROM_ADDRESS: ${varEmailFromAddress}
+          # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
+      FunctionName: !Sub ${AWS::StackName}-LambdaBackendService
+      Handler: rasd_fastapi.handler.handler
+      MemorySize: 4096
+      Role: !GetAtt IAMRoleiamRoleForLambda.Arn
+      Runtime: python3.9
+      # RuntimeManagementConfig: RuntimeManagementConfig
+      # SnapStart: SnapStart
+      Timeout: 30
       Tags:
-        - Tag
-      Timeout: Integer
-      TracingConfig: TracingConfig
-      VpcConfig: VpcConfig
+        - Key: Name
+          Value: !Ref AWS::StackName
