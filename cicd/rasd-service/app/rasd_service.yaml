@@ -263,10 +263,6 @@ Resources:
         - AttributeDataType: String
           Mutable: true
           Name: organisation_id
-          Required: true
-          StringAttributeConstraints:
-            MaxLength: '2048'
-            MinLength: '0'
         - AttributeDataType: String
           Mutable: true
           Name: family_name
