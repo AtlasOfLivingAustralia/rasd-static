@@ -407,7 +407,7 @@ Resources:
           # AWS_COGNITO_CLIENT_SECRET_KEY:
           # EMAIL_FROM_ADDRESS: ${varEmailFromAddress}
           # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
-      FunctionName: !Sub ${AWS::StackName}-LambdaBackendService
+      FunctionName: !Sub rasd-${pCleanBranch}-LambdaBackendApi
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
       Role: !GetAtt IAMRoleiamRoleForLambda.Arn
