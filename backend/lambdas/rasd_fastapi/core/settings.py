@@ -3,10 +3,20 @@
 
 # Third-Party
 import pydantic
+import boto3
+import os
+import json
 
 # Typing
 from typing import Optional
 
+secret_name = os.environ.get("RASD_SECRETS_NAME")
+
+sm_client = boto3.client('secretsmanager')
+response = sm_client.get_secret_value(SecretId=secret_name)
+secrets = json.loads(response['SecretString'])
+print("type of secrets:", type(secrets))
+print(secrets.keys())
 
 class Settings(pydantic.BaseSettings):
     """Settings for the RASD Backend."""

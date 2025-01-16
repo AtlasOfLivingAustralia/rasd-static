@@ -18,9 +18,9 @@ Parameters:
   pHostedZoneId:
     Type: String
     Description: The hosted zone ID of the hosted zone
-  pSecretAbnTokenName:
+  pSecretKeyName:
     Type: String
-    Description: The secret token name for ABN lookup
+    Description: The secret name for rasd service
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
@@ -36,11 +36,11 @@ Conditions:
     - !Condition IsDev
 
 Resources:
-  ABNAppSecret:
+  RasdSecrets:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Name: !Ref pSecretAbnTokenName
-      Description: ABN Token for RASD Service
+      Name: !Ref pSecretKeyName
+      Description: Secrets for RASD services
 
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
@@ -132,7 +132,7 @@ Resources:
             Version: '2012-10-17'
             Statement:
               - Resource:
-                  - !Ref ABNAppSecret
+                  - !Ref RasdSecrets
                 Action:
                   - secretsmanager:GetSecretValue
                 Effect: Allow
@@ -400,14 +400,14 @@ Resources:
       Description: Rasd Service Lambda Function
       Environment:
         Variables:
-          ABN_LOOKUP_GUID: !Ref ABNAppSecret
+          RASD_SECRETS_NAME: !Ref RasdSecrets
           # AWS_COGNITO_CLIENT_ID: !Ref cgn_AppClient_RasdBackend.id
           # AWS_COGNITO_POOL_ID: !Ref CognitoPool
           # AWS_COGNITO_CLIENT_SECRET_KEY: !Ref cgn_AppClient_RasdBackend.clientSecret
           # AWS_COGNITO_CLIENT_SECRET_KEY:
           # EMAIL_FROM_ADDRESS: ${varEmailFromAddress}
           # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
-      FunctionName: !Sub rasd-${pCleanBranch}-LambdaBackendApi
+      FunctionName: !Sub rasd-${pCleanBranch}-backend-api
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
       Role: !GetAtt IAMRoleiamRoleForLambda.Arn
