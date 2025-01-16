@@ -81,11 +81,13 @@ phases:
     commands:
       - echo Entered the build phase...
       # package templates and generate the template configs
-      - cd $CODEBUILD_SRC_DIR
+      - cd backend || exit 2
+      - pwd
       - $POETRY_HOME/bin/poetry export -f requirements.txt --with $LAMBDA_NAME -o lambdas/$LAMBDA_NAME/requirements.txt
       - mkdir -p dist/$LAMBDA_NAME
       - pip install -r lambdas/$LAMBDA_NAME/requirements.txt --target ./dist/$LAMBDA_NAME --upgrade
       - cp -r lambdas/$LAMBDA_NAME dist/$LAMBDA_NAME/
+      - cd $CODEBUILD_SRC_DIR
       - |
         for i in cicd/$PRODUCT_COMPONENT/app/*.yaml; do
           stack=$(echo $i | sed 's/.yaml$//')
