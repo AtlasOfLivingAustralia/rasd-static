@@ -261,19 +261,19 @@ Resources:
               OutputArtifacts:
                 - Name: BuildFrontendArtifact
               RunOrder: 2
-            - Name: BuildBackend
-              ActionTypeId:
-                Category: Build
-                Owner: AWS
-                Provider: CodeBuild
-                Version: 1
-              Configuration:
-                ProjectName: !Ref BuildBackend
-              InputArtifacts:
-                - Name: SourceArtifact
-              OutputArtifacts:
-                - Name: BuildBackendArtifact
-              RunOrder: 3
+            # - Name: BuildBackend
+            #   ActionTypeId:
+            #     Category: Build
+            #     Owner: AWS
+            #     Provider: CodeBuild
+            #     Version: 1
+            #   Configuration:
+            #     ProjectName: !Ref BuildBackend
+            #   InputArtifacts:
+            #     - Name: SourceArtifact
+            #   OutputArtifacts:
+            #     - Name: BuildBackendArtifact
+            #   RunOrder: 3
             - Name: DeployCfStack
               ActionTypeId:
                 Owner: AWS
@@ -293,7 +293,7 @@ Resources:
                 - Name: 'ExportConfigArtifact'
               Namespace: ServiceCloudFormationOutNS
               OutputArtifacts: []
-              RunOrder: 4
+              RunOrder: 3
 
         - Name: Deploy
           Actions:
