@@ -23,16 +23,6 @@ try:
 except Exception as e:
     print("Error retrieving secret in ARN:", e)
 
-# NAME
-try:
-    secret_name = 'ala-rasd-keys-testing'
-    response = sm_client.get_secret_value(SecretId=secret_name)
-    secrets = json.loads(response['SecretString'])
-    print("type of secrets from name:", type(secrets))
-    print(secrets.keys())
-except Exception as e:
-    print("Error retrieving secret in NAME:", e)
-
 class Settings(pydantic.BaseSettings):
     """Settings for the RASD Backend."""
     # Application Settings

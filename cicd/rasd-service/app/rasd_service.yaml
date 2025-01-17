@@ -246,16 +246,16 @@ Resources:
           HostedZoneId: !Ref pHostedZoneId
       ValidationMethod: DNS
 
-  # DNSBackend:
-  #   Type: AWS::Route53::RecordSet
-  #   Properties:
-  #     HostedZoneId: !Ref pHostedZoneId
-  #     Name: !Sub ${pSubDomain}.${pHostedZone}
-  #     Type: A
-  #     AliasTarget:
-  #       DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-  #       HostedZoneId: Z2FDTNDATAQYW2
-  #     TTL: '60'
+  DNSBackend:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub ${pSubDomain}.${pHostedZone}
+      Type: A
+      # AliasTarget:
+      #   DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
+      #   HostedZoneId: !
+      TTL: '60'
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
@@ -404,8 +404,12 @@ Resources:
           AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
           AWS_COGNITO_POOL_ID: !Ref CognitoPool
           AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
-          # EMAIL_FROM_ADDRESS: ${emailFromAlias}@${ses_MailFrom.mailFromDomain}
-          # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
+          AWS_DYNAMODB_TABLE_ACCESS_REQUESTS: !Sub ${AWS::StackName}-DataAccessRequests
+          AWS_DYNAMODB_TABLE_METADATA: !Sub ${AWS::StackName}-Metadata
+          AWS_DYNAMODB_TABLE_ORGANISATIONS: !Sub ${AWS::StackName}-Organisations
+          AWS_DYNAMODB_TABLE_REGISTRATIONS: !Sub ${AWS::StackName}-Registrations
+            # EMAIL_FROM_ADDRESS: ${emailFromAlias}@${ses_MailFrom.mailFromDomain}
+            # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
       FunctionName: !Sub rasd-${pCleanBranch}-backend-api
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
@@ -417,3 +421,10 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+
+  SESDomainIdentity:
+    Type: AWS::SES::EmailIdentity
+    Properties:
+      EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
+      MailFromAttributes:
+        MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
