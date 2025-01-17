@@ -185,6 +185,10 @@ Resources:
                 Action:
                   - ses:SendEmail
                 Effect: Allow
+              - Resource: '*'
+                Action:
+                  - 'lambda:InvokeFunction'
+                Effect: Allow
       RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
       Tags:
         - Key: Name
@@ -200,50 +204,6 @@ Resources:
   #         SecurityPolicy: TLS_1_2
   #     Tags:
   #       Name: !Ref AWS::StackName
-
-  ApiGatewayCustomDomainName:
-    Type: AWS::ApiGateway::DomainName
-    Properties:
-      DomainName: !Sub ${pSubDomain}.${pHostedZone}
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
-      RegionalCertificateArn: !Ref ApiGatewayCertificateRegional
-      SecurityPolicy: TLS_1_2
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiGatewayRestApiRasdService:
-    Type: AWS::ApiGateway::RestApi
-    Properties:
-      ApiKeySourceType: HEADER
-      BinaryMediaTypes:
-        - "*/*"
-      DisableExecuteApiEndpoint: false
-      EndpointConfiguration:
-        Types:
-          - EDGE
-      Name: !Sub ${AWS::StackName}-RestApi
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiMapping:
-    Type: AWS::ApiGatewayV2::ApiMapping
-    Properties:
-      ApiId: !Ref ApiGatewayRestApiRasdService
-      DomainName: !Ref ApiGatewayCustomDomainName
-      Stage: !Ref pEnvironment
-
-  ApiGatewayCertificateRegional:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub ${pSubDomain}.${pHostedZone}
-      DomainValidationOptions:
-        - DomainName: !Sub ${pSubDomain}.${pHostedZone}
-          HostedZoneId: !Ref pHostedZoneId
-      ValidationMethod: DNS
 
   DNSBackend:
     Type: AWS::Route53::RecordSet
@@ -421,6 +381,167 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+
+  ApiGatewayCertificateRegional:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      DomainValidationOptions:
+        - DomainName: !Sub ${pSubDomain}.${pHostedZone}
+          HostedZoneId: !Ref pHostedZoneId
+      ValidationMethod: DNS
+
+  ApiGatewayCustomDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: !Ref ApiGatewayCertificateRegional
+      SecurityPolicy: TLS_1_2
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      BinaryMediaTypes:
+        - "*/*"
+      DisableExecuteApiEndpoint: false
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: !Sub ${AWS::StackName}-RestApi
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  ApiGatewayResourceApi:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: "api"
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayResourceApiProxy:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref ApiGatewayResourceApi
+      PathPart: "{proxy+}"
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - ApiGatewayResourceApi
+      - ApiGatewayResourceApiProxy
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref pEnvironment
+
+  # ApiMapping:
+  #   Type: AWS::ApiGatewayV2::ApiMapping
+  #   Properties:
+  #     ApiId: !Ref ApiGatewayRestApi
+  #     DomainName: !Ref ApiGatewayCustomDomainName
+  #     Stage: !Ref pEnvironment
+
+  # ApiStage:
+  #   Type: AWS::ApiGateway::Stage
+  #   Properties:
+  #     StageName: !Ref pEnvironment
+  #     Description: API Stage of the Environment
+  #     RestApiId: !Ref ApiGatewayRestApi
+  #     # DeploymentId: !Ref TestDeployment
+  #     # DocumentationVersion: !Ref MyDocumentationVersion
+  #     # ClientCertificateId: !Ref ClientCertificate
+  #     Variables:
+  #       Stack: Prod
+  #     MethodSettings:
+  #       - ResourcePath: /api
+  #         HttpMethod: '*'
+  #         # MetricsEnabled: 'true'
+  #         # DataTraceEnabled: 'false'
+  #         # - ResourcePath: /stack
+  #         #   HttpMethod: POST
+  #         #   MetricsEnabled: 'true'
+  #         #   DataTraceEnabled: 'false'
+  #         #   ThrottlingBurstLimit: '999'
+  #         # - ResourcePath: /stack
+  #         #   HttpMethod: GET
+  #         #   MetricsEnabled: 'true'
+  #         #   DataTraceEnabled: 'false'
+  #         #   ThrottlingBurstLimit: '555'
+
+  ApiRootMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      HttpMethod: '*'
+      Integration:
+        Credentials: !GetAtt IAMRoleiamRoleForLambda.Arn
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - StatusCode: "200"
+        PassthroughBehavior: WHEN_NO_MATCH
+        # TimeoutInMillis: 29000
+        Type: AWS
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+      MethodResponses:
+        - StatusCode: "200"
+        # OperationName: String
+        # RequestModels:
+        # Key: Value
+        # RequestParameters:
+        # Key: Value
+        # RequestValidatorId: String
+      ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayMethodApiAny:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      ResourceId: !Ref ApiGatewayResourceApi
+      RestApiId: !Ref ApiGatewayRestApi
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+        IntegrationResponses:
+          - StatusCode: "200"
+        PassthroughBehavior: WHEN_NO_MATCH
+      MethodResponses:
+        - StatusCode: "200"
+
+  ApiGatewayMethodApiProxyAny:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      ResourceId: !Ref ApiGatewayResourceApiProxy
+      RestApiId: !Ref ApiGatewayRestApi
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+        IntegrationResponses:
+          - StatusCode: "200"
+        PassthroughBehavior: WHEN_NO_MATCH
+      MethodResponses:
+        - StatusCode: "200"
+
+  ApiGatewayBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref ApiGatewayCustomDomainName
+      RestApiId: !Ref ApiGatewayRestApi
+      Stage: !Ref pEnvironment
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
