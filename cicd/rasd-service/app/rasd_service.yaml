@@ -400,12 +400,11 @@ Resources:
       Description: Rasd Service Lambda Function
       Environment:
         Variables:
-          RASD_SECRETS_NAME: !Ref RasdSecrets
-          # AWS_COGNITO_CLIENT_ID: !Ref cgn_AppClient_RasdBackend.id
-          # AWS_COGNITO_POOL_ID: !Ref CognitoPool
-          # AWS_COGNITO_CLIENT_SECRET_KEY: !Ref cgn_AppClient_RasdBackend.clientSecret
-          # AWS_COGNITO_CLIENT_SECRET_KEY:
-          # EMAIL_FROM_ADDRESS: ${varEmailFromAddress}
+          RASD_SECRETS_NAME: !Ref RasdSecrets # !Ref pSecretKeyName
+          AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
+          AWS_COGNITO_POOL_ID: !Ref CognitoPool
+          AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
+          # EMAIL_FROM_ADDRESS: ${emailFromAlias}@${ses_MailFrom.mailFromDomain}
           # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
       FunctionName: !Sub rasd-${pCleanBranch}-backend-api
       Handler: rasd_fastapi.handler.handler

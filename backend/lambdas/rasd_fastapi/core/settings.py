@@ -21,7 +21,7 @@ try:
     print("type of secrets from arn:", type(secrets))
     print(secrets.keys())
 except Exception as e:
-    print("Error retrieving secret:", e)
+    print("Error retrieving secret in ARN:", e)
 
 # NAME
 try:
@@ -31,7 +31,7 @@ try:
     print("type of secrets from name:", type(secrets))
     print(secrets.keys())
 except Exception as e:
-    print("Error retrieving secret:", e)
+    print("Error retrieving secret in NAME:", e)
 
 class Settings(pydantic.BaseSettings):
     """Settings for the RASD Backend."""
@@ -77,4 +77,5 @@ class Settings(pydantic.BaseSettings):
 
 
 # Instantiate Settings
-SETTINGS = Settings(_env_file=".env")  # type: ignore[call-arg]
+os.environ.update(secrets)  # Add secrets to environment
+SETTINGS = Settings()  # type: ignore[call-arg]
