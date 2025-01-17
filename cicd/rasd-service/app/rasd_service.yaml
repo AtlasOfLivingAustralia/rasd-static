@@ -214,28 +214,27 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  # ApiMapping:
-  #   Type: AWS::ApiGatewayV2::ApiMapping
-  #   Properties:
-  #     DomainName: !Ref ApiGatewayCustomDomainName
-  #     ApiId: !Ref ApiGatewayRestApiRasdService
-  #     Stage: '*'
-  #     ApiMappingKey: !If [ IsDev, 'dev', 'prod' ]
+  ApiGatewayRestApiRasdService:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      BinaryMediaTypes:
+        - "*/*"
+      DisableExecuteApiEndpoint: false
+      EndpointConfiguration:
+        Types:
+          - EDGE
+      Name: !Sub ${AWS::StackName}-RestApi
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
-  # ApiGatewayRestApiRasdService:
-  #   Type: AWS::ApiGateway::RestApi
-  #   Properties:
-  #     ApiKeySourceType: HEADER
-  #     BinaryMediaTypes:
-  #       - "*/*"
-  #     DisableExecuteApiEndpoint: false
-  #     EndpointConfiguration:
-  #       Types:
-  #         - EDGE
-  #     Name: !Sub ${AWS::StackName}-RestApi
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Ref AWS::StackName
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref ApiGatewayRestApiRasdService
+      DomainName: !Ref ApiGatewayCustomDomainName
+      Stage: !Ref pEnvironment
 
   ApiGatewayCertificateRegional:
     Type: AWS::CertificateManager::Certificate
@@ -252,9 +251,10 @@ Resources:
       HostedZoneId: !Ref pHostedZoneId
       Name: !Sub ${pSubDomain}.${pHostedZone}
       Type: A
-      # AliasTarget:
-      #   DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-      #   HostedZoneId: !
+      AliasTarget:
+        DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
+        HostedZoneId: Z2RPCDW04V8134
+        EvaluateTargetHealth: true
       TTL: '60'
 
   CognitoPool:
