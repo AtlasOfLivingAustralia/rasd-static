@@ -445,6 +445,9 @@ Resources:
     DependsOn:
       - ApiGatewayResourceApi
       - ApiGatewayResourceApiProxy
+      - ApiRootMethod
+      - ApiGatewayMethodApiAny
+      - ApiGatewayMethodApiProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: !Ref pEnvironment
