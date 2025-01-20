@@ -289,12 +289,12 @@ Resources:
                 Version: 1
               Configuration:
                 ProjectName: !Ref LintBuildFrontend
-              EnvironmentVariables: !Sub |
-                [
-                  { "name":"ARTIFACTS_BUCKET", "value":"#{ExportConfigNS.ARTIFACTS_BUCKET}" },
-                  { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
-                  { "name":"STATIC_BUCKET", "value":"#{ExportConfigNS.APP_STACK_NAME}"}
-                ]
+                EnvironmentVariables: !Sub |
+                  [
+                    { "name":"ARTIFACTS_BUCKET", "value":"#{ExportConfigNS.ARTIFACTS_BUCKET}" },
+                    { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
+                    { "name":"STATIC_BUCKET", "value":"#{ExportConfigNS.APP_STACK_NAME}"}
+                  ]
               InputArtifacts:
                 - Name: SourceArtifact
               OutputArtifacts:
