@@ -404,6 +404,14 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  ApiGatewayBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    DependsOn: ApiGatewayDeployment
+    Properties:
+      DomainName: !Ref ApiGatewayCustomDomainName
+      RestApiId: !Ref ApiGatewayRestApi
+      Stage: !Ref pEnvironment
+
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -447,7 +455,7 @@ Resources:
   #   Properties:
   #     ApiId: !Ref ApiGatewayRestApi
   #     DomainName: !Ref ApiGatewayCustomDomainName
-  #     Stage: !Ref pEnvironment
+  #     Stage: !Ref ProdStage
 
   # ApiStage:
   #   Type: AWS::ApiGateway::Stage
@@ -455,13 +463,13 @@ Resources:
   #     StageName: !Ref pEnvironment
   #     Description: API Stage of the Environment
   #     RestApiId: !Ref ApiGatewayRestApi
-  #     # DeploymentId: !Ref TestDeployment
+  #     DeploymentId: !Ref ApiGatewayDeployment
   #     # DocumentationVersion: !Ref MyDocumentationVersion
   #     # ClientCertificateId: !Ref ClientCertificate
-  #     Variables:
-  #       Stack: Prod
+  #     # Variables:
+  #     # Stack: Prod
   #     MethodSettings:
-  #       - ResourcePath: /api
+  #       - ResourcePath: /
   #         HttpMethod: '*'
   #         # MetricsEnabled: 'true'
   #         # DataTraceEnabled: 'false'
@@ -475,6 +483,23 @@ Resources:
   #         #   MetricsEnabled: 'true'
   #         #   DataTraceEnabled: 'false'
   #         #   ThrottlingBurstLimit: '555'
+
+  # ProdApiStage:
+  #   Type: AWS::ApiGatewayV2::Stage
+  #   Properties:
+  #     # AccessLogSettings: AccessLogSettings
+  #     # AccessPolicyId: String
+  #     ApiId: !Ref ApiGatewayRestApi
+  #     AutoDeploy: true
+  #     # ClientCertificateId: String
+  #     # DefaultRouteSettings: RouteSettings
+  #     # DeploymentId: String
+  #     Description: This is the Default Stage
+  #     # RouteSettings: Json
+  #     StageName: !Ref pEnvironment
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
 
   ApiRootMethod:
     Type: AWS::ApiGateway::Method
@@ -535,13 +560,6 @@ Resources:
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: "200"
-
-  ApiGatewayBasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      DomainName: !Ref ApiGatewayCustomDomainName
-      RestApiId: !Ref ApiGatewayRestApi
-      Stage: !Ref pEnvironment
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
