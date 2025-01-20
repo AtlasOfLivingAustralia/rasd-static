@@ -215,7 +215,6 @@ Resources:
         DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
         HostedZoneId: Z2RPCDW04V8134
         EvaluateTargetHealth: true
-      TTL: '60'
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
