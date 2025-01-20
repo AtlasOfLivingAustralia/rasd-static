@@ -482,68 +482,12 @@ Resources:
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
-      # - ApiGatewayResourceApi
-      # - ApiGatewayResourceApiProxy
       - ApiRootMethod
       - ApiGatewayMethodApiAny
       - ApiGatewayMethodApiProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: !Ref pEnvironment
-
-  # Not Used
-  # ApiMapping:
-  #   Type: AWS::ApiGatewayV2::ApiMapping
-  #   Properties:
-  #     ApiId: !Ref ApiGatewayRestApi
-  #     DomainName: !Ref ApiGatewayCustomDomainName
-  #     Stage: !Ref ProdStage
-
-  # Not Used
-  # ApiStage:
-  #   Type: AWS::ApiGateway::Stage
-  #   Properties:
-  #     StageName: !Ref pEnvironment
-  #     Description: API Stage of the Environment
-  #     RestApiId: !Ref ApiGatewayRestApi
-  #     DeploymentId: !Ref ApiGatewayDeployment
-  #     # DocumentationVersion: !Ref MyDocumentationVersion
-  #     # ClientCertificateId: !Ref ClientCertificate
-  #     # Variables:
-  #     # Stack: Prod
-  #     MethodSettings:
-  #       - ResourcePath: /
-  #         HttpMethod: '*'
-  #         # MetricsEnabled: 'true'
-  #         # DataTraceEnabled: 'false'
-  #         # - ResourcePath: /stack
-  #         #   HttpMethod: POST
-  #         #   MetricsEnabled: 'true'
-  #         #   DataTraceEnabled: 'false'
-  #         #   ThrottlingBurstLimit: '999'
-  #         # - ResourcePath: /stack
-  #         #   HttpMethod: GET
-  #         #   MetricsEnabled: 'true'
-  #         #   DataTraceEnabled: 'false'
-  #         #   ThrottlingBurstLimit: '555'
-
-  # Not Used
-  # ProdApiStage:
-  #   Type: AWS::ApiGatewayV2::Stage
-  #   Properties:
-  #     # AccessLogSettings: AccessLogSettings
-  #     # AccessPolicyId: String
-  #     ApiId: !Ref ApiGatewayRestApi
-  #     AutoDeploy: true
-  #     # ClientCertificateId: String
-  #     # DefaultRouteSettings: RouteSettings
-  #     # DeploymentId: String
-  #     Description: This is the Default Stage
-  #     # RouteSettings: Json
-  #     StageName: !Ref pEnvironment
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Ref AWS::StackName
 
   ApiRootMethod:
     Type: AWS::ApiGateway::Method
@@ -556,18 +500,22 @@ Resources:
         IntegrationHttpMethod: GET
         Credentials: !GetAtt ApiGatewayS3Role.Arn
         Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/{key}
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/index.html
           - BucketName: !Ref ApiGatewayS3Bucket
-        RequestParameters:
-          integration.request.path.key: method.request.path.key
+          # RequestParameters:
+          # integration.request.path.key: method.request.path.key
         IntegrationResponses:
           - StatusCode: 200
             ResponseParameters:
               method.response.header.Content-Type: integration.response.header.Content-Type
-              method.response.header.Content-Length: integration.response.header.Content-Length
+              method.response.header.content-type: integration.response.header.content-type
+          - StatusCode: 400
+            SelectionPattern: 4\d{2}
+          - StatusCode: 500
+            SelectionPattern: 5\d{2}
         PassthroughBehavior: WHEN_NO_MATCH
-      RequestParameters:
-        method.request.path.key: true
+        # RequestParameters:
+        # method.request.path.key: true
       MethodResponses:
         - StatusCode: 200
           ResponseParameters:
@@ -584,7 +532,7 @@ Resources:
       ResourceId: !Ref ApiGatewayResourceApi
       RestApiId: !Ref ApiGatewayRestApi
       Integration:
-        Type: AWS
+        Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         IntegrationResponses:
@@ -601,7 +549,7 @@ Resources:
       ResourceId: !Ref ApiGatewayResourceApiProxy
       RestApiId: !Ref ApiGatewayRestApi
       Integration:
-        Type: AWS
+        Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         # IntegrationResponses:
