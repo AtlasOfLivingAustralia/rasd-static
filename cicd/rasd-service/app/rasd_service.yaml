@@ -114,6 +114,39 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  ApiGatewayS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-api-static-files
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
+  ApiGatewayS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: !Sub ${ApiGatewayS3Bucket.Arn}/*
+
   IAMRoleiamRoleForLambda:
     Type: AWS::IAM::Role
     Properties:
@@ -511,24 +544,29 @@ Resources:
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
-      HttpMethod: ANY
+      HttpMethod: GET
       Integration:
-        Credentials: !GetAtt IAMRoleiamRoleForLambda.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: "200"
-        PassthroughBehavior: WHEN_NO_MATCH
-        # TimeoutInMillis: 29000
         Type: AWS
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        # MethodResponses:
-        # - StatusCode: "200"
-        # OperationName: String
-        # RequestModels:
-        # Key: Value
-        # RequestParameters:
-        # Key: Value
-        # RequestValidatorId: String
+        IntegrationHttpMethod: GET
+        Credentials: !GetAtt ApiGatewayS3Role.Arn
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/{key}
+          - BucketName: !Ref ApiGatewayS3Bucket
+        RequestParameters:
+          integration.request.path.key: method.request.path.key
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: integration.response.header.Content-Type
+              method.response.header.Content-Length: integration.response.header.Content-Length
+        PassthroughBehavior: WHEN_NO_MATCH
+      RequestParameters:
+        method.request.path.key: true
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Content-Type: true
+            method.response.header.Content-Length: true
       ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
       RestApiId: !Ref ApiGatewayRestApi
 

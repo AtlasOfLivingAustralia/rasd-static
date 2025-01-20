@@ -248,19 +248,6 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
-            - Name: BuildFrontend
-              ActionTypeId:
-                Category: Build
-                Owner: AWS
-                Provider: CodeBuild
-                Version: 1
-              Configuration:
-                ProjectName: !Ref LintBuildFrontend
-              InputArtifacts:
-                - Name: SourceArtifact
-              OutputArtifacts:
-                - Name: BuildFrontendArtifact
-              RunOrder: 2
             # - Name: BuildBackend
             #   ActionTypeId:
             #     Category: Build
@@ -293,8 +280,26 @@ Resources:
                 - Name: 'ExportConfigArtifact'
               Namespace: ServiceCloudFormationOutNS
               OutputArtifacts: []
+              RunOrder: 2
+            - Name: BuildFrontend
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName: !Ref LintBuildFrontend
+              EnvironmentVariables: !Sub |
+                [
+                  { "name":"ARTIFACTS_BUCKET", "value":"#{ExportConfigNS.ARTIFACTS_BUCKET}" },
+                  { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
+                  { "name":"STATIC_BUCKET", "value":"#{ExportConfigNS.APP_STACK_NAME}"}
+                ]
+              InputArtifacts:
+                - Name: SourceArtifact
+              OutputArtifacts:
+                - Name: BuildFrontendArtifact
               RunOrder: 3
-
         - Name: Deploy
           Actions:
             - Name: DeployNotification

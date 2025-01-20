@@ -4,6 +4,8 @@ version: 0.2
 
 env:
   shell: bash
+  variables:
+    BUCKET_NAME: $STATIC_BUCKET
 
 phases:
   install:
@@ -24,7 +26,8 @@ phases:
       - npm run build -- --mode production #  -- --mode $CI_COMMIT_BRANCH
   post_build:
     commands:
-      - echo front end build complete
+      - echo "Uploading files to S3 bucket ${BUCKET_NAME}..."
+      - aws s3 sync dist s3://${BUCKET_NAME} --delete
 
 artifacts:
   files:
