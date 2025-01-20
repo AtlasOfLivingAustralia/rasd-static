@@ -469,18 +469,27 @@ Resources:
         Types:
           - REGIONAL
       Name: !Sub ${AWS::StackName}-RestApi
-      GatewayResponses:
-        MISSING_AUTHENTICATION_TOKEN:
-          StatusCode: 404
-          ResponseTemplates:
-            application/json: '{"message": "404 Not found" }'
-        ACCESS_DENIED:
-          StatusCode: 404
-          ResponseTemplates:
-            application/json: '{"message": "404 Not found" }'
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+
+  GatewayResponseMissingAuth:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters: {}
+      ResponseTemplates:
+        application/json: '{"message": "404 Not found" }'
+      ResponseType: MISSING_AUTHENTICATION_TOKEN
+      RestApiId: !Ref ApiGatewayRestApi
+      StatusCode: '404'
+
+  GatewayResponseAccessDenied:
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters: {}
+      ResponseTemplates:
+        application/json: '{"message": "404 Not found" }'
+      ResponseType: ACCESS_DENIED
+      RestApiId: !Ref ApiGatewayRestApi
+      StatusCode: '404'
+
   ApiGatewayResourceApi:
     Type: AWS::ApiGateway::Resource
     Properties:
