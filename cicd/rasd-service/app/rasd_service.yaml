@@ -566,7 +566,7 @@ Resources:
   ApiGatewayMethodApiProxyAny:
     Type: AWS::ApiGateway::Method
     Properties:
-      # AuthorizationType: NONE
+      AuthorizationType: NONE
       HttpMethod: ANY
       ResourceId: !Ref ApiGatewayResourceApiProxy
       RestApiId: !Ref ApiGatewayRestApi
