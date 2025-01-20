@@ -129,6 +129,9 @@ Resources:
         BlockPublicPolicy: true
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
+        # WebsiteConfiguration:
+        # IndexDocument: index.html
+        # ErrorDocument: error.html
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -151,7 +154,12 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:GetObject
-                Resource: !Sub ${ApiGatewayS3Bucket.Arn}/*
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub ${ApiGatewayS3Bucket.Arn}
+                  - !Sub ${ApiGatewayS3Bucket.Arn}/*
 
   IAMRoleiamRoleForLambda:
     Type: AWS::IAM::Role
@@ -454,17 +462,25 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       ApiKeySourceType: HEADER
-      # BinaryMediaTypes:
-      # - "*/*"
+      BinaryMediaTypes:
+        - "*/*"
       DisableExecuteApiEndpoint: false
       EndpointConfiguration:
         Types:
           - REGIONAL
       Name: !Sub ${AWS::StackName}-RestApi
+      GatewayResponses:
+        MISSING_AUTHENTICATION_TOKEN:
+          StatusCode: 404
+          ResponseTemplates:
+            application/json: '{"message": "404 Not found" }'
+        ACCESS_DENIED:
+          StatusCode: 404
+          ResponseTemplates:
+            application/json: '{"message": "404 Not found" }'
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
-
   ApiGatewayResourceApi:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -502,25 +518,24 @@ Resources:
         Uri: !Sub
           - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/index.html
           - BucketName: !Ref ApiGatewayS3Bucket
-          # RequestParameters:
-          # integration.request.path.key: method.request.path.key
         IntegrationResponses:
           - StatusCode: 200
             ResponseParameters:
               method.response.header.Content-Type: integration.response.header.Content-Type
               method.response.header.content-type: integration.response.header.content-type
+            SelectionPattern: default
           - StatusCode: 400
             SelectionPattern: 4\d{2}
           - StatusCode: 500
             SelectionPattern: 5\d{2}
         PassthroughBehavior: WHEN_NO_MATCH
-        # RequestParameters:
-        # method.request.path.key: true
       MethodResponses:
         - StatusCode: 200
           ResponseParameters:
             method.response.header.Content-Type: true
-            method.response.header.Content-Length: true
+            method.response.header.content-type: true
+        - StatusCode: 400
+        - StatusCode: 500
       ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
       RestApiId: !Ref ApiGatewayRestApi
 
@@ -535,8 +550,6 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        IntegrationResponses:
-          - StatusCode: "200"
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: "200"
@@ -544,7 +557,7 @@ Resources:
   ApiGatewayMethodApiProxyAny:
     Type: AWS::ApiGateway::Method
     Properties:
-      AuthorizationType: NONE
+      # AuthorizationType: NONE
       HttpMethod: ANY
       ResourceId: !Ref ApiGatewayResourceApiProxy
       RestApiId: !Ref ApiGatewayRestApi
