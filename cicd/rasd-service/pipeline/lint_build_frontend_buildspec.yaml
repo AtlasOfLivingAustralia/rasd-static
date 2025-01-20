@@ -5,7 +5,8 @@ version: 0.2
 env:
   shell: bash
   variables:
-    BUCKET_NAME: $STATIC_BUCKET
+    BUCKET_NAME: $BUCKET_NAME
+    BUCKET_PATH: $BUCKET_PATH
 
 phases:
   install:
@@ -27,7 +28,7 @@ phases:
   post_build:
     commands:
       - echo "Uploading files to S3 bucket ${BUCKET_NAME}..."
-      - aws s3 sync dist s3://${BUCKET_NAME} --delete
+      - aws s3 sync dist s3://${BUCKET_NAME}/${BUCKET_PATH} --delete
 
 artifacts:
   files:

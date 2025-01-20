@@ -18,6 +18,12 @@ Parameters:
   pHostedZoneId:
     Type: String
     Description: The hosted zone ID of the hosted zone
+  pProductComponent:
+    Type: String
+    Description: The name of the product component
+  pProductName:
+    Type: String
+    Description: The name of the product
   pSecretKeyName:
     Type: String
     Description: The secret name for rasd service
@@ -117,7 +123,7 @@ Resources:
   ApiGatewayS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub ${AWS::StackName}-api-static-files
+      BucketName: !Sub ${pProductName}-${pProductComponent}-assets
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true

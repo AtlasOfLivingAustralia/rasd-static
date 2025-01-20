@@ -291,9 +291,8 @@ Resources:
                 ProjectName: !Ref LintBuildFrontend
                 EnvironmentVariables: !Sub |
                   [
-                    { "name":"ARTIFACTS_BUCKET", "value":"#{ExportConfigNS.ARTIFACTS_BUCKET}" },
-                    { "name":"CLEAN_BRANCH", "value":"${pCleanBranch}" },
-                    { "name":"STATIC_BUCKET", "value":"#{ExportConfigNS.APP_STACK_NAME}"}
+                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" },
+                    { "name":"BUCKET_NAME", "value":"${pProductName}-${pProductComponent}-assets" }
                   ]
               InputArtifacts:
                 - Name: SourceArtifact
