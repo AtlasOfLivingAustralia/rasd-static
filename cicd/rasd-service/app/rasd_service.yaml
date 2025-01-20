@@ -415,8 +415,8 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       ApiKeySourceType: HEADER
-      BinaryMediaTypes:
-        - "*/*"
+      # BinaryMediaTypes:
+      # - "*/*"
       DisableExecuteApiEndpoint: false
       EndpointConfiguration:
         Types:
@@ -433,25 +433,26 @@ Resources:
       PathPart: "api"
       RestApiId: !Ref ApiGatewayRestApi
 
-  ApiGatewayResourceApiProxy:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !Ref ApiGatewayResourceApi
-      PathPart: "{proxy+}"
-      RestApiId: !Ref ApiGatewayRestApi
+  # ApiGatewayResourceApiProxy:
+  #   Type: AWS::ApiGateway::Resource
+  #   Properties:
+  #     ParentId: !Ref ApiGatewayResourceApi
+  #     PathPart: "{proxy+}"
+  #     RestApiId: !Ref ApiGatewayRestApi
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
-      - ApiGatewayResourceApi
-      - ApiGatewayResourceApiProxy
-      - ApiRootMethod
+      # - ApiGatewayResourceApi
+      # - ApiGatewayResourceApiProxy
+      # - ApiRootMethod
       - ApiGatewayMethodApiAny
-      - ApiGatewayMethodApiProxyAny
+      # - ApiGatewayMethodApiProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: !Ref pEnvironment
 
+  # Not Used
   # ApiMapping:
   #   Type: AWS::ApiGatewayV2::ApiMapping
   #   Properties:
@@ -459,6 +460,7 @@ Resources:
   #     DomainName: !Ref ApiGatewayCustomDomainName
   #     Stage: !Ref ProdStage
 
+  # Not Used
   # ApiStage:
   #   Type: AWS::ApiGateway::Stage
   #   Properties:
@@ -486,6 +488,7 @@ Resources:
   #         #   DataTraceEnabled: 'false'
   #         #   ThrottlingBurstLimit: '555'
 
+  # Not Used
   # ProdApiStage:
   #   Type: AWS::ApiGatewayV2::Stage
   #   Properties:
@@ -503,31 +506,31 @@ Resources:
   #       - Key: Name
   #         Value: !Ref AWS::StackName
 
-  ApiRootMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      ApiKeyRequired: false
-      AuthorizationType: NONE
-      HttpMethod: '*'
-      Integration:
-        Credentials: !GetAtt IAMRoleiamRoleForLambda.Arn
-        IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - StatusCode: "200"
-        PassthroughBehavior: WHEN_NO_MATCH
-        # TimeoutInMillis: 29000
-        Type: AWS
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-      MethodResponses:
-        - StatusCode: "200"
-        # OperationName: String
-        # RequestModels:
-        # Key: Value
-        # RequestParameters:
-        # Key: Value
-        # RequestValidatorId: String
-      ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
-      RestApiId: !Ref ApiGatewayRestApi
+  # ApiRootMethod:
+  #   Type: AWS::ApiGateway::Method
+  #   Properties:
+  #     ApiKeyRequired: false
+  #     AuthorizationType: NONE
+  #     HttpMethod: ANY
+  #     Integration:
+  #       Credentials: !GetAtt IAMRoleiamRoleForLambda.Arn
+  #       IntegrationHttpMethod: POST
+  #       IntegrationResponses:
+  #         - StatusCode: "200"
+  #       PassthroughBehavior: WHEN_NO_MATCH
+  #       # TimeoutInMillis: 29000
+  #       Type: AWS
+  #       Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+  #     MethodResponses:
+  #       - StatusCode: "200"
+  #       # OperationName: String
+  #       # RequestModels:
+  #       # Key: Value
+  #       # RequestParameters:
+  #       # Key: Value
+  #       # RequestValidatorId: String
+  #     ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
+  #     RestApiId: !Ref ApiGatewayRestApi
 
   ApiGatewayMethodApiAny:
     Type: AWS::ApiGateway::Method
@@ -546,22 +549,22 @@ Resources:
       MethodResponses:
         - StatusCode: "200"
 
-  ApiGatewayMethodApiProxyAny:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: ANY
-      ResourceId: !Ref ApiGatewayResourceApiProxy
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        IntegrationResponses:
-          - StatusCode: "200"
-        PassthroughBehavior: WHEN_NO_MATCH
-      MethodResponses:
-        - StatusCode: "200"
+  # ApiGatewayMethodApiProxyAny:
+  #   Type: AWS::ApiGateway::Method
+  #   Properties:
+  #     AuthorizationType: NONE
+  #     HttpMethod: ANY
+  #     ResourceId: !Ref ApiGatewayResourceApiProxy
+  #     RestApiId: !Ref ApiGatewayRestApi
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+  #       IntegrationResponses:
+  #         - StatusCode: "200"
+  #       PassthroughBehavior: WHEN_NO_MATCH
+  #     MethodResponses:
+  #       - StatusCode: "200"
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
