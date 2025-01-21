@@ -546,8 +546,6 @@ Resources:
           - BucketName: !Ref ApiGatewayS3Bucket
         IntegrationResponses:
           - StatusCode: 200
-            ResponseModels:
-              application/json: !Ref ApiGatewayResponseModel
             ResponseParameters:
               method.response.header.Content-Type: integration.response.header.Content-Type
               method.response.header.content-type: integration.response.header.content-type
@@ -559,6 +557,8 @@ Resources:
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: 200
+          ResponseModels:
+            application/json: !Ref ApiGatewayResponseModel
           ResponseParameters:
             method.response.header.Content-Type: true
             method.response.header.content-type: true
