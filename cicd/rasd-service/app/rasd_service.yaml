@@ -478,25 +478,40 @@ Resources:
           - REGIONAL
       Name: !Sub ${AWS::StackName}-RestApi
 
+  GatewayEmptyResponseModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ContentType: application/json
+      Description: Empty response model
+      Name: EmptyResponse
+      Schema:
+        type: object
+        properties: {}
+
   GatewayResponseMissingAuth:
     Type: AWS::ApiGateway::GatewayResponse
     Properties:
       ResponseParameters: {}
       ResponseTemplates:
-        application/json: '{"message": "404 Not found" }'
+        application/json: "{}"
       ResponseType: MISSING_AUTHENTICATION_TOKEN
       RestApiId: !Ref ApiGatewayRestApi
       StatusCode: '404'
+      ResponseModels:
+        application/json: !Ref GatewayEmptyResponseModel
 
   GatewayResponseAccessDenied:
     Type: AWS::ApiGateway::GatewayResponse
     Properties:
       ResponseParameters: {}
       ResponseTemplates:
-        application/json: '{"message": "404 Not found" }'
+        application/json: "{}"
       ResponseType: ACCESS_DENIED
       RestApiId: !Ref ApiGatewayRestApi
       StatusCode: '404'
+      ResponseModels:
+        application/json: !Ref GatewayEmptyResponseModel
 
   ApiGatewayResourceApi:
     Type: AWS::ApiGateway::Resource

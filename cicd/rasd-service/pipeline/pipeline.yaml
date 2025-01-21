@@ -292,7 +292,11 @@ Resources:
                 EnvironmentVariables: !Sub |
                   [
                     { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" },
-                    { "name":"BUCKET_NAME", "value":"${pProductName}-${pProductComponent}-assets" }
+                    { "name":"BUCKET_NAME", "value":"${pProductName}-${pProductComponent}-assets" },
+                    { "name":"NODE_ENV", "value":"${pEnvironment}" },
+                    { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
+                    { "name":"MODE", "value":"${pEnvironment}" },
+                    { "name":"VITE_API_BASE_URL", "value":"#{ExportConfigNS.SUB_DOMAIN}.${ExportConfigNS.HOSTED_ZONE}/api/v1" }
                   ]
               InputArtifacts:
                 - Name: SourceArtifact
