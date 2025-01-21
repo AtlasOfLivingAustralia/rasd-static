@@ -478,13 +478,11 @@ Resources:
           - REGIONAL
       Name: !Sub ${AWS::StackName}-RestApi
 
-  GatewayEmptyResponseModel:
+  ApiGatewayResponseModel:
     Type: AWS::ApiGateway::Model
     Properties:
-      RestApiId: !Ref ApiGatewayRestApi
       ContentType: application/json
-      Description: Empty response model
-      Name: EmptyResponse
+      RestApiId: !Ref ApiGatewayRestApi
       Schema:
         type: object
         properties: {}
@@ -498,8 +496,6 @@ Resources:
       ResponseType: MISSING_AUTHENTICATION_TOKEN
       RestApiId: !Ref ApiGatewayRestApi
       StatusCode: '404'
-      ResponseModels:
-        application/json: !Ref GatewayEmptyResponseModel
 
   GatewayResponseAccessDenied:
     Type: AWS::ApiGateway::GatewayResponse
@@ -510,8 +506,6 @@ Resources:
       ResponseType: ACCESS_DENIED
       RestApiId: !Ref ApiGatewayRestApi
       StatusCode: '404'
-      ResponseModels:
-        application/json: !Ref GatewayEmptyResponseModel
 
   ApiGatewayResourceApi:
     Type: AWS::ApiGateway::Resource
@@ -552,6 +546,8 @@ Resources:
           - BucketName: !Ref ApiGatewayS3Bucket
         IntegrationResponses:
           - StatusCode: 200
+            ResponseModels:
+              application/json: !Ref ApiGatewayResponseModel
             ResponseParameters:
               method.response.header.Content-Type: integration.response.header.Content-Type
               method.response.header.content-type: integration.response.header.content-type
