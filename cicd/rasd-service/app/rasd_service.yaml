@@ -549,7 +549,6 @@ Resources:
             ResponseParameters:
               method.response.header.Content-Type: integration.response.header.Content-Type
               method.response.header.content-type: integration.response.header.content-type
-            SelectionPattern: default
           - StatusCode: 400
             SelectionPattern: 4\d{2}
           - StatusCode: 500
