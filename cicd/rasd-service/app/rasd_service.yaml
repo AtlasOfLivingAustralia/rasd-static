@@ -428,6 +428,14 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  ApiGatewayLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaBackendService.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*
+
   ApiGatewayCertificateRegional:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -525,7 +533,7 @@ Resources:
         IntegrationHttpMethod: GET
         Credentials: !GetAtt ApiGatewayS3Role.Arn
         Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/index.html
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${pCleanBranch}-static/index.html
           - BucketName: !Ref ApiGatewayS3Bucket
         IntegrationResponses:
           - StatusCode: 200
@@ -560,8 +568,8 @@ Resources:
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
-      MethodResponses:
-        - StatusCode: "200"
+      # MethodResponses:
+      #   - StatusCode: "200"
 
   ApiGatewayMethodApiProxyAny:
     Type: AWS::ApiGateway::Method
