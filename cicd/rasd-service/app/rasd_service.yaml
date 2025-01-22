@@ -238,10 +238,6 @@ Resources:
                 Action:
                   - ses:SendEmail
                 Effect: Allow
-              - Resource: '*'
-                Action:
-                  - 'lambda:InvokeFunction'
-                Effect: Allow
       RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
       Tags:
         - Key: Name
@@ -420,11 +416,12 @@ Resources:
           AWS_DYNAMODB_TABLE_METADATA: !Sub ${AWS::StackName}-Metadata
           AWS_DYNAMODB_TABLE_ORGANISATIONS: !Sub ${AWS::StackName}-Organisations
           AWS_DYNAMODB_TABLE_REGISTRATIONS: !Sub ${AWS::StackName}-Registrations
-          EMAIL_FROM_ADDRESS: no-reply@mail.${pSubDomain}.${pHostedZone}
-          EMAIL_ADMIN_INBOX: ${pEmailAdminInbox}
-          RASD_FRAMEWORK_URL: https://www.${pHostedZone}/framework
-          RASD_CREATE_PASSWORD_URL: https://${pSubDomain}.${pHostedZone}/#/create-password
-          RASD_SUPPORT_EMAIL: ${pRasdSupportEmail}
+          EMAIL_FROM_ADDRESS: !Sub no-reply@mail.${pSubDomain}.${pHostedZone}
+          EMAIL_ADMIN_INBOX: !Ref pEmailAdminInbox
+          RASD_FRAMEWORK_URL: !Sub https://www.${pHostedZone}/framework
+          RASD_CREATE_PASSWORD_URL: !Sub https://${pSubDomain}.${pHostedZone}/#/create-password
+          RASD_SUPPORT_EMAIL: !Ref pRasdSupportEmail
+          RASD_URL: !Sub https://${pSubDomain}.${pHostedZone}
       FunctionName: !Sub rasd-${pCleanBranch}-backend-api
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
