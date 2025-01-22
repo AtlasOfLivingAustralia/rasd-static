@@ -152,8 +152,20 @@ Resources:
             Principal:
               Service: apigateway.amazonaws.com
             Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub ${ApiGatewayS3Bucket.Arn}
+                  - !Sub ${ApiGatewayS3Bucket.Arn}/*
 
   IAMRoleiamRoleForLambda:
     Type: AWS::IAM::Role
