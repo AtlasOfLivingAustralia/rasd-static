@@ -549,9 +549,6 @@ Resources:
       Description: !Sub The ${pEnvironment} stage of the ${AWS::StackName} API
       RestApiId: !Ref ApiGatewayRestApi
       StageName: !Ref pEnvironment
-      Variables:
-        LambdaFunctionARN: !GetAtt LambdaBackendService.Arn
-        S3BucketName: !Ref ApiGatewayS3Bucket
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
