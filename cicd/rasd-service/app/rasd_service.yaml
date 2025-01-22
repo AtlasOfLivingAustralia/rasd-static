@@ -601,7 +601,8 @@ Resources:
       RestApiId: !Ref ApiGatewayRestApi
       Integration:
         Type: AWS
-        IntegrationHttpMethod: POST
+        Credentials: !GetAtt ApiGatewayS3Role.Arn
+        IntegrationHttpMethod: GET
         IntegrationResponses:
           - StatusCode: 200
             ResponseParameters:
@@ -613,7 +614,10 @@ Resources:
             SelectionPattern: 5\d{2}
         RequestParameters:
           integration.request.path.proxy: method.request.path.proxy
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${pCleanBranch}-static/{proxy}
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${CleanBranch}-static/{proxy}
+          - BucketName: !Ref ApiGatewayS3Bucket
+            CleanBranch: !Ref pCleanBranch
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: 200
