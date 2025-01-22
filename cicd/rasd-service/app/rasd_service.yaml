@@ -539,7 +539,6 @@ Resources:
       - ApiGatewayMethodRootProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
-      StageName: !Ref pEnvironment
 
   ApiGatewayStage:
     Type: AWS::ApiGateway::Stage
