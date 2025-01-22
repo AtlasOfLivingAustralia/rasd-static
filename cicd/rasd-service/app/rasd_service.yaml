@@ -481,7 +481,7 @@ Resources:
     Properties:
       DomainName: !Ref ApiGatewayCustomDomainName
       RestApiId: !Ref ApiGatewayRestApi
-      Stage: !Ref pEnvironment
+      Stage: !Ref ApiGatewayStage
 
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
