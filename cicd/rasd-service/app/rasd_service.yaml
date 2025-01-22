@@ -443,7 +443,15 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt LambdaBackendService.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/api/{proxy+}
+
+  ApiGatewayLambdaInvokePermission2:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaBackendService.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/api
 
   ApiGatewayCertificateRegional:
     Type: AWS::CertificateManager::Certificate
@@ -605,6 +613,7 @@ Resources:
             SelectionPattern: 5\d{2}
         RequestParameters:
           integration.request.path.proxy: method.request.path.proxy
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${pCleanBranch}-static/{proxy}
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: 200
