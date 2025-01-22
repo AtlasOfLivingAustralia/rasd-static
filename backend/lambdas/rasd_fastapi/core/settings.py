@@ -21,6 +21,7 @@ try:
     print("type of secrets from arn:", type(secrets))
     print(secrets.keys())
 except Exception as e:
+    secrests = {}
     print("Error retrieving secret in ARN:", e)
 
 class Settings(pydantic.BaseSettings):
