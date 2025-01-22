@@ -152,20 +152,8 @@ Resources:
             Principal:
               Service: apigateway.amazonaws.com
             Action: sts:AssumeRole
-      Policies:
-        - PolicyName: S3Access
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:GetObject
-                  - s3:PutObject
-                  - s3:DeleteObject
-                  - s3:ListBucket
-                Resource:
-                  - !Sub ${ApiGatewayS3Bucket.Arn}
-                  - !Sub ${ApiGatewayS3Bucket.Arn}/*
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
 
   IAMRoleiamRoleForLambda:
     Type: AWS::IAM::Role
@@ -548,9 +536,22 @@ Resources:
       - ApiRootMethod
       - ApiGatewayMethodApiAny
       - ApiGatewayMethodApiProxyAny
+      - ApiGatewayMethodRootProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: !Ref pEnvironment
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      CacheClusterEnabled: false
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: !Sub The ${pEnvironment} stage of the ${AWS::StackName} API
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: !Ref pEnvironment
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   ApiRootMethod:
     Type: AWS::ApiGateway::Method
@@ -638,8 +639,6 @@ Resources:
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
-      # MethodResponses:
-      #   - StatusCode: "200"
 
   ApiGatewayMethodApiProxyAny:
     Type: AWS::ApiGateway::Method
@@ -654,11 +653,7 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        # IntegrationResponses:
-        #   - StatusCode: "200"
         PassthroughBehavior: WHEN_NO_MATCH
-      # MethodResponses:
-      #   - StatusCode: "200"
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
