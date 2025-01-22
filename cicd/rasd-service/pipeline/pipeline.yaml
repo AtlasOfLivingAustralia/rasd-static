@@ -81,26 +81,26 @@ Resources:
         Type: CODEPIPELINE
         BuildSpec: !Sub cicd/${pProductComponent}/pipeline/export_config_buildspec.yaml
       TimeoutInMinutes: 5
-  # EmptyBucket:
-  #   Type: AWS::CodeBuild::Project
-  #   Properties:
-  #     Name: !Sub
-  #       - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
-  #       - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
-  #     Description: Empty the source s3 bucket before updating
-  #     ServiceRole:
-  #       Fn::ImportValue:
-  #         Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
-  #     Artifacts:
-  #       Type: CODEPIPELINE
-  #     Environment:
-  #       Type: LINUX_CONTAINER
-  #       ComputeType: BUILD_GENERAL1_SMALL
-  #       Image: aws/codebuild/standard:7.0
-  #     Source:
-  #       Type: CODEPIPELINE
-  #       BuildSpec: !Sub cicd/${pProductComponent}/pipeline/empty_bucket_buildspec.yaml
-  #     TimeoutInMinutes: 5
+  EmptyBucket:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Sub
+        - "${pProductName}-${pProductComponent}-empty-bucket-${ResourceName}"
+        - ResourceName: !If [ IsDev, !Ref pCleanBranch, !Ref pEnvironment ]
+      Description: Empty the source s3 bucket before updating
+      ServiceRole:
+        Fn::ImportValue:
+          Fn::Sub: ${pBootstrapStackName}-CodeBuildServiceRoleArn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub cicd/${pProductComponent}/pipeline/empty_bucket_buildspec.yaml
+      TimeoutInMinutes: 5
   DeployNotification:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -248,19 +248,23 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
-            # - Name: BuildBackend
-            #   ActionTypeId:
-            #     Category: Build
-            #     Owner: AWS
-            #     Provider: CodeBuild
-            #     Version: 1
-            #   Configuration:
-            #     ProjectName: !Ref BuildBackend
-            #   InputArtifacts:
-            #     - Name: SourceArtifact
-            #   OutputArtifacts:
-            #     - Name: BuildBackendArtifact
-            #   RunOrder: 3
+            - Name: EmptyBucketPreDeploy
+              ActionTypeId:
+                Owner: AWS
+                Category: Build
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref EmptyBucket
+                EnvironmentVariables: |
+                  [
+                    { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
+                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
+                  ]
+              Namespace: EmptyBucketPreDeployNS
+              InputArtifacts:
+                - Name: SourceArtifact
+              RunOrder: 2
             - Name: DeployCfStack
               ActionTypeId:
                 Owner: AWS
@@ -280,7 +284,7 @@ Resources:
                 - Name: 'ExportConfigArtifact'
               Namespace: ServiceCloudFormationOutNS
               OutputArtifacts: []
-              RunOrder: 2
+              RunOrder: 3
             - Name: BuildFrontend
               ActionTypeId:
                 Category: Build
@@ -302,7 +306,7 @@ Resources:
                 - Name: SourceArtifact
               OutputArtifacts:
                 - Name: BuildFrontendArtifact
-              RunOrder: 3
+              RunOrder: 4
         - Name: Deploy
           Actions:
             - Name: DeployNotification
