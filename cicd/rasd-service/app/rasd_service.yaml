@@ -8,6 +8,9 @@ Parameters:
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
+  pEmailAdminInbox:
+    Type: String
+    Description: The email address of the admin inbox
   pCleanBranch:
     Type: String
     Description: A cleaned version of the code branch name
@@ -24,6 +27,9 @@ Parameters:
   pProductName:
     Type: String
     Description: The name of the product
+  pRasdSupportEmail:
+    Type: String
+    Description: The support email address for the RASD service
   pSecretKeyName:
     Type: String
     Description: The secret name for rasd service
@@ -414,8 +420,11 @@ Resources:
           AWS_DYNAMODB_TABLE_METADATA: !Sub ${AWS::StackName}-Metadata
           AWS_DYNAMODB_TABLE_ORGANISATIONS: !Sub ${AWS::StackName}-Organisations
           AWS_DYNAMODB_TABLE_REGISTRATIONS: !Sub ${AWS::StackName}-Registrations
-            # EMAIL_FROM_ADDRESS: ${emailFromAlias}@${ses_MailFrom.mailFromDomain}
-            # EMAIL_ADMIN_INBOX: ${varEmailAdminInbox}
+          EMAIL_FROM_ADDRESS: no-reply@mail.${pSubDomain}.${pHostedZone}
+          EMAIL_ADMIN_INBOX: ${pEmailAdminInbox}
+          RASD_FRAMEWORK_URL: https://www.${pHostedZone}/framework
+          RASD_CREATE_PASSWORD_URL: https://${pSubDomain}.${pHostedZone}/#/create-password
+          RASD_SUPPORT_EMAIL: ${pRasdSupportEmail}
       FunctionName: !Sub rasd-${pCleanBranch}-backend-api
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
@@ -514,6 +523,13 @@ Resources:
       PathPart: "api"
       RestApiId: !Ref ApiGatewayRestApi
 
+  ApiGatewayResourceRootProxy:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: "{proxy+}"
+      RestApiId: !Ref ApiGatewayRestApi
+
   ApiGatewayResourceApiProxy:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -566,6 +582,41 @@ Resources:
       ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
       RestApiId: !Ref ApiGatewayRestApi
 
+  ApiGatewayMethodRootProxyAny:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: ANY
+      RequestParameters:
+        method.request.path.proxy: true
+      ResourceId: !Ref ApiGatewayResourceRootProxy
+      RestApiId: !Ref ApiGatewayRestApi
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: integration.response.header.Content-Type
+              method.response.header.content-type: integration.response.header.content-type
+          - StatusCode: 400
+            SelectionPattern: 4\d{2}
+          - StatusCode: 500
+            SelectionPattern: 5\d{2}
+        RequestParameters:
+          integration.request.path.proxy: method.request.path.proxy
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
+        PassthroughBehavior: WHEN_NO_MATCH
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: !Ref ApiGatewayResponseModel
+          ResponseParameters:
+            method.response.header.Content-Type: true
+            method.response.header.content-type: true
+        - StatusCode: 400
+        - StatusCode: 500
+
   ApiGatewayMethodApiAny:
     Type: AWS::ApiGateway::Method
     Properties:
@@ -586,6 +637,8 @@ Resources:
     Properties:
       AuthorizationType: NONE
       HttpMethod: ANY
+      RequestParameters:
+        method.request.path.proxy: false
       ResourceId: !Ref ApiGatewayResourceApiProxy
       RestApiId: !Ref ApiGatewayRestApi
       Integration:
