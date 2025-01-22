@@ -5,6 +5,9 @@ Parameters:
   pArtifactsBucket:
     Type: String
     Description: The S3 artifact bucket path
+  pCodeBuildNumber:
+    Type: String
+    Description: The code build number, used for updating ApiGateway Deployment
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
@@ -551,7 +554,7 @@ Resources:
       - ApiGatewayMethodRootProxyAny
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
-      Description: !Sub "Deployment for ${AWS::StackName} at ${AWS::Timestamp}"
+      Description: !Sub Deployment for ${AWS::StackName} in build ${pCodeBuildNumber}
 
   ApiGatewayStage:
     Type: AWS::ApiGateway::Stage
