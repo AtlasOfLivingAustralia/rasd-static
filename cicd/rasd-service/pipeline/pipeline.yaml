@@ -256,7 +256,7 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: |
+                EnvironmentVariables: !Sub |
                   [
                     { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
                     { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
