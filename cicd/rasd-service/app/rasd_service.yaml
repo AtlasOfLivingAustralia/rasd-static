@@ -605,7 +605,6 @@ Resources:
             SelectionPattern: 5\d{2}
         RequestParameters:
           integration.request.path.proxy: method.request.path.proxy
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
         - StatusCode: 200
