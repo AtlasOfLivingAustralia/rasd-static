@@ -48,6 +48,13 @@ import testingJson from './../../testing.json';
 import productionJson from './../../production.json';
 
 let config = testingJson;
+
+const defaultConfig = {
+  rasd_UI_framework_url: 'https://rasd.org.au',
+  termsOfUseUrl: 'https://service.rasd.org.au/#/terms-of-use',
+  privacyPolicyUrl: 'https://service.rasd.org.au/#/privacy-notice',
+};
+
 export default {
   created() {
     const currentDomain = window.location.hostname;
@@ -58,12 +65,19 @@ export default {
       this.jsonData = productionJson;
     } else {
       console.warn('Unknown domain:', currentDomain);
+      const frameworkUrl = currentDomain.includes('service.') ? currentDomain.replace('service.', '') : 'rasd.org.au';
+      this.jsonData = {
+        rasd_UI_framework_url: `https://${frameworkUrl}`,
+        termsOfUseUrl: `https://${currentDomain}/#/terms-of-use`,
+        privacyPolicyUrl: `https://${currentDomain}/#/privacy-notice`,
+      };
     }
     // Access the JSON data
     if (this.jsonData) {
       console.log('JSON Data:', this.jsonData);
     } else {
       console.warn('No JSON data found');
+      this.jsonData = defaultConfig;
     }
     console.log('rasd_UI_framework_url:', this.jsonData.rasd_UI_framework_url);
     if (null != config && config !== this.jsonData) {
@@ -72,7 +86,7 @@ export default {
   },
   data() {
     return {
-      rasd_UI_framework_url: config.rasd_UI_framework_url,
+      rasd_UI_framework_url: config.rasd_UI_framework_url || 'https://rasd.org.au',
     };
   },
 };
