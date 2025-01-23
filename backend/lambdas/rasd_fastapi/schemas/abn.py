@@ -31,4 +31,3 @@ class AbnLookup(pydantic.BaseModel):
     EntityTypeName: str
     Gst: Optional[str]
     Message: str
-    Email: pydantic.EmailStr
