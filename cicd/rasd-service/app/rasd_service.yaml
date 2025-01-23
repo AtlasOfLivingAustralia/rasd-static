@@ -670,9 +670,56 @@ Resources:
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
 
+  # RasdHostedZone:
+  #   Type: AWS::Route53::HostedZone
+  #   Properties:
+  #     HostedZoneConfig: HostedZoneConfig
+  #     HostedZoneTags:
+  #       - HostedZoneTag
+  #     Name: String
+  #     QueryLoggingConfig: QueryLoggingConfig
+  #     VPCs:
+  #       - VPC
+  # HostedZoneID: !Ref RasdHostedZone
+
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
     Properties:
+      DkimAttributes:
+        SigningEnabled: true
+      DkimSigningAttributes:
+        NextSigningKeyLength: RSA_2048_BIT
       EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
       MailFromAttributes:
         MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
+  # dkimTokens: [!GetAtt SESDomainIdentity.DkimDNSTokenName1, !GetAtt SESDomainIdentity.DkimDNSTokenName2, !GetAtt SESDomainIdentity.DkimDNSTokenName3]
+
+  DKIMRecord1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName1
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue1
+
+  DKIMRecord2:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName2
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue2
+
+  DKIMRecord3:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName3
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue3
