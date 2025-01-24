@@ -277,7 +277,7 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: !If [ NotDev, true, false ]
+      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
       # UsernameConfiguration:
       # CaseSensitive: false
       UserPoolName: !Sub ${AWS::StackName}-users
