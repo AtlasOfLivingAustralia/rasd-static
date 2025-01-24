@@ -411,15 +411,15 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  BuildCodeLogGroup:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Delete
-    Properties:
-      LogGroupName: !Sub /aws/codebuild/${BuildCode}
-      RetentionInDays: 30
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+  # BuildCodeLogGroup:
+  #   Type: AWS::Logs::LogGroup
+  #   DeletionPolicy: Delete
+  #   Properties:
+  #     LogGroupName: !Sub /aws/codebuild/${BuildCode}
+  #     RetentionInDays: 30
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
 
   EmptyBucketLogGroup:
     Type: AWS::Logs::LogGroup
