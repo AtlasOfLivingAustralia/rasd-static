@@ -280,7 +280,7 @@ Resources:
       DeletionProtection: !If [ NotDev, true, false ]
       UsernameConfiguration:
         CaseSensitive: false
-      UserPoolName: !Sub ${AWS::StackName}-UserPool
+      UserPoolName: !Sub ${AWS::StackName}-users
       # EmailVerificationMessage: Please click the link below to verify your email address.
       # EmailVerificationSubject: Your verification link of RASD
       Policies:
