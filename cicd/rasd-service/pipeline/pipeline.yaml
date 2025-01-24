@@ -348,23 +348,23 @@ Resources:
               Configuration:
                 CustomData: Approval required to tear down this stack
               RunOrder: 1
-            # - Name: EmptyBucketForTeardown
-            #   ActionTypeId:
-            #     Owner: AWS
-            #     Category: Build
-            #     Version: 1
-            #     Provider: CodeBuild
-            #   Configuration:
-            #     ProjectName: !Ref EmptyBucket
-            #     EnvironmentVariables: |
-            #       [
-            #         { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.SOURCE_BUCKET}" },
-            #         { "name":"BUCKET_PATH", "value":"#{ExportConfigNS.BUCKET_PATH}" }
-            #       ]
-            #   Namespace: EmptyBucketForTeardownNS
-            #   InputArtifacts:
-            #     - Name: 'SourceArtifact'
-            #   RunOrder: 2
+            - Name: EmptyBucketForTeardown
+              ActionTypeId:
+                Owner: AWS
+                Category: Build
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName: !Ref EmptyBucket
+                EnvironmentVariables: |
+                  [
+                    { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
+                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
+                  ]
+              Namespace: EmptyBucketForTeardownNS
+              InputArtifacts:
+                - Name: 'SourceArtifact'
+              RunOrder: 2
             - Name: TeardownAppStack
               ActionTypeId:
                 Owner: AWS
@@ -377,7 +377,7 @@ Resources:
                 RoleArn:
                   Fn::ImportValue:
                     Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
-              RunOrder: 2
+              RunOrder: 3
             - Name: ApprovalForPipelineTeardown
               ActionTypeId:
                 Owner: AWS
@@ -386,7 +386,7 @@ Resources:
                 Provider: Manual
               Configuration:
                 CustomData: Approval required to tear down this stack
-              RunOrder: 3
+              RunOrder: 4
             - Name: TeardownCodePipeline
               ActionTypeId:
                 Owner: AWS
@@ -399,7 +399,7 @@ Resources:
                 RoleArn:
                   Fn::ImportValue:
                     Fn::Sub: '${pBootstrapStackName}-CloudFormationServiceRoleArn'
-              RunOrder: 4
+              RunOrder: 5
 
   CodeBuildLogGroup:
     Type: AWS::Logs::LogGroup
@@ -411,25 +411,25 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  # BuildCodeLogGroup:
-  #   Type: AWS::Logs::LogGroup
-  #   DeletionPolicy: Delete
-  #   Properties:
-  #     LogGroupName: !Sub /aws/codebuild/${BuildCode}
-  #     RetentionInDays: 30
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Ref AWS::StackName
+  BuildCodeLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/codebuild/${BuildCode}
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
-  # EmptyBucketLogGroup:
-  #   Type: AWS::Logs::LogGroup
-  #   DeletionPolicy: Delete
-  #   Properties:
-  #     LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
-  #     RetentionInDays: 30
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Ref AWS::StackName
+  EmptyBucketLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   DeployNotificationCodeBuildLogGroup:
     Type: AWS::Logs::LogGroup
