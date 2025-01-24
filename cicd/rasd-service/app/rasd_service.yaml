@@ -271,15 +271,15 @@ Resources:
   CognitoPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      # AliasAttributes:
-      # - email
+      AliasAttributes:
+        - email
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
       DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
-      # UsernameConfiguration:
-      # CaseSensitive: false
+      UsernameConfiguration:
+        CaseSensitive: false
       UserPoolName: !Sub ${AWS::StackName}-users
       # EmailVerificationMessage: Please click the link below to verify your email address.
       # EmailVerificationSubject: Your verification link of RASD
