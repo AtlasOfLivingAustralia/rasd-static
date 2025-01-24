@@ -356,7 +356,7 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: |
+                EnvironmentVariables: !Sub |
                   [
                     { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
                     { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
@@ -421,15 +421,15 @@ Resources:
   #       - Key: Name
   #         Value: !Ref AWS::StackName
 
-  EmptyBucketLogGroup:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Delete
-    Properties:
-      LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
-      RetentionInDays: 30
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+  # EmptyBucketLogGroup:
+  #   Type: AWS::Logs::LogGroup
+  #   DeletionPolicy: Delete
+  #   Properties:
+  #     LogGroupName: !Sub /aws/codebuild/${EmptyBucket}
+  #     RetentionInDays: 30
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Ref AWS::StackName
 
   DeployNotificationCodeBuildLogGroup:
     Type: AWS::Logs::LogGroup
