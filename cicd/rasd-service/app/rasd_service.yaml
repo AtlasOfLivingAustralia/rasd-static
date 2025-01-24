@@ -744,3 +744,4 @@ Resources:
       TTL: 600
       ResourceRecords:
         - v=spf1 include:amazonses.com ~all
+      Type: TXT
