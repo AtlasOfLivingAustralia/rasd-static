@@ -733,7 +733,7 @@ Resources:
       Name: !Sub mail.${pSubDomain}.${pHostedZone}
       TTL: 600
       ResourceRecords:
-        - !Sub 10 inbound-smtp.${AWS::Region}.amazonaws.com
+        - !Sub "10 inbound-smtp.${AWS::Region}.amazonaws.com"
       Type: MX
 
   TXTRecord:
@@ -743,5 +743,5 @@ Resources:
       Name: !Sub ${pSubDomain}.${pHostedZone}
       TTL: 600
       ResourceRecords:
-        - v=spf1 include:amazonses.com ~all
+        - "v=spf1 include:amazonses.com ~all"
       Type: TXT
