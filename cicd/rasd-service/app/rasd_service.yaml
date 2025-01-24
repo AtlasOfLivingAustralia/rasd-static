@@ -271,12 +271,15 @@ Resources:
   CognitoPool:
     Type: AWS::Cognito::UserPool
     Properties:
+      AliasAttributes:
+        - email
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      # AutoVerifiedAttributes:
-      #   - email
+      DeletionProtection: !If [ NotDev, true, false ]
+      UsernameConfiguration:
+        CaseSensitive: false
       UserPoolName: !Sub ${AWS::StackName}-UserPool
       # EmailVerificationMessage: Please click the link below to verify your email address.
       # EmailVerificationSubject: Your verification link of RASD
@@ -692,7 +695,6 @@ Resources:
       EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
       MailFromAttributes:
         MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
-  # dkimTokens: [!GetAtt SESDomainIdentity.DkimDNSTokenName1, !GetAtt SESDomainIdentity.DkimDNSTokenName2, !GetAtt SESDomainIdentity.DkimDNSTokenName3]
 
   DKIMRecord1:
     Type: AWS::Route53::RecordSet
@@ -723,3 +725,22 @@ Resources:
       TTL: 600
       ResourceRecords:
         - !GetAtt SESDomainIdentity.DkimDNSTokenValue3
+
+  MXRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub mail.${pSubDomain}.${pHostedZone}
+      TTL: 600
+      ResourceRecords:
+        - !Sub 10 inbound-smtp.${AWS::Region}.amazonaws.com
+      Type: MX
+
+  TXTRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub ${pSubDomain}.${pHostedZone}
+      TTL: 600
+      ResourceRecords:
+        - v=spf1 include:amazonses.com ~all
