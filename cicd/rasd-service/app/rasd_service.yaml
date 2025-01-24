@@ -743,5 +743,5 @@ Resources:
       Name: !Sub ${pSubDomain}.${pHostedZone}
       TTL: 600
       ResourceRecords:
-        - "v=spf1 include:amazonses.com ~all"
+        - "\"v=spf1 include:amazonses.com ~all\""
       Type: TXT
