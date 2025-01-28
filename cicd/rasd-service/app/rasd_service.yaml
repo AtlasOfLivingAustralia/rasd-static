@@ -2,6 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: The RASD service stack
 
 Parameters:
+  pAppStackName:
+    Type: String
+    Description: The name of the app stack, which is used for bucket name
   pArtifactsBucket:
     Type: String
     Description: The S3 artifact bucket path
@@ -132,15 +135,12 @@ Resources:
   ApiGatewayS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub ${pProductName}-${pProductComponent}-assets
+      BucketName: !Ref pAppStackName
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
-        # WebsiteConfiguration:
-        # IndexDocument: index.html
-        # ErrorDocument: error.html
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -583,7 +583,7 @@ Resources:
         IntegrationHttpMethod: GET
         Credentials: !GetAtt ApiGatewayS3Role.Arn
         Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${pCleanBranch}-static/index.html
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/index.html
           - BucketName: !Ref ApiGatewayS3Bucket
         IntegrationResponses:
           - StatusCode: 200
@@ -673,18 +673,6 @@ Resources:
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
-
-  # RasdHostedZone:
-  #   Type: AWS::Route53::HostedZone
-  #   Properties:
-  #     HostedZoneConfig: HostedZoneConfig
-  #     HostedZoneTags:
-  #       - HostedZoneTag
-  #     Name: String
-  #     QueryLoggingConfig: QueryLoggingConfig
-  #     VPCs:
-  #       - VPC
-  # HostedZoneID: !Ref RasdHostedZone
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity

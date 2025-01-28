@@ -1,8 +1,7 @@
 version: 0.2
 ###
-# Deletes all objects from the source bucket, this needs to be done 
-# before publish so that old files are removed and before the teardown action
-# so the bucket can be removed
+# Deletes all objects from the rasd service bucket, this needs to be done 
+# before the teardown action so the bucket can be removed
 
 env:
   shell: bash
@@ -10,12 +9,5 @@ env:
 phases:
   build:
     commands:
-      - echo source bucket is $SOURCE_BUCKET/$BUCKET_PATH
-      - |
-        if aws s3 ls s3://$SOURCE_BUCKET/$BUCKET_PATH > /dev/null 2>&1; then
-            echo "Path exists in the bucket. Proceeding to delete contents."
-            aws s3 rm s3://$SOURCE_BUCKET/$BUCKET_PATH --recursive
-            echo "Path contents deleted successfully."
-        else
-            echo "Path does not exist in the bucket. Skipping deletion."
-        fi
+      - echo emptying bucket $BACKUP_BUCKET
+      - aws s3 rm s3://$BACKUP_BUCKET --recursive

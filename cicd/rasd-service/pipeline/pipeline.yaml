@@ -248,23 +248,6 @@ Resources:
               OutputArtifacts:
                 - Name: ExportConfigArtifact
               RunOrder: 1
-            - Name: EmptyBucketPreDeploy
-              ActionTypeId:
-                Owner: AWS
-                Category: Build
-                Version: 1
-                Provider: CodeBuild
-              Configuration:
-                ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: !Sub |
-                  [
-                    { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
-                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
-                  ]
-              Namespace: EmptyBucketPreDeployNS
-              InputArtifacts:
-                - Name: SourceArtifact
-              RunOrder: 2
             - Name: DeployCfStack
               ActionTypeId:
                 Owner: AWS
@@ -284,7 +267,7 @@ Resources:
                 - Name: 'ExportConfigArtifact'
               Namespace: ServiceCloudFormationOutNS
               OutputArtifacts: []
-              RunOrder: 3
+              RunOrder: 2
             - Name: BuildFrontend
               ActionTypeId:
                 Category: Build
@@ -295,8 +278,7 @@ Resources:
                 ProjectName: !Ref LintBuildFrontend
                 EnvironmentVariables: !Sub |
                   [
-                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" },
-                    { "name":"BUCKET_NAME", "value":"${pProductName}-${pProductComponent}-assets" },
+                    { "name":"BUCKET_NAME", "value":"#{ExportConfigNS.APP_STACK_NAME}" },
                     { "name":"NODE_ENV", "value":"${pEnvironment}" },
                     { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
                     { "name":"MODE", "value":"${pEnvironment}" },
@@ -306,7 +288,7 @@ Resources:
                 - Name: SourceArtifact
               OutputArtifacts:
                 - Name: BuildFrontendArtifact
-              RunOrder: 4
+              RunOrder: 3
         - Name: Deploy
           Actions:
             - Name: DeployNotification
@@ -356,10 +338,9 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref EmptyBucket
-                EnvironmentVariables: !Sub |
+                EnvironmentVariables: |
                   [
-                    { "name":"SOURCE_BUCKET", "value":"${pProductName}-${pProductComponent}-assets" },
-                    { "name":"BUCKET_PATH", "value":"${pCleanBranch}-static" }
+                    { "name":"SOURCE_BUCKET", "value":"#{ExportConfigNS.APP_STACK_NAME}" }
                   ]
               Namespace: EmptyBucketForTeardownNS
               InputArtifacts:
