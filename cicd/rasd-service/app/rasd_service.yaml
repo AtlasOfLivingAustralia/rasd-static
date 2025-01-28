@@ -270,14 +270,15 @@ Resources:
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
+    DeletionPolicy: !If [ NotDev, Retain, Delete ]
     Properties:
-      AliasAttributes:
-        - email
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
       DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
+      UsernameAttributes:
+        - email
       UsernameConfiguration:
         CaseSensitive: false
       UserPoolName: !Sub ${AWS::StackName}-users
@@ -733,7 +734,7 @@ Resources:
       Name: !Sub mail.${pSubDomain}.${pHostedZone}
       TTL: 600
       ResourceRecords:
-        - !Sub "10 inbound-smtp.${AWS::Region}.amazonaws.com"
+        - !Sub "10 feedback-smtp.ap-southeast-2.amazonses.com"
       Type: MX
 
   TXTRecord:
