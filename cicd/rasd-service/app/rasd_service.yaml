@@ -632,7 +632,7 @@ Resources:
         RequestParameters:
           integration.request.path.proxy: method.request.path.proxy
         Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${CleanBranch}-static/{proxy}
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/{proxy}
           - BucketName: !Ref ApiGatewayS3Bucket
             CleanBranch: !Ref pCleanBranch
         PassthroughBehavior: WHEN_NO_MATCH
