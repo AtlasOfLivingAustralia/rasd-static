@@ -92,12 +92,7 @@
       </div>
       <div class="field is-flex">
         <o-checkbox v-model="termsCheckbox"></o-checkbox>
-        <p class="is-inline-block pt-5">
-          * When registering as a Data Custodian or Data Requestor with the RASDS, you agree to adhere to these
-          <a :href="termsOfUseUrl">Terms of Use</a>. Any personal information that you provide will be used for the
-          purpose of establishing your account with and facilitating data access via the RASDS, and will be handled in
-          accordance with the <a :href="privacyPolicyUrl">RASDS Privacy Notice</a>.
-        </p>
+        <p>{{ registerTerms }}</p>
       </div>
       <div class="field is-grouped buttons is-pulled-right">
         <o-button
@@ -119,10 +114,6 @@ import { useProgrammatic } from '@oruga-ui/oruga-next';
 import { abnValidator, emailValidator, nameValidator } from '@/helpers/helpers';
 import PageHeadingWithDescription from '@/components/PageHeadingWithDescription.vue';
 import isEmail from 'validator/es/lib/isEmail';
-import testingJson from './../../testing.json';
-import productionJson from './../../production.json';
-
-let config = testingJson;
 
 export default {
   name: 'DataCustodianRegisterView',
@@ -133,26 +124,6 @@ export default {
   beforeMount() {
     this.getOptions();
   },
-  created() {
-    const currentDomain = window.location.hostname;
-    // Determine the appropriate JSON file based on the domain
-    if (currentDomain === 'service.testing.rasd.org.au' || currentDomain === 'localhost') {
-      this.jsonData = testingJson;
-    } else if (currentDomain === 'service.rasd.org.au') {
-      this.jsonData = productionJson;
-    } else {
-      console.warn('Unknown domain:', currentDomain);
-    }
-    // Access the JSON data
-    if (this.jsonData) {
-      console.log('JSON Data:', this.jsonData);
-    } else {
-      console.warn('No JSON data found');
-    }
-    if (null != config && config !== this.jsonData) {
-      config = this.jsonData;
-    }
-  },
   data() {
     return {
       firstName: '',
@@ -160,8 +131,6 @@ export default {
         nameClasses: '',
         nameMessage: '',
       },
-      termsOfUseUrl: config.termsOfUseUrl,
-      privacyPolicyUrl: config.privacyPolicyUrl,
       lastName: '',
       lastNameValidation: {
         nameClasses: '',
@@ -177,7 +146,6 @@ export default {
       organisationLookup: null,
       organisationOptions: [],
       selectedOrg: null,
-      org: null,
       abn: '',
       lookupABN: '',
       lookupABNValidation: {
@@ -191,14 +159,16 @@ export default {
         emailClasses: '',
         emailMessage: '',
       },
-      filteredOrganisationsObj: this.filteredOrganisationsObj,
+      filteredOrganisationsObj: [],
       referenceCheckbox: false,
       policyCheckbox: false,
-      termsCheckbox: this.termsCheckbox,
+      termsCheckbox: false,
       orgSelected: false,
       registerReference: '* You can refer to a public website showing you are a legitimate custodian.',
       registerPolicy:
         '* Your organisation has a publicly accessible RASD policy that is compliant with the RASD framework.',
+      registerTerms:
+        '* When registering as a Data Custodian or Data Requestor with the RASDS, you agree to adhere to these Terms of Use. Any personal information that you provide will be used for the purpose of establishing your account with and facilitating data access via the RASDS, and will be handled in accordance with the RASDS Privacy Notice.',
       loading: false,
     };
   },
@@ -262,6 +232,7 @@ export default {
     },
     async abnLookup() {
       const { oruga } = useProgrammatic();
+      this.organisationEmail = '';
       this.orgSelected = false;
       this.organisationLookup = await lookupABNAPI(this.lookupABN);
       if (this.organisationLookup?.AbnStatus === 'Active') {
@@ -285,46 +256,24 @@ export default {
       }
     },
     selectOrg(option) {
-      if (option == null) {
-        const existingOrg = lookupABNAPI(this.organisationABN);
-        if (existingOrg == null) {
-          this.orgSelected = true;
-        }
-      } else {
-        this.selectedOrg = option;
-        this.org = this.selectedOrg?.id;
+      this.selectedOrg = option;
+      if (!this.organisationLookup) {
         this.orgSelected = true;
       }
-      if (!this.organisationLookup) {
-        this.org = this.selectedOrg?.id;
-      }
     },
-
     async registerUser() {
       const { oruga } = useProgrammatic();
-
-      if (this.org == null) {
-        this.org = this.selectedOrg?.id || {
-          name: this.organisationName,
-          abn: this.organisationABN,
-          email: this.organisationEmail,
-        };
-      }
-
+      const org = this.selectedOrg?.id || {
+        name: this.organisationName,
+        abn: this.organisationABN,
+        email: this.organisationEmail,
+      };
       const agreements =
         this.role === 'DataCustodians'
-          ? [this.registerReference, this.registerPolicy, this.termsCheckbox]
-          : [this.termsCheckbox];
-
+          ? [this.registerReference, this.registerPolicy, this.registerTerms]
+          : [this.registerTerms];
       this.loading = true;
-      this.notification = await registerAPI(
-        this.workEmail,
-        this.firstName,
-        this.lastName,
-        this.role,
-        this.org,
-        agreements
-      );
+      this.notification = await registerAPI(this.workEmail, this.firstName, this.lastName, this.role, org, agreements);
       this.loading = false;
       oruga.notification.open({
         message: this.notification[0],
