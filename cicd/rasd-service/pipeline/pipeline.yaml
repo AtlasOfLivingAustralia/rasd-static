@@ -265,7 +265,7 @@ Resources:
                 StackName: '#{ExportConfigNS.APP_STACK_NAME}'
               InputArtifacts:
                 - Name: 'ExportConfigArtifact'
-              Namespace: ServiceCloudFormationOutNS
+              Namespace: CloudFormationOutNS
               OutputArtifacts: []
               RunOrder: 2
             - Name: BuildFrontend
@@ -279,9 +279,9 @@ Resources:
                 EnvironmentVariables: !Sub |
                   [
                     { "name":"BUCKET_NAME", "value":"#{ExportConfigNS.APP_STACK_NAME}" },
-                    { "name":"NODE_ENV", "value":"${pEnvironment}" },
                     { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
-                    { "name":"MODE", "value":"${pEnvironment}" },
+                    { "name":"REST_API_ID", "value":"#{CloudFormationOutNS.REST_API_ID}" },
+                    { "name":"ROOT_API_URL", "value":"#{CloudFormationOutNS.ROOT_API_URL}" },
                     { "name":"VITE_API_BASE_URL", "value":"https://#{ExportConfigNS.SUB_DOMAIN}.#{ExportConfigNS.HOSTED_ZONE}/api/v1" }
                   ]
               InputArtifacts:

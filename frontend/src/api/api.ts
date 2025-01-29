@@ -608,28 +608,31 @@ export const registerAPI = async function register(
   organisation: string | object,
   agreements: string[]
 ) {
-  let message: (string | boolean)[] = [];
-
-  const postData = {
-    username: username,
-    given_name: given_name,
-    family_name: family_name,
-    group: group,
-    organisation: organisation,
-    agreements: agreements,
-  };
-
-  try {
-    const response = await axios.post('/register', postData, {
-      headers: {
-        'Content-Type': 'application/json',
+  let message: (string | boolean)[];
+  await axios
+    .post(
+      '/register',
+      {
+        username: username,
+        given_name: given_name,
+        family_name: family_name,
+        group: group,
+        organisation: organisation,
+        agreements: agreements,
       },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    .then(() => {
+      message = ['Your registration request has been received! The RASD team will be in touch.', true];
+    })
+    .catch(() => {
+      message = ['There has been a problem sending your registration request.', false];
     });
-    // Handle the response as needed
-    message = ['Your registration request has been received! The RASD team will be in touch.', true];
-  } catch (e) {
-    message = [e.response.data.detail, false];
-  }
+  // @ts-ignore
   return message;
 };
 

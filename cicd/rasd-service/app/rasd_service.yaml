@@ -640,7 +640,7 @@ Resources:
         RequestParameters:
           integration.request.path.proxy: method.request.path.proxy
         Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/${CleanBranch}-static/{proxy}
+          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/{proxy}
           - BucketName: !Ref ApiGatewayS3Bucket
         PassthroughBehavior: WHEN_NO_MATCH
       MethodResponses:
@@ -741,3 +741,11 @@ Resources:
       ResourceRecords:
         - "\"v=spf1 include:amazonses.com ~all\""
       Type: TXT
+
+Outputs:
+  REST_API_ID:
+    Description: The ID of the REST API
+    Value: !Ref ApiGatewayRestApi
+  ROOT_API_URL:
+    Description: The URL of the API
+    Value: !Ref ApiGatewayCustomDomainName

@@ -12,7 +12,15 @@ echo "$0: Start of script."
 
 unset fail
 err=0
-root_url=$(pulumi stack output deployURLBackend)
+# Check if root_url is passed as an argument
+if [[ -z "$1" ]]; then
+    echo "❌ Error: root_url is required as an argument."
+    echo "Usage: $0 <root_url>"
+    exit 1
+fi
+
+# Set root_url from the first argument
+root_url=$1
 api_suffix="/v1/"
 
 # Unfortunately, apparently Macs don't come with Bash 4 which is the minimum to support hash tables (dictionaries)
