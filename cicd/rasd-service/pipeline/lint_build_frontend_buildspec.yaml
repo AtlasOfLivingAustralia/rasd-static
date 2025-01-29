@@ -23,7 +23,7 @@ phases:
   build:
     commands:
       - pwd
-      - npm run build
+      - npm run build -- --mode production #  -- --mode $CI_COMMIT_BRANCH
   post_build:
     commands:
       - echo "Uploading files to S3 bucket ${BUCKET_NAME}..."

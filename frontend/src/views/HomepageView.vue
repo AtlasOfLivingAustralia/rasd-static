@@ -18,7 +18,7 @@
               the data.
               <span class="is-inline-block pt-5">
                 For more information about the framework see the
-                <a href="https://rasd.org.au/" class="has-text-white is-underlined"
+                <a :href="rasd_UI_framework_url" class="has-text-white is-underlined"
                   >Restricted Access Species Data Framework.</a
                 ></span
               >
@@ -27,11 +27,12 @@
                 <router-link to="about" class="has-text-white is-underlined">About page.</router-link></span
               >
             </p>
+
             <div class="column is-flex-grow-0 mx-auto mb-auto pr-6">
               <router-link to="search">
                 <button class="button is-secondary is-large px-6 py-6 is-hoverable">
                   Search
-                  <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="pl-3" />
+                  <font-awesome-icon class="pl-3" icon="fa-solid fa-magnifying-glass" />
                 </button>
               </router-link>
             </div>
@@ -41,6 +42,55 @@
     </div>
   </div>
 </template>
+
+<script>
+import testingJson from './../../testing.json';
+import productionJson from './../../production.json';
+
+let config = testingJson;
+
+const defaultConfig = {
+  rasd_UI_framework_url: 'https://rasd.org.au',
+  termsOfUseUrl: 'https://service.rasd.org.au/#/terms-of-use',
+  privacyPolicyUrl: 'https://service.rasd.org.au/#/privacy-notice',
+};
+
+export default {
+  created() {
+    const currentDomain = window.location.hostname;
+    // Determine the appropriate JSON file based on the domain
+    if (currentDomain === 'service.testing.rasd.org.au' || currentDomain === 'localhost') {
+      this.jsonData = testingJson;
+    } else if (currentDomain === 'service.rasd.org.au') {
+      this.jsonData = productionJson;
+    } else {
+      console.warn('Unknown domain:', currentDomain);
+      const frameworkUrl = currentDomain.includes('service.') ? currentDomain.replace('service.', '') : 'rasd.org.au';
+      this.jsonData = {
+        rasd_UI_framework_url: `https://${frameworkUrl}`,
+        termsOfUseUrl: `https://${currentDomain}/#/terms-of-use`,
+        privacyPolicyUrl: `https://${currentDomain}/#/privacy-notice`,
+      };
+    }
+    // Access the JSON data
+    if (this.jsonData) {
+      console.log('JSON Data:', this.jsonData);
+    } else {
+      console.warn('No JSON data found');
+      this.jsonData = defaultConfig;
+    }
+    console.log('rasd_UI_framework_url:', this.jsonData.rasd_UI_framework_url);
+    if (null != config && config !== this.jsonData) {
+      config = this.jsonData;
+    }
+  },
+  data() {
+    return {
+      rasd_UI_framework_url: config.rasd_UI_framework_url || 'https://rasd.org.au',
+    };
+  },
+};
+</script>
 
 <style scoped>
 #hero-description {
