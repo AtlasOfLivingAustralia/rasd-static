@@ -263,6 +263,9 @@ Resources:
 
   DNSBackend:
     Type: AWS::Route53::RecordSet
+    DependsOn:
+      - APIGatewayCustomDomainName
+      - ApiGatewayRestApi
     Properties:
       HostedZoneId: !Ref pHostedZoneId
       Name: !Sub ${pSubDomain}.${pHostedZone}
@@ -739,7 +742,7 @@ Resources:
       Name: !Sub ${pSubDomain}.${pHostedZone}
       TTL: 600
       ResourceRecords:
-        - "\"v=spf1 include:amazonses.com ~all\""
+        - "\"v=spf1 include:amazonses.com -all\""
       Type: TXT
 
 Outputs:
