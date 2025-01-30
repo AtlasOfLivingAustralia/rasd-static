@@ -483,7 +483,7 @@ Resources:
       DomainName: !Ref ApiGatewayCustomDomainName
       RestApiId: !Ref ApiGatewayRestApi
       Stage: !Ref ApiGatewayStage
-https://ap-southeast-2.console.aws.amazon.com/codesuite/home?region=ap-southeast-2
+
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
