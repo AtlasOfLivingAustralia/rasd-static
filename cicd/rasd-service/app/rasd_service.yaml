@@ -472,8 +472,7 @@ Resources:
           SecurityPolicy: TLS_1_2
           CertificateArn: !Ref ApiGatewayCertificateRegional
       Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
+        Name: !Ref AWS::StackName
 
   ApiGatewayMapping:
     Type: AWS::ApiGatewayV2::ApiMapping
