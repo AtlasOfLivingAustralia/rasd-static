@@ -464,14 +464,13 @@ Resources:
       ValidationMethod: DNS
 
   ApiGatewayCustomDomainName:
-    Type: AWS::ApiGateway::DomainName
+    Type: AWS::ApiGatewayV2::DomainName
     Properties:
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
-      RegionalCertificateArn: !Ref ApiGatewayCertificateRegional
-      SecurityPolicy: TLS_1_2
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+          CertificateArn: !Ref ApiGatewayCertificateRegional
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
