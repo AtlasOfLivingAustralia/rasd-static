@@ -280,8 +280,8 @@ Resources:
                   [
                     { "name":"BUCKET_NAME", "value":"#{ExportConfigNS.APP_STACK_NAME}" },
                     { "name":"ENVIRONMENT", "value":"${pEnvironment}" },
-                    { "name":"REST_API_ID", "value":"#{CloudFormationOutNS.REST_API_ID}" },
-                    { "name":"ROOT_API_URL", "value":"#{CloudFormationOutNS.ROOT_API_URL}" },
+                    { "name":"REST_API_ID", "value":"#{CloudFormationOutNS.RestApiIdOutput}" },
+                    { "name":"ROOT_API_URL", "value":"#{CloudFormationOutNS.RootApiUrlOutput}" },
                     { "name":"VITE_API_BASE_URL", "value":"https://#{ExportConfigNS.SUB_DOMAIN}.#{ExportConfigNS.HOSTED_ZONE}/api/v1" }
                   ]
               InputArtifacts:

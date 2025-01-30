@@ -743,9 +743,9 @@ Resources:
       Type: TXT
 
 Outputs:
-  REST_API_ID:
+  RestApiIdOutput:
     Description: The ID of the REST API
     Value: !Ref ApiGatewayRestApi
-  ROOT_API_URL:
+  RootApiUrlOutput:
     Description: The URL of the API
     Value: !Ref ApiGatewayCustomDomainName
