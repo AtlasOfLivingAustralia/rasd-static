@@ -250,22 +250,8 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  # ApiGatewayV2DomainName:
-  #   Type: AWS::ApiGatewayV2::DomainName
-  #   Properties:
-  #     DomainName: !Sub ${pSubDomain}.${pHostedZone}
-  #     DomainNameConfigurations:
-  #       - CertificateArn: !Ref ApiGatewayCertificateRegional
-  #         EndpointType: REGIONAL
-  #         SecurityPolicy: TLS_1_2
-  #     Tags:
-  #       Name: !Ref AWS::StackName
-
   DNSBackend:
     Type: AWS::Route53::RecordSet
-    DependsOn:
-      - APIGatewayCustomDomainName
-      - ApiGatewayRestApi
     Properties:
       HostedZoneId: !Ref pHostedZoneId
       Name: !Sub ${pSubDomain}.${pHostedZone}
@@ -497,7 +483,7 @@ Resources:
       DomainName: !Ref ApiGatewayCustomDomainName
       RestApiId: !Ref ApiGatewayRestApi
       Stage: !Ref ApiGatewayStage
-
+https://ap-southeast-2.console.aws.amazon.com/codesuite/home?region=ap-southeast-2
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
