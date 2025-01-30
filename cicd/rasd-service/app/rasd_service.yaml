@@ -476,12 +476,12 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  ApiGatewayBasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
+  ApiGatewayMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
     DependsOn: ApiGatewayDeployment
     Properties:
+      ApiId: !Ref ApiGatewayRestApi
       DomainName: !Ref ApiGatewayCustomDomainName
-      RestApiId: !Ref ApiGatewayRestApi
       Stage: !Ref ApiGatewayStage
 
   ApiGatewayRestApi:
@@ -493,7 +493,7 @@ Resources:
       DisableExecuteApiEndpoint: false
       EndpointConfiguration:
         Types:
-          - REGIONAL
+          - EDGE
       Name: !Sub ${AWS::StackName}-RestApi
 
   ApiGatewayResponseModel:
