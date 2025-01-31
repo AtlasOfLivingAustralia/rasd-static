@@ -112,7 +112,6 @@ Resources:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
       Precedence: 1
       UserPoolId: ap-southeast-2_8Vln95ht4
@@ -121,7 +120,6 @@ Resources:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
       Precedence: 2
       UserPoolId: ap-southeast-2_8Vln95ht4
@@ -130,7 +128,6 @@ Resources:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
       Precedence: 3
       UserPoolId: ap-southeast-2_8Vln95ht4
