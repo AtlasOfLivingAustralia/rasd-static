@@ -1,0 +1,76 @@
+[
+    {
+        "ResourceType": "AWS::ApiGatewayV2::DomainName",
+        "LogicalResourceId": "ApiGatewayCustomDomainName",
+        "ResourceIdentifier": {
+            "DomainName": "service.migrating.testing.rasd.org.au"
+        }
+    },
+    {
+        "ResourceType": "AWS::Cognito::UserPoolClient",
+        "LogicalResourceId": "CognitoAppClientRasdbackend",
+        "ResourceIdentifier": {
+            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "ClientId": "5fng4v1i5ft17dtsi43mbhksbd"
+        }
+    },
+    {
+        "ResourceType": "AWS::Cognito::UserPoolGroup",
+        "LogicalResourceId": "CognitoGroupAdmin",
+        "ResourceIdentifier": {
+            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "GroupName": "Administrators"
+        }
+    },
+    {
+        "ResourceType": "AWS::Cognito::UserPoolGroup",
+        "LogicalResourceId": "CognitoGroupCustodians",
+        "ResourceIdentifier": {
+            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "GroupName": "DataCustodians"
+        }
+    },
+    {
+        "ResourceType": "AWS::Cognito::UserPoolGroup",
+        "LogicalResourceId": "CognitoGroupRequestors",
+        "ResourceIdentifier": {
+            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "GroupName": "DataRequestors"
+        }
+    },
+    {
+        "ResourceType": "AWS::Cognito::UserPool",
+        "LogicalResourceId": "CognitoPool",
+        "ResourceIdentifier": {
+            "UserPoolId": "ap-southeast-2_8Vln95ht4"
+        }
+    },
+    {
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LogicalResourceId": "DynamoDBTableDataAccessRequests",
+        "ResourceIdentifier": {
+            "TableName": "migrating-DataAccessRequests"
+        }
+    },
+    {
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LogicalResourceId": "DynamoDBTableMetadata",
+        "ResourceIdentifier": {
+            "TableName": "migrating-Metadata"
+        }
+    },
+    {
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LogicalResourceId": "DynamoDBTableOrganisations",
+        "ResourceIdentifier": {
+            "TableName": "migrating-Organisations"
+        }
+    },
+    {
+        "ResourceType": "AWS::DynamoDB::Table",
+        "LogicalResourceId": "DynamoDBTableRegistrations",
+        "ResourceIdentifier": {
+            "TableName": "migrating-Registrations"
+        }
+    }
+]
