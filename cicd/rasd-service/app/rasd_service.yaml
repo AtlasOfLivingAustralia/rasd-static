@@ -246,17 +246,6 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  DNSBackend:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !Sub ${pSubDomain}.${pHostedZone}
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-        HostedZoneId: Z2RPCDW04V8134
-        EvaluateTargetHealth: true
-
   CognitoPool:
     Type: AWS::Cognito::UserPool
     DeletionPolicy: Retain
