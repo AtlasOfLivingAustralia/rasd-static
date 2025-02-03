@@ -10,15 +10,15 @@
         "ResourceType": "AWS::Cognito::UserPoolClient",
         "LogicalResourceId": "CognitoAppClientRasdbackend",
         "ResourceIdentifier": {
-            "UserPoolId": "ap-southeast-2_8Vln95ht4",
-            "ClientId": "5fng4v1i5ft17dtsi43mbhksbd"
+            "UserPoolId": "ap-southeast-2_6q3QErPLZ",
+            "ClientId": "6600g943krr7fqb6mig53v3f42"
         }
     },
     {
         "ResourceType": "AWS::Cognito::UserPoolGroup",
         "LogicalResourceId": "CognitoGroupAdmin",
         "ResourceIdentifier": {
-            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "UserPoolId": "ap-southeast-2_6q3QErPLZ",
             "GroupName": "Administrators"
         }
     },
@@ -26,7 +26,7 @@
         "ResourceType": "AWS::Cognito::UserPoolGroup",
         "LogicalResourceId": "CognitoGroupCustodians",
         "ResourceIdentifier": {
-            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "UserPoolId": "ap-southeast-2_6q3QErPLZ",
             "GroupName": "DataCustodians"
         }
     },
@@ -34,7 +34,7 @@
         "ResourceType": "AWS::Cognito::UserPoolGroup",
         "LogicalResourceId": "CognitoGroupRequestors",
         "ResourceIdentifier": {
-            "UserPoolId": "ap-southeast-2_8Vln95ht4",
+            "UserPoolId": "ap-southeast-2_6q3QErPLZ",
             "GroupName": "DataRequestors"
         }
     },
@@ -42,7 +42,7 @@
         "ResourceType": "AWS::Cognito::UserPool",
         "LogicalResourceId": "CognitoPool",
         "ResourceIdentifier": {
-            "UserPoolId": "ap-southeast-2_8Vln95ht4"
+            "UserPoolId": "ap-southeast-2_6q3QErPLZ"
         }
     },
     {
@@ -71,6 +71,13 @@
         "LogicalResourceId": "DynamoDBTableRegistrations",
         "ResourceIdentifier": {
             "TableName": "migrating-Registrations"
+        }
+    },
+    {
+        "ResourceType": "AWS::SES::EmailIdentity",
+        "LogicalResourceId": "SESDomainIdentity",
+        "ResourceIdentifier": {
+            "EmailIdentity": "service.migrating.testing.rasd.org.au"
         }
     }
 ]

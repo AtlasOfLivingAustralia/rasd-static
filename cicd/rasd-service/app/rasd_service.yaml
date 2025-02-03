@@ -7,7 +7,6 @@ Parameters:
     Description: The name of the app stack, which is used for bucket name
   pArtifactsBucket:
     Type: String
-    Description: The S3 artifact bucket path
   pCodeBuildNumber:
     Type: String
     Description: The code build number, used for updating ApiGateway Deployment
@@ -54,12 +53,6 @@ Conditions:
     - !Condition IsDev
 
 Resources:
-  RasdSecrets:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Name: !Ref pSecretKeyName
-      Description: Secrets for RASD services
-
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
     DeletionPolicy: Retain
@@ -68,16 +61,9 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      # TableName: !Sub ${AWS::StackName}-DataAccessRequests
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
 
   DynamoDBTableMetadata:
     Type: AWS::DynamoDB::Table
@@ -87,16 +73,9 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      # TableName: !Sub ${AWS::StackName}-Metadata
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
 
   DynamoDBTableOrganisations:
     Type: AWS::DynamoDB::Table
@@ -106,16 +85,9 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      # TableName: !Sub ${AWS::StackName}-Organisations
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
 
   DynamoDBTableRegistrations:
     Type: AWS::DynamoDB::Table
@@ -125,141 +97,9 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      # TableName: !Sub ${AWS::StackName}-Registrations
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiGatewayS3Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref pAppStackName
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiGatewayS3Role:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: apigateway.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: S3Access
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:GetObject
-                  - s3:PutObject
-                  - s3:DeleteObject
-                  - s3:ListBucket
-                Resource:
-                  - !Sub ${ApiGatewayS3Bucket.Arn}
-                  - !Sub ${ApiGatewayS3Bucket.Arn}/*
-
-  IAMRoleiamRoleForLambda:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Action: sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: PolicyForRASDLambda
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Resource:
-                  - !Ref RasdSecrets
-                Action:
-                  - secretsmanager:GetSecretValue
-                Effect: Allow
-              - Resource:
-                  - !GetAtt DynamoDBTableDataAccessRequests.Arn
-                  - !GetAtt DynamoDBTableMetadata.Arn
-                  - !GetAtt DynamoDBTableOrganisations.Arn
-                  - !GetAtt DynamoDBTableRegistrations.Arn
-                Action:
-                  - dynamodb:BatchGetItem
-                  - dynamodb:GetItem
-                  - dynamodb:Query
-                  - dynamodb:Scan
-                  - dynamodb:BatchWriteItem
-                  - dynamodb:PutItem
-                  - dynamodb:UpdateItem
-                  - dynamodb:DeleteItem
-                Effect: Allow
-              - Resource: '*'
-                Action:
-                  - s3:ListAllMyBuckets
-                  - s3:ListBucket
-                  - s3:HeadBucket
-                  - s3:Get*
-                  - s3:List*
-                Effect: Allow
-              - Resource: '*'
-                Action:
-                  - cognito-identity:ListIdentityPools
-                  - cognito-sync:ListRecords
-                  - cognito-sync:UpdateRecords
-                  - cognito-idp:Admin*
-                  - cognito-idp:ChangePassword
-                  - cognito-idp:ConfirmDevice
-                  - cognito-idp:ConfirmForgotPassword
-                  - cognito-idp:ConfirmSignUp
-                  - cognito-idp:CreateGroup
-                  - cognito-idp:DeleteGroup
-                Effect: Allow
-              - Resource: '*'
-                Action:
-                  - logs:CreateLogGroup
-                Effect: Allow
-              - Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
-                Action:
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Effect: Allow
-              - Resource: '*'
-                Action:
-                  - ses:SendEmail
-                Effect: Allow
-      RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  DNSBackend:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !Sub ${pSubDomain}.${pHostedZone}
-      Type: A
-      AliasTarget:
-        DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-        HostedZoneId: Z2RPCDW04V8134
-        EvaluateTargetHealth: true
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
@@ -269,7 +109,6 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
       UsernameAttributes:
         - email
       UsernameConfiguration:
@@ -312,34 +151,31 @@ Resources:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
       Precedence: 1
-      UserPoolId: !Ref CognitoPool
+      UserPoolId: ap-southeast-2_6q3QErPLZ
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
       Precedence: 2
-      UserPoolId: !Ref CognitoPool
+      UserPoolId: ap-southeast-2_6q3QErPLZ
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
-      Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
       Precedence: 3
-      UserPoolId: !Ref CognitoPool
+      UserPoolId: ap-southeast-2_6q3QErPLZ
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
     DeletionPolicy: Retain
     Properties:
-      UserPoolId: !Ref CognitoPool
+      UserPoolId: ap-southeast-2_6q3QErPLZ
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: True
       EnableTokenRevocation: True
@@ -397,59 +233,6 @@ Resources:
         - nickname
         - email
 
-  LambdaBackendService:
-    Type: AWS::Lambda::Function
-    Properties:
-      # Architectures:
-      #   - String
-      Code: ../../../backend/dist/rasd_fastapi
-      # CodeSigningConfigArn: String
-      # DeadLetterConfig: DeadLetterConfig
-      Description: Rasd Service Lambda Function
-      Environment:
-        Variables:
-          RASD_SECRETS_NAME: !Ref RasdSecrets # !Ref pSecretKeyName
-          AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
-          AWS_COGNITO_POOL_ID: !Ref CognitoPool
-          AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
-          AWS_DYNAMODB_TABLE_ACCESS_REQUESTS: !Sub ${AWS::StackName}-DataAccessRequests
-          AWS_DYNAMODB_TABLE_METADATA: !Sub ${AWS::StackName}-Metadata
-          AWS_DYNAMODB_TABLE_ORGANISATIONS: !Sub ${AWS::StackName}-Organisations
-          AWS_DYNAMODB_TABLE_REGISTRATIONS: !Sub ${AWS::StackName}-Registrations
-          EMAIL_FROM_ADDRESS: !Sub no-reply@mail.${pSubDomain}.${pHostedZone}
-          EMAIL_ADMIN_INBOX: !Ref pEmailAdminInbox
-          RASD_FRAMEWORK_URL: !Sub https://www.${pHostedZone}/framework
-          RASD_CREATE_PASSWORD_URL: !Sub https://${pSubDomain}.${pHostedZone}/#/create-password
-          RASD_SUPPORT_EMAIL: !Ref pRasdSupportEmail
-          RASD_URL: !Sub https://${pSubDomain}.${pHostedZone}
-      FunctionName: !Sub rasd-${pCleanBranch}-backend-api
-      Handler: rasd_fastapi.handler.handler
-      MemorySize: 4096
-      Role: !GetAtt IAMRoleiamRoleForLambda.Arn
-      Runtime: python3.9
-      # RuntimeManagementConfig: RuntimeManagementConfig
-      # SnapStart: SnapStart
-      Timeout: 30
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiGatewayLambdaInvokePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt LambdaBackendService.Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/api/{proxy+}
-
-  ApiGatewayLambdaInvokePermission2:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt LambdaBackendService.Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/api
-
   ApiGatewayCertificateRegional:
     Type: AWS::CertificateManager::Certificate
     Properties:
@@ -461,274 +244,22 @@ Resources:
 
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGatewayV2::DomainName
+    DeletionPolicy: Delete
     Properties:
-      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      DomainName: service.migrating.testing.rasd.org.au
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
           CertificateArn: !Ref ApiGatewayCertificateRegional
-      Tags:
-        Name: !Ref AWS::StackName
-
-  ApiGatewayMapping:
-    Type: AWS::ApiGatewayV2::ApiMapping
-    DependsOn: ApiGatewayDeployment
-    Properties:
-      ApiId: !Ref ApiGatewayRestApi
-      DomainName: !Ref ApiGatewayCustomDomainName
-      Stage: !Ref ApiGatewayStage
-
-  ApiGatewayRestApi:
-    Type: AWS::ApiGateway::RestApi
-    Properties:
-      ApiKeySourceType: HEADER
-      BinaryMediaTypes:
-        - "*/*"
-      DisableExecuteApiEndpoint: false
-      EndpointConfiguration:
-        Types:
-          - EDGE
-      Name: !Sub ${AWS::StackName}-RestApi
-
-  ApiGatewayResponseModel:
-    Type: AWS::ApiGateway::Model
-    Properties:
-      ContentType: application/json
-      RestApiId: !Ref ApiGatewayRestApi
-      Schema:
-        type: object
-        properties: {}
-
-  GatewayResponseMissingAuth:
-    Type: AWS::ApiGateway::GatewayResponse
-    Properties:
-      ResponseParameters: {}
-      ResponseTemplates:
-        application/json: "{}"
-      ResponseType: MISSING_AUTHENTICATION_TOKEN
-      RestApiId: !Ref ApiGatewayRestApi
-      StatusCode: '404'
-
-  GatewayResponseAccessDenied:
-    Type: AWS::ApiGateway::GatewayResponse
-    Properties:
-      ResponseParameters: {}
-      ResponseTemplates:
-        application/json: "{}"
-      ResponseType: ACCESS_DENIED
-      RestApiId: !Ref ApiGatewayRestApi
-      StatusCode: '404'
-
-  ApiGatewayResourceApi:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-      PathPart: "api"
-      RestApiId: !Ref ApiGatewayRestApi
-
-  ApiGatewayResourceRootProxy:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-      PathPart: "{proxy+}"
-      RestApiId: !Ref ApiGatewayRestApi
-
-  ApiGatewayResourceApiProxy:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !Ref ApiGatewayResourceApi
-      PathPart: "{proxy+}"
-      RestApiId: !Ref ApiGatewayRestApi
-
-  ApiGatewayDeployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn:
-      - ApiRootMethod
-      - ApiGatewayMethodApiAny
-      - ApiGatewayMethodApiProxyAny
-      - ApiGatewayMethodRootProxyAny
-    Properties:
-      RestApiId: !Ref ApiGatewayRestApi
-      Description: !Sub Deployment for ${AWS::StackName} in build ${pCodeBuildNumber}
-
-  ApiGatewayStage:
-    Type: AWS::ApiGateway::Stage
-    Properties:
-      CacheClusterEnabled: false
-      DeploymentId: !Ref ApiGatewayDeployment
-      Description: !Sub The ${pEnvironment} stage of the ${AWS::StackName} API
-      RestApiId: !Ref ApiGatewayRestApi
-      StageName: !Ref pEnvironment
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
-  ApiRootMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      ApiKeyRequired: false
-      AuthorizationType: NONE
-      HttpMethod: GET
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: GET
-        Credentials: !GetAtt ApiGatewayS3Role.Arn
-        Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/index.html
-          - BucketName: !Ref ApiGatewayS3Bucket
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseParameters:
-              method.response.header.Content-Type: integration.response.header.Content-Type
-              method.response.header.content-type: integration.response.header.content-type
-          - StatusCode: 400
-            SelectionPattern: 4\d{2}
-          - StatusCode: 500
-            SelectionPattern: 5\d{2}
-        PassthroughBehavior: WHEN_NO_MATCH
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref ApiGatewayResponseModel
-          ResponseParameters:
-            method.response.header.Content-Type: true
-            method.response.header.content-type: true
-        - StatusCode: 400
-        - StatusCode: 500
-      ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
-      RestApiId: !Ref ApiGatewayRestApi
-
-  ApiGatewayMethodRootProxyAny:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: ANY
-      RequestParameters:
-        method.request.path.proxy: true
-      ResourceId: !Ref ApiGatewayResourceRootProxy
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: AWS
-        Credentials: !GetAtt ApiGatewayS3Role.Arn
-        IntegrationHttpMethod: GET
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseParameters:
-              method.response.header.Content-Type: integration.response.header.Content-Type
-              method.response.header.content-type: integration.response.header.content-type
-          - StatusCode: 400
-            SelectionPattern: 4\d{2}
-          - StatusCode: 500
-            SelectionPattern: 5\d{2}
-        RequestParameters:
-          integration.request.path.proxy: method.request.path.proxy
-        Uri: !Sub
-          - arn:aws:apigateway:${AWS::Region}:s3:path/${BucketName}/{proxy}
-          - BucketName: !Ref ApiGatewayS3Bucket
-        PassthroughBehavior: WHEN_NO_MATCH
-      MethodResponses:
-        - StatusCode: 200
-          ResponseModels:
-            application/json: !Ref ApiGatewayResponseModel
-          ResponseParameters:
-            method.response.header.Content-Type: true
-            method.response.header.content-type: true
-        - StatusCode: 400
-        - StatusCode: 500
-
-  ApiGatewayMethodApiAny:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: ANY
-      ResourceId: !Ref ApiGatewayResourceApi
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        PassthroughBehavior: WHEN_NO_MATCH
-
-  ApiGatewayMethodApiProxyAny:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: ANY
-      RequestParameters:
-        method.request.path.proxy: false
-      ResourceId: !Ref ApiGatewayResourceApiProxy
-      RestApiId: !Ref ApiGatewayRestApi
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
-        PassthroughBehavior: WHEN_NO_MATCH
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
+    DeletionPolicy: Delete
     Properties:
       DkimAttributes:
         SigningEnabled: true
       DkimSigningAttributes:
         NextSigningKeyLength: RSA_2048_BIT
-      EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
+      EmailIdentity: service.migrating.testing.rasd.org.au
       MailFromAttributes:
-        MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
-
-  DKIMRecord1:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName1
-      Type: CNAME
-      TTL: 600
-      ResourceRecords:
-        - !GetAtt SESDomainIdentity.DkimDNSTokenValue1
-
-  DKIMRecord2:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName2
-      Type: CNAME
-      TTL: 600
-      ResourceRecords:
-        - !GetAtt SESDomainIdentity.DkimDNSTokenValue2
-
-  DKIMRecord3:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName3
-      Type: CNAME
-      TTL: 600
-      ResourceRecords:
-        - !GetAtt SESDomainIdentity.DkimDNSTokenValue3
-
-  MXRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !Sub mail.${pSubDomain}.${pHostedZone}
-      TTL: 600
-      ResourceRecords:
-        - !Sub "10 feedback-smtp.ap-southeast-2.amazonses.com"
-      Type: MX
-
-  TXTRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref pHostedZoneId
-      Name: !Sub ${pSubDomain}.${pHostedZone}
-      TTL: 600
-      ResourceRecords:
-        - "\"v=spf1 include:amazonses.com -all\""
-      Type: TXT
-
-Outputs:
-  RestApiIdOutput:
-    Description: The ID of the REST API
-    Value: !Ref ApiGatewayRestApi
-  RootApiUrlOutput:
-    Description: The URL of the API
-    Value: !Ref ApiGatewayCustomDomainName
+        MailFromDomain: mail.service.migrating.testing.rasd.org.au
