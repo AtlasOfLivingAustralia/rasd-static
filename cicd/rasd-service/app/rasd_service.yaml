@@ -74,7 +74,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      TableName: !Sub ${AWS::StackName}-DataAccessRequests
+      # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -93,7 +93,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      TableName: !Sub ${AWS::StackName}-Metadata
+      # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -112,7 +112,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      TableName: !Sub ${AWS::StackName}-Organisations
+      # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -131,7 +131,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
-      TableName: !Sub ${AWS::StackName}-Registrations
+      # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -274,9 +274,6 @@ Resources:
         - email
       UsernameConfiguration:
         CaseSensitive: false
-      UserPoolName: !Sub ${AWS::StackName}-users
-      # EmailVerificationMessage: Please click the link below to verify your email address.
-      # EmailVerificationSubject: Your verification link of RASD
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -343,7 +340,6 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       UserPoolId: !Ref CognitoPool
-      ClientName: !Sub ${AWS::StackName}-AppClientRasdbackend
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: True
       EnableTokenRevocation: True

@@ -9,5 +9,5 @@ env:
 phases:
   build:
     commands:
-      - echo emptying bucket $BACKUP_BUCKET
-      - aws s3 rm s3://$BACKUP_BUCKET --recursive
+      - echo emptying bucket $SOURCE_BUCKET
+      - aws s3 rm s3://$SOURCE_BUCKET --recursive
