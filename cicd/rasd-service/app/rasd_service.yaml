@@ -74,6 +74,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -92,6 +93,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -110,6 +112,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -128,6 +131,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -311,7 +315,7 @@ Resources:
       Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
       Precedence: 1
-      UserPoolId: ap-southeast-2_8Vln95ht4
+      UserPoolId: !Ref CognitoPool
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
@@ -320,7 +324,7 @@ Resources:
       Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
       Precedence: 2
-      UserPoolId: ap-southeast-2_8Vln95ht4
+      UserPoolId: !Ref CognitoPool
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
@@ -329,13 +333,13 @@ Resources:
       Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
       Precedence: 3
-      UserPoolId: ap-southeast-2_8Vln95ht4
+      UserPoolId: !Ref CognitoPool
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
     DeletionPolicy: Retain
     Properties:
-      UserPoolId: ap-southeast-2_8Vln95ht4
+      UserPoolId: !Ref CognitoPool
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: True
       EnableTokenRevocation: True
@@ -457,9 +461,8 @@ Resources:
 
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGatewayV2::DomainName
-    DeletionPolicy: Delete
     Properties:
-      DomainName: service.migrating.testing.rasd.org.au
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
