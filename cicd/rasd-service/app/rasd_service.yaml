@@ -246,6 +246,17 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  DNSBackend:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub ${pSubDomain}.${pHostedZone}
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
+        HostedZoneId: Z2RPCDW04V8134
+        EvaluateTargetHealth: true
+
   CognitoPool:
     Type: AWS::Cognito::UserPool
     DeletionPolicy: Retain
@@ -456,6 +467,14 @@ Resources:
       Tags:
         Name: !Ref AWS::StackName
 
+  ApiGatewayMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn: ApiGatewayDeployment
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+      DomainName: !Ref ApiGatewayCustomDomainName
+      Stage: !Ref ApiGatewayStage
+
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -641,6 +660,67 @@ Resources:
         IntegrationHttpMethod: POST
         Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaBackendService.Arn}/invocations
         PassthroughBehavior: WHEN_NO_MATCH
+
+  SESDomainIdentity:
+    Type: AWS::SES::EmailIdentity
+    Properties:
+      DkimAttributes:
+        SigningEnabled: true
+      DkimSigningAttributes:
+        NextSigningKeyLength: RSA_2048_BIT
+      EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
+      MailFromAttributes:
+        MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
+
+  DKIMRecord1:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName1
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue1
+
+  DKIMRecord2:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName2
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue2
+
+  DKIMRecord3:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !GetAtt SESDomainIdentity.DkimDNSTokenName3
+      Type: CNAME
+      TTL: 600
+      ResourceRecords:
+        - !GetAtt SESDomainIdentity.DkimDNSTokenValue3
+
+  MXRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub mail.${pSubDomain}.${pHostedZone}
+      TTL: 600
+      ResourceRecords:
+        - !Sub "10 feedback-smtp.ap-southeast-2.amazonses.com"
+      Type: MX
+
+  TXTRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub ${pSubDomain}.${pHostedZone}
+      TTL: 600
+      ResourceRecords:
+        - "\"v=spf1 include:amazonses.com -all\""
+      Type: TXT
 
 Outputs:
   RestApiIdOutput:
