@@ -412,10 +412,10 @@ Resources:
           AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
           AWS_COGNITO_POOL_ID: !Ref CognitoPool
           AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
-          AWS_DYNAMODB_TABLE_ACCESS_REQUESTS: !Sub ${AWS::StackName}-DataAccessRequests
-          AWS_DYNAMODB_TABLE_METADATA: !Sub ${AWS::StackName}-Metadata
-          AWS_DYNAMODB_TABLE_ORGANISATIONS: !Sub ${AWS::StackName}-Organisations
-          AWS_DYNAMODB_TABLE_REGISTRATIONS: !Sub ${AWS::StackName}-Registrations
+          AWS_DYNAMODB_TABLE_ACCESS_REQUESTS: !Ref DynamoDBTableDataAccessRequests
+          AWS_DYNAMODB_TABLE_METADATA: !Ref DynamoDBTableMetadata
+          AWS_DYNAMODB_TABLE_ORGANISATIONS: !Ref DynamoDBTableOrganisations
+          AWS_DYNAMODB_TABLE_REGISTRATIONS: !Ref DynamoDBTableRegistrations
           EMAIL_FROM_ADDRESS: !Sub no-reply@mail.${pSubDomain}.${pHostedZone}
           EMAIL_ADMIN_INBOX: !Ref pEmailAdminInbox
           RASD_FRAMEWORK_URL: !Sub https://www.${pHostedZone}/framework
@@ -461,6 +461,7 @@ Resources:
 
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGatewayV2::DomainName
+    DeletionPolicy: Delete
     Properties:
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainNameConfigurations:
@@ -666,6 +667,7 @@ Resources:
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
+    DeletionPolicy: Delete
     Properties:
       DkimAttributes:
         SigningEnabled: true

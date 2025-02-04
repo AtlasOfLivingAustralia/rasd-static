@@ -32,7 +32,7 @@ phases:
       - aws apigateway create-deployment --rest-api-id $REST_API_ID --stage-name $ENVIRONMENT
       # Test the API
       - cd ..
-      # - bash backend/test-api.sh $ROOT_API_URL
+      - bash backend/test-api.sh $ROOT_API_URL
 
 artifacts:
   files:
