@@ -62,7 +62,7 @@ Resources:
 
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -81,7 +81,7 @@ Resources:
 
   DynamoDBTableMetadata:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -100,7 +100,7 @@ Resources:
 
   DynamoDBTableOrganisations:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -119,7 +119,7 @@ Resources:
 
   DynamoDBTableRegistrations:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       AttributeDefinitions:
         - AttributeType: S
@@ -263,7 +263,7 @@ Resources:
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       AccountRecoverySetting:
         RecoveryMechanisms:
@@ -310,7 +310,7 @@ Resources:
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
@@ -319,7 +319,7 @@ Resources:
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
@@ -328,7 +328,7 @@ Resources:
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
@@ -337,7 +337,7 @@ Resources:
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       UserPoolId: !Ref CognitoPool
       PreventUserExistenceErrors: ENABLED
