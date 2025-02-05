@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block email_content %}
+<table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+  <tr>
+    <td style="padding: 0 20px;">
+      <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tr>
+          <td class="col" width="640" style="padding: 0 10px;">
+            <p>A new RASD registration request has been received.</p>
+            <p>The registration request has been assigned an ID:</p>
+            <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+              <tr>
+                <td align="center">
+                  <a><b><code>{{ registration_id }}</code></b></a>
+                </td>
+              </tr>
+            </table>
+            <p>Please login and action the request as soon as possible.</p>
+            <p>Please do not reply to this automatically generated email.</p>
+            <p>Kind regards,</p>
+            <p>The RASD Team</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endblock %}

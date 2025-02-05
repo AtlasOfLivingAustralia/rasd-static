@@ -1,0 +1,1 @@
+"""RASD FastAPI Application."""
