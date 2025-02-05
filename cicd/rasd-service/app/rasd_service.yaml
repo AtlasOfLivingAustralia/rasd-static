@@ -7,6 +7,7 @@ Parameters:
     Description: The name of the app stack, which is used for bucket name
   pArtifactsBucket:
     Type: String
+    Description: The S3 artifact bucket path
   pCodeBuildNumber:
     Type: String
     Description: The code build number, used for updating ApiGateway Deployment
@@ -221,6 +222,17 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  DNSBackend:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref pHostedZoneId
+      Name: !Sub ${pSubDomain}.${pHostedZone}
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
+        HostedZoneId: Z2RPCDW04V8134
+        EvaluateTargetHealth: true
+
   CognitoPool:
     Type: AWS::Cognito::UserPool
     DeletionPolicy: Retain
@@ -424,6 +436,14 @@ Resources:
         - EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
           CertificateArn: !Ref ApiGatewayCertificateRegional
+
+  ApiGatewayMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn: ApiGatewayDeployment
+    Properties:
+      ApiId: !Ref ApiGatewayRestApi
+      DomainName: !Ref ApiGatewayCustomDomainName
+      Stage: !Ref ApiGatewayStage
 
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
