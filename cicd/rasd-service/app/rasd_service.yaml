@@ -68,9 +68,16 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-DataAccessRequests
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   DynamoDBTableMetadata:
     Type: AWS::DynamoDB::Table
@@ -80,9 +87,16 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Metadata
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   DynamoDBTableOrganisations:
     Type: AWS::DynamoDB::Table
@@ -92,9 +106,16 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Organisations
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   DynamoDBTableRegistrations:
     Type: AWS::DynamoDB::Table
@@ -104,9 +125,16 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Registrations
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
 
   ApiGatewayS3Bucket:
     Type: AWS::S3::Bucket
@@ -241,6 +269,7 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
+      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
       UsernameAttributes:
         - email
       UsernameConfiguration:
@@ -283,31 +312,34 @@ Resources:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
+      Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
       Precedence: 1
-      UserPoolId: ap-southeast-2_IJQBL4Q7j
+      UserPoolId: !Ref CognitoPool
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
+      Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
       Precedence: 2
-      UserPoolId: ap-southeast-2_IJQBL4Q7j
+      UserPoolId: !Ref CognitoPool
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
     DeletionPolicy: Retain
     Properties:
+      Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
       Precedence: 3
-      UserPoolId: ap-southeast-2_IJQBL4Q7j
+      UserPoolId: !Ref CognitoPool
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
     DeletionPolicy: Retain
     Properties:
-      UserPoolId: ap-southeast-2_IJQBL4Q7j
+      UserPoolId: !Ref CognitoPool
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: True
       EnableTokenRevocation: True
@@ -431,11 +463,13 @@ Resources:
     Type: AWS::ApiGatewayV2::DomainName
     DeletionPolicy: Delete
     Properties:
-      DomainName: service.testing.rasd.org.au
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
           CertificateArn: !Ref ApiGatewayCertificateRegional
+      Tags:
+        Name: !Ref AWS::StackName
 
   ApiGatewayMapping:
     Type: AWS::ApiGatewayV2::ApiMapping
@@ -639,9 +673,9 @@ Resources:
         SigningEnabled: true
       DkimSigningAttributes:
         NextSigningKeyLength: RSA_2048_BIT
-      EmailIdentity: service.testing.rasd.org.au
+      EmailIdentity: !Sub ${pSubDomain}.${pHostedZone}
       MailFromAttributes:
-        MailFromDomain: mail.service.testing.rasd.org.au
+        MailFromDomain: !Sub mail.${pSubDomain}.${pHostedZone}
 
   DKIMRecord1:
     Type: AWS::Route53::RecordSet
