@@ -68,12 +68,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: true
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: true
       # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
@@ -87,12 +87,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: true
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: true
       # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
@@ -106,12 +106,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: true
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: true
       # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
@@ -125,12 +125,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: true
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: true
       # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
@@ -269,7 +269,7 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
+      DeletionProtection: ACTIVE
       UsernameAttributes:
         - email
       UsernameConfiguration:
