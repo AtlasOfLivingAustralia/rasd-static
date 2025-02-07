@@ -62,17 +62,18 @@ Resources:
 
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: false
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
@@ -80,53 +81,56 @@ Resources:
 
   DynamoDBTableMetadata:
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: false
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
-      TableName: !Sub ${AWS::StackName}-Metadata
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
 
   DynamoDBTableOrganisations:
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: false
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
-      TableName: !Sub ${AWS::StackName}-Organisations
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+      # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
 
   DynamoDBTableRegistrations:
     Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: false
+      DeletionProtectionEnabled: !If [ NotDev, true, false ]
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
+        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
       # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
@@ -259,17 +263,17 @@ Resources:
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
+    DeletionPolicy: Retain
     Properties:
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: INACTIVE
+      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
       UsernameAttributes:
         - email
       UsernameConfiguration:
         CaseSensitive: false
-      UserPoolName: !Sub ${AWS::StackName}-users
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -306,6 +310,7 @@ Resources:
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
+    DeletionPolicy: Retain
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
@@ -314,6 +319,7 @@ Resources:
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
+    DeletionPolicy: Retain
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
@@ -322,6 +328,7 @@ Resources:
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
+    DeletionPolicy: Retain
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
@@ -330,6 +337,7 @@ Resources:
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
+    DeletionPolicy: Retain
     Properties:
       UserPoolId: !Ref CognitoPool
       PreventUserExistenceErrors: ENABLED
