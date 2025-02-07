@@ -177,6 +177,12 @@ ul {
     padding-bottom: 60px;
 }
 
+
+.navbar-collapse {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 .small-text {
      font-size: 14px;
 }
