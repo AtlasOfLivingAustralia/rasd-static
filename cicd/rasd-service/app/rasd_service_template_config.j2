@@ -30,6 +30,12 @@
         "Action" : "Update:*",
         "Principal": "*",
         "Resource" : "*"
+      },
+      {
+        "Effect" : "Deny",
+        "Action" : ["Update:Replace", "Update:Delete"],
+        "Principal": "*",
+        "Resource" : "LogicalResourceId/DynamoDBTableRegistrations"
       }
     ]
   }
