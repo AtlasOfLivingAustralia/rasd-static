@@ -14,7 +14,7 @@ book:
     font: Roboto
   navbar:
     background: primary
-    title: "RASD Framework"
+    title: "RASD"
     href: "https://rasd.org.au"
   page-footer:
     background: info
