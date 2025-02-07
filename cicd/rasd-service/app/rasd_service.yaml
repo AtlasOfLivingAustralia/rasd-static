@@ -131,7 +131,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
-      # TableName: !Sub ${AWS::StackName}-Registrations
+      TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -274,6 +274,7 @@ Resources:
         - email
       UsernameConfiguration:
         CaseSensitive: false
+      UserPoolName: !Sub ${AWS::StackName}-users
       Policies:
         PasswordPolicy:
           MinimumLength: 8
