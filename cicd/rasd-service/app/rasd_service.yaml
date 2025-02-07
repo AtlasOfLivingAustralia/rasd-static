@@ -112,7 +112,7 @@ Resources:
           AttributeName: id
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
-      # TableName: !Sub ${AWS::StackName}-Organisations
+      TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
