@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block email_content %}
+<table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+  <tr>
+    <td style="padding: 0 20px;">
+      <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+        <tr>
+          <td class="col" width="640" style="padding: 0 10px;">
+            <p>Hi {{ given_name }} {{ family_name }}</p>
+            <p>Thank you for your Data Access Request ID <a><b><code>{{ request_id }}</code></b></a>.</p>
+            <p>Once your request has been assessed the Data Custodian(s) will contact you to advise you of the outcome
+              of your request.</p>
+            <p>Please do not reply to this email.</p>
+            <p>If you require more detail, please contact us on {{ rasd_support_email }} and quote your Data Access
+              Request ID.</p>
+            <p>Kind regards,</p>
+            <p>The RASD Team</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endblock %}

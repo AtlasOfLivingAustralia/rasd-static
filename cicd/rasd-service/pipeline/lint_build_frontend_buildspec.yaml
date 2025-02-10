@@ -1,0 +1,41 @@
+version: 0.2
+###
+# This build project is for the lint and build frontend in the rasd-service pipeline
+
+env:
+  shell: bash
+  variables:
+    BUCKET_NAME: $BUCKET_NAME
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - cd frontend
+      - npm install
+
+  pre_build:
+    commands:
+      - npm run lint
+      - npm run prettier-check
+
+  build:
+    commands:
+      - pwd
+      - npm run build
+  post_build:
+    commands:
+      - echo "Uploading files to S3 bucket ${BUCKET_NAME}..."
+      - aws s3 sync dist s3://${BUCKET_NAME} --delete
+      # Deploy the API Gateway Resources
+      - aws apigateway create-deployment --rest-api-id $REST_API_ID --stage-name $ENVIRONMENT
+      # Test the API
+      - cd ..
+      - bash backend/test-api.sh $ROOT_API_URL
+
+artifacts:
+  files:
+    - frontend/dist/**/*
+  name: BuildFrontendArtifact
+  discard-paths: no

@@ -1,0 +1,36 @@
+{
+  "Parameters" : {
+    "pAppStackName"     : "{{ app_stack_name }}",
+    "pArtifactsBucket"  : "{{ artifacts_bucket }}",
+    "pCodeBuildNumber"  : "{{ codebuild_build_number }}",
+    "pCleanBranch"      : "{{ clean_branch }}",
+    "pEnvironment"      : "{{ environment }}",
+    "pEmailAdminInbox"  : "{{ email_admin_inbox }}",
+    "pRasdSupportEmail" : "{{ rasd_support_email }}",
+    "pHostedZone"       : "{{ hosted_zone }}",
+    "pHostedZoneId"     : "{{ hosted_zone_id }}",
+    "pSecretKeyName"    : "{{ secret_key_name }}",
+    "pSslCertificate"   : "{{ ssl_certificate }}",
+    "pProductName"      : "{{ product_name }}",
+    "pProductComponent" : "{{ product_component }}",
+    "pSubDomain"        : "{{ sub_domain }}"
+  },
+  "Tags" : {
+    "product"     : "{{ product_name }}",
+    "component"   : "{{ product_component }}",
+    "environment" : "{{ environment }}",
+    "branch"      : "{{ clean_branch }}",
+    "version"     : "{{ commit_id }}",
+    "build"       : "{{ codebuild_build_number }}"
+  },
+  "StackPolicy" : {
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "Update:*",
+        "Principal": "*",
+        "Resource" : "*"
+      }
+    ]
+  }
+}

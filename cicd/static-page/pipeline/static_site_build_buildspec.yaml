@@ -1,0 +1,35 @@
+version: 0.2
+###
+# This build project builds the static site files ready for upload to s3. There's very little thats
+# done here but keeping it as a build stage for consistency with other projects and for when we
+# inevitably want to make some change before sending this up to S3
+
+env:
+  shell: bash
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      python: 3.12
+    commands:
+      - apt-get update && apt-get install curl -y
+      - curl -L "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-$(dpkg --print-architecture).deb" -o quarto-${QUARTO_VERSION}.deb
+      - dpkg -i quarto-${QUARTO_VERSION}.deb
+      - echo 'quarto installed version $(quarto -v)'
+  pre_build:
+    commands:
+      - cd cicd/$PRODUCT_COMPONENT/pipeline
+      - python modify_env.py ../quarto-source-files/_quarto.yml
+  build:
+    commands:
+      - quarto render ../quarto-source-files/ --to html --output-dir ../webroot/pdf-html
+  post_build:
+    commands:
+      - ls -l ../webroot/pdf-html
+      - echo Build completed on `date`
+
+artifacts:
+  base-directory: ./cicd/$PRODUCT_COMPONENT/webroot
+  files:
+    - '**/*'
