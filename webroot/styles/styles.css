@@ -177,11 +177,21 @@ ul {
     padding-bottom: 60px;
 }
 
-
-.navbar {
+/*
+.navbar-brand {
     padding-left: 50px;
-    padding-right: 50px;
-    color:#ffffff;
+}
+*/
+.nav-item .nav-link {
+    color: #ffffff;
+}
+
+.nav-item:hover .nav-link {
+    color: #c5e3ef;
+}
+
+.nav-item:active .nav-link {
+    color: #1a3d4d;
 }
 
 .small-text {
@@ -190,4 +200,10 @@ ul {
 
 .tou {
     padding-right: 35px;
+}
+
+@media only screen and (max-width: 412px) {
+  .image-credit-container {
+    display: none;
+  }
 }
