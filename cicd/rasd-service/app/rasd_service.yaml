@@ -2,9 +2,48 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: The RASD service stack
 
 Parameters:
+  pAppStackName:
+    Type: String
+    Description: The name of the app stack, which is used for bucket name
+  pArtifactsBucket:
+    Type: String
+  pCodeBuildNumber:
+    Type: String
+    Description: The code build number, used for updating ApiGateway Deployment
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
+  pEmailAdminInbox:
+    Type: String
+    Description: The email address of the admin inbox
+  pCleanBranch:
+    Type: String
+    Description: A cleaned version of the code branch name
+    Default: development
+  pHostedZone:
+    Type: String
+    Description: The hosted zone the site is accessed under
+  pHostedZoneId:
+    Type: String
+    Description: The hosted zone ID of the hosted zone
+  pProductComponent:
+    Type: String
+    Description: The name of the product component
+  pProductName:
+    Type: String
+    Description: The name of the product
+  pRasdSupportEmail:
+    Type: String
+    Description: The support email address for the RASD service
+  pSecretKeyName:
+    Type: String
+    Description: The secret name for rasd service
+  pSubDomain:
+    Type: String
+    Description: The subdomain the site is accessed on
+  pSslCertificate:
+    Type: String
+    Description: The arn of the SSL certificate to be used
 
 Conditions:
   IsDev: !Equals
@@ -203,18 +242,28 @@ Resources:
         - nickname
         - email
 
+  ApiGatewayCertificateRegional:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub ${pSubDomain}.${pHostedZone}
+      DomainValidationOptions:
+        - DomainName: !Sub ${pSubDomain}.${pHostedZone}
+          HostedZoneId: !Ref pHostedZoneId
+      ValidationMethod: DNS
+
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGatewayV2::DomainName
-    DeletionPolicy: Delete
+    DeletionPolicy: Retain
     Properties:
       DomainName: service.rasd.org.au
       DomainNameConfigurations:
         - EndpointType: REGIONAL
           SecurityPolicy: TLS_1_2
+          CertificateArn: !Ref ApiGatewayCertificateRegional
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
-    DeletionPolicy: Delete
+    DeletionPolicy: Retain
     Properties:
       DkimAttributes:
         SigningEnabled: true
