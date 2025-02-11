@@ -1,0 +1,41 @@
+{
+    "title": "Unit Test Metadata",
+    "abstract": "This is metadata used for unit testing",
+    "keywords": [
+        "Flora",
+        "Flora-Exotic"
+    ],
+    "temporal_coverage_from": "2022-01-01",
+    "temporal_coverage_to": "2023-01-01",
+    "north_bounding_coordinate": -10,
+    "south_bounding_coordinate": -44,
+    "east_bounding_coordinate": 154,
+    "west_bounding_coordinate": 113,
+    "locations": [
+        "Australia",
+        "Victoria"
+    ],
+    "taxa_covered": "string",
+    "collection_methods": [
+        "Incidental Observation",
+        "Specimen Collection"
+    ],
+    "data_source_url": "https://example.org/url/source",
+    "data_source_doi": "10.1001/doi/source",
+    "embargoed": true,
+    "embargo_release_date": "2023-02-01",
+    "organisation_id": "c7dee788-561f-4434-a4bd-b0d6f73679cf",
+    "custodian": "str",
+    "contact_organisation": "string",
+    "contact_position": "string",
+    "contact_email": "contact@example.com",
+    "stored_format": "Json",
+    "available_formats": [
+        "Csv",
+        "Shp"
+    ],
+    "access_rights": "Sensitive But Unclassified",
+    "use_restrictions": "string",
+    "security_classification": "For Official Use Only",
+    "generalisations": "string"
+}

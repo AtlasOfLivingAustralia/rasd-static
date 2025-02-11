@@ -1,0 +1,215 @@
+// Client Supplied Colour Palette
+$primary: #073d6e;
+$secondary: #6dc574;
+$white: #f4faf4;
+$grey: #414140;
+$pale-blue: #c5e2ef;
+// Client Supplied Font
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+$family-primary: 'Roboto';
+$family-serif: 'Roboto';
+
+/*@import './base.css';*/
+@import './../node_modules/bulma/bulma.sass';
+@import './../node_modules/bulma/sass/utilities/_all';
+
+// Derived Variables of Client Supplied Colour Palette
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+
+$secondary-light: #b7ffbe;
+$secondary-dark: #57b25e;
+$secondary-invert: findColorInvert($secondary);
+
+$white-light: findLightColor($white);
+$white-dark: findDarkColor($white);
+$white-invert: findColorInvert($white);
+
+$pale-blue-light: findLightColor($pale-blue);
+$pale-blue-dark: findDarkColor($pale-blue);
+$pale-blue-invert: findColorInvert($pale-blue);
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: mergeColorMaps(
+  (
+    'white': (
+      $white,
+      $white-invert,
+      $white-light,
+      $white-dark,
+    ),
+    'black': (
+      $black,
+      $white,
+    ),
+    'light': (
+      $light,
+      $light-invert,
+    ),
+    'dark': (
+      $dark,
+      $dark-invert,
+    ),
+    'primary': (
+      $primary,
+      $primary-invert,
+      $primary-light,
+      $primary-dark,
+    ),
+    'secondary': (
+      $secondary,
+      $secondary-invert,
+      $secondary-light,
+      $secondary-dark,
+    ),
+    'link': (
+      $link,
+      $link-invert,
+      $link-light,
+      $link-dark,
+    ),
+    'info': (
+      $pale-blue,
+      $pale-blue-invert,
+      $pale-blue-light,
+      $pale-blue-dark,
+    ),
+    'success': (
+      #6dc574,
+      $success-invert,
+      $success-light,
+      $success-dark,
+    ),
+    'warning': (
+      $warning,
+      $warning-invert,
+      $warning-light,
+      $warning-dark,
+    ),
+    'danger': (
+      $danger,
+      $danger-invert,
+      $danger-light,
+      $danger-dark,
+    ),
+  ),
+  $custom-colors
+);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Remove navbar hover colours
+$navbar-dropdown-item-hover-background-color: unset;
+$navbar-tab-hover-background-color: unset;
+$navbar-item-hover-background-color: unset;
+$navbar-item-hover-color: $white;
+$navbar-dropdown-item-hover-color: $white;
+
+@import './../node_modules/bulma/bulma';
+@import './../node_modules/@oruga-ui/theme-bulma/dist/scss/bulma';
+
+// Custom Buttons
+.button {
+  border: none;
+  color: $grey;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.is-primary {
+  background-color: $primary;
+  color: $white;
+}
+
+.is-primary:hover {
+  background-color: $primary-light;
+}
+
+.is-secondary {
+  background-color: $secondary;
+}
+
+.is-secondary:hover {
+  background-color: $secondary-dark;
+}
+
+.is-edit {
+  background-color: $warning;
+}
+
+.is-edit:hover {
+  background-color: #f8d467;
+}
+$duration: 0.2s;
+$distance: 8px;
+$easeOutBack: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+.navbar-item {
+  color: $white;
+  position: relative;
+  text-decoration: none;
+  padding-bottom: 8px;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: $white;
+  }
+
+  &:before {
+    opacity: 0;
+    transform: translateY(-$distance);
+    transition: transform 0s $easeOutBack, opacity 0s;
+  }
+
+  &:after {
+    opacity: 0;
+    transform: translateY(calc($distance / 2));
+    transition: transform $duration $easeOutBack, opacity $duration;
+  }
+
+  &:hover,
+  &:focus {
+    &:before,
+    &:after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &:before {
+      transition: transform $duration $easeOutBack, opacity $duration;
+    }
+
+    &:after {
+      transition: transform 0s $duration $easeOutBack, opacity 0s $duration;
+    }
+  }
+}
+body {
+  background-color: $white;
+}
+
+.has-background-info-light-hover:hover {
+  background: $info-light;
+}
+
+// Height and width
+.h-0 {
+  height: 0;
+  overflow: hidden;
+}
+
+.w-full {
+  width: 100%;
+}
