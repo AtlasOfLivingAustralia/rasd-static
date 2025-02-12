@@ -42,9 +42,6 @@ Parameters:
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
-  pSslCertificate:
-    Type: String
-    Description: The arn of the SSL certificate to be used
 
 Conditions:
   IsDev: !Equals
