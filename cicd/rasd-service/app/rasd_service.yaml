@@ -259,7 +259,7 @@ Resources:
       Type: A
       AliasTarget:
         DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-        HostedZoneId: Z2RPCDW04V8134
+        HostedZoneId: Z2RPCDW04V8134 # Obtained from https://docs.aws.amazon.com/general/latest/gr/apigateway.html
         EvaluateTargetHealth: true
 
   CognitoPool:
@@ -406,15 +406,11 @@ Resources:
   LambdaBackendService:
     Type: AWS::Lambda::Function
     Properties:
-      # Architectures:
-      #   - String
       Code: ../../../backend/dist/rasd_fastapi
-      # CodeSigningConfigArn: String
-      # DeadLetterConfig: DeadLetterConfig
       Description: Rasd Service Lambda Function
       Environment:
         Variables:
-          RASD_SECRETS_NAME: !Ref RasdSecrets # !Ref pSecretKeyName
+          RASD_SECRETS_NAME: !Ref RasdSecrets
           AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
           AWS_COGNITO_POOL_ID: !Ref CognitoPool
           AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
@@ -433,8 +429,6 @@ Resources:
       MemorySize: 4096
       Role: !GetAtt IAMRoleiamRoleForLambda.Arn
       Runtime: python3.9
-      # RuntimeManagementConfig: RuntimeManagementConfig
-      # SnapStart: SnapStart
       Timeout: 30
       Tags:
         - Key: Name
