@@ -309,6 +309,10 @@ Resources:
           StringAttributeConstraints:
             MaxLength: '2048'
             MinLength: '0'
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
+        EmailMessage: Your verification code is {####}
+        EmailSubject: Your verification code
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
