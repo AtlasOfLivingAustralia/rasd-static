@@ -440,7 +440,7 @@ Resources:
       Handler: rasd_fastapi.handler.handler
       MemorySize: 4096
       Role: !GetAtt IAMRoleiamRoleForLambda.Arn
-      Runtime: python3.9
+      Runtime: python3.12
       Timeout: 30
       Tags:
         - Key: Name
