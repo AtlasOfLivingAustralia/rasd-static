@@ -731,6 +731,18 @@ Resources:
         - "\"v=spf1 include:amazonses.com -all\""
       Type: TXT
 
+  RasdLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub
+        - /aws/lambda/${FunctionName}
+        - FunctionName: !Ref LambdaBackendService
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
 Outputs:
   RestApiIdOutput:
     Description: The ID of the REST API
