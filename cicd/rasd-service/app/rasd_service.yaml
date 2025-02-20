@@ -254,7 +254,7 @@ Resources:
                 Action:
                   - ses:SendEmail
                 Effect: Allow
-      RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
+      RoleName: !Sub ${AWS::StackName}-LambdaRole
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
