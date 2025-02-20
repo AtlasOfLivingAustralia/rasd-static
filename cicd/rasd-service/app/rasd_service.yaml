@@ -8,6 +8,10 @@ Parameters:
   pArtifactsBucket:
     Type: String
     Description: The S3 artifact bucket path
+  pDdbDeletionProtection:
+    Type: String
+    Description: Whether to enable deletion protection for DynamoDB tables
+    Default: true
   pCodeBuildNumber:
     Type: String
     Description: The code build number, used for updating ApiGateway Deployment
@@ -39,6 +43,10 @@ Parameters:
   pSecretKeyName:
     Type: String
     Description: The secret name for rasd service
+  pPoolDeletionProtection:
+    Type: String
+    Description: Whether to enable deletion protection for Cognito User Pool
+    Default: ACTIVE
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
@@ -66,12 +74,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
@@ -86,12 +94,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
@@ -106,12 +114,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
@@ -126,12 +134,12 @@ Resources:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
@@ -271,7 +279,7 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
+      DeletionProtection: !Ref pPoolDeletionProtection
       UsernameAttributes:
         - email
       UsernameConfiguration:
