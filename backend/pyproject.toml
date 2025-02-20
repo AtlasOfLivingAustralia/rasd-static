@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "rasd"
-version = "0.1.0"
-description = "RASD Python AWS Lambda backend REST API using Poetry and Pulumi"
+version = "0.1.1"
+description = "RASD Python AWS Lambda backend REST API using Poetry and FastAPI"
 authors = ["Gaia Resources <dev@gaiaresources.com.au>"]
 readme = "README.md"
 packages = [
@@ -9,7 +9,10 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "~3.9"
+python = "~3.12"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
 
 [tool.poetry.group.rasd_fastapi.dependencies]
 fastapi = "^0.92.0"
