@@ -329,6 +329,11 @@ Resources:
         DefaultEmailOption: CONFIRM_WITH_CODE
         EmailMessage: Your verification code is {####}
         EmailSubject: Your verification code
+        SMSMessage: Your verification code is {####}
+      InviteMessageTemplate:
+        EmailMessage: Your username is {username} and temporary password is {####}
+        EmailSubject: Your temporary password
+        SMSMessage: Your username is {username} and temporary password is {####}
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
