@@ -300,7 +300,7 @@ Resources:
                 EnvironmentVariables: !Sub |
                   [
                     { "name":"RASD_SECRETS_NAME", "value":"#{ExportConfigNS.SECRET_KEY_NAME}" },
-                    { "name":"AWS_COGNITO_POOL_ID", "value":"#{CloudFormationOutNS.CognitoPoolId}" }
+                    { "name":"AWS_COGNITO_POOL_ID", "value":"#{CloudFormationOutNS.CognitoPoolId}" },
                     { "name":"AWS_COGNITO_CLIENT_ID", "value":"#{CloudFormationOutNS.CognitoClientId}" },
                     { "name":"AWS_COGNITO_CLIENT_SECRET_KEY", "value":"#{CloudFormationOutNS.CognitoClientSecretKey}" }
                   ]
