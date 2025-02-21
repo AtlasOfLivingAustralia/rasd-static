@@ -19,7 +19,7 @@ phases:
       - pipx install poetry==1.3.2
       - pipx install poethepoet
       - export POETRY_HOME=/root/.local
-      - $POETRY_HOME/bin/poetry install
+      - $POETRY_HOME/bin/poetry install --no-root
 
   build:
     commands:
