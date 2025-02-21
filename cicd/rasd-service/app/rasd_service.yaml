@@ -287,6 +287,12 @@ Resources:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+        InviteMessageTemplate:
+          EmailMessage: Your username is {username} and temporary password is {####}
+          EmailSubject: Your temporary password
+          SMSMessage: Your username is {username} and temporary password is {####}
       DeletionProtection: !Ref pPoolDeletionProtection
       UsernameAttributes:
         - email
@@ -329,11 +335,7 @@ Resources:
         DefaultEmailOption: CONFIRM_WITH_CODE
         EmailMessage: Your verification code is {####}
         EmailSubject: Your verification code
-        SMSMessage: Your verification code is {####}
-      InviteMessageTemplate:
-        EmailMessage: Your username is {username} and temporary password is {####}
-        EmailSubject: Your temporary password
-        SMSMessage: Your username is {username} and temporary password is {####}
+        SmsMessage: Your verification code is {####}
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
