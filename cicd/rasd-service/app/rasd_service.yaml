@@ -767,6 +767,27 @@ Resources:
           Value: !Ref AWS::StackName
 
 Outputs:
+  CognitoPoolId:
+    Description: The Cognito Pool ID
+    Value: !Ref CognitoPool
+  CognitoClientId:
+    Description: The Cognito Client ID
+    Value: !Ref CognitoAppClientRasdbackend
+  CognitoClientSecretKey:
+    Description: The Cognito Client Secret Key
+    Value: !GetAtt CognitoAppClientRasdbackend.ClientSecret
+  DynamoDBTableAccessRequests:
+    Description: The DynamoDB Table for Access Requests
+    Value: !Ref DynamoDBTableDataAccessRequests
+  DynamoDBTableMetadata:
+    Description: The DynamoDB Table for Metadata
+    Value: !Ref DynamoDBTableMetadata
+  DynamoDBTableOrganisations:
+    Description: The DynamoDB Table for Organisations
+    Value: !Ref DynamoDBTableOrganisations
+  DynamoDBTableRegistrations:
+    Description: The DynamoDB Table for Registrations
+    Value: !Ref DynamoDBTableRegistrations
   RestApiIdOutput:
     Description: The ID of the REST API
     Value: !Ref ApiGatewayRestApi
