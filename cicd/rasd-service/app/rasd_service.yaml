@@ -8,9 +8,17 @@ Parameters:
   pArtifactsBucket:
     Type: String
     Description: The S3 artifact bucket path
+  pDdbDeletionProtection:
+    Type: String
+    Description: Whether to enable deletion protection for DynamoDB tables
+    Default: true
   pCodeBuildNumber:
     Type: String
     Description: The code build number, used for updating ApiGateway Deployment
+  pDeletionPolicy:
+    Type: String
+    Description: The deletion policy for the stack
+    Default: Retain
   pEnvironment:
     Type: String
     Description: The AWS environment this belongs to
@@ -39,12 +47,17 @@ Parameters:
   pSecretKeyName:
     Type: String
     Description: The secret name for rasd service
+  pPoolDeletionProtection:
+    Type: String
+    Description: Whether to enable deletion protection for Cognito User Pool
+    Default: ACTIVE
   pSubDomain:
     Type: String
     Description: The subdomain the site is accessed on
-  pSslCertificate:
+  pUpdateReplacePolicy:
     Type: String
-    Description: The arn of the SSL certificate to be used
+    Description: The update replace policy for the stack
+    Default: Retain
 
 Conditions:
   IsDev: !Equals
@@ -62,19 +75,19 @@ Resources:
 
   DynamoDBTableDataAccessRequests:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-DataAccessRequests
       Tags:
         - Key: Name
@@ -82,19 +95,19 @@ Resources:
 
   DynamoDBTableMetadata:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Metadata
       Tags:
         - Key: Name
@@ -102,19 +115,19 @@ Resources:
 
   DynamoDBTableOrganisations:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Organisations
       Tags:
         - Key: Name
@@ -122,19 +135,19 @@ Resources:
 
   DynamoDBTableRegistrations:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       AttributeDefinitions:
         - AttributeType: S
           AttributeName: id
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: !If [ NotDev, true, false ]
+      DeletionProtectionEnabled: !Ref pDdbDeletionProtection
       KeySchema:
         - KeyType: HASH
           AttributeName: id
       PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [ NotDev, true, false ]
+        PointInTimeRecoveryEnabled: !Ref pDdbDeletionProtection
       # TableName: !Sub ${AWS::StackName}-Registrations
       Tags:
         - Key: Name
@@ -249,7 +262,7 @@ Resources:
                 Action:
                   - ses:SendEmail
                 Effect: Allow
-      RoleName: !Sub ${AWS::StackName}-iamRoleForLambda
+      RoleName: !Sub rasd-${pCleanBranch}-lambda-role
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -262,19 +275,25 @@ Resources:
       Type: A
       AliasTarget:
         DNSName: !GetAtt ApiGatewayCustomDomainName.RegionalDomainName
-        HostedZoneId: Z2RPCDW04V8134
+        HostedZoneId: Z2RPCDW04V8134 # Obtained from https://docs.aws.amazon.com/general/latest/gr/apigateway.html
         EvaluateTargetHealth: true
 
   CognitoPool:
     Type: AWS::Cognito::UserPool
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       AccountRecoverySetting:
         RecoveryMechanisms:
           - Name: verified_email
             Priority: 1
-      DeletionProtection: !If [ NotDev, ACTIVE, INACTIVE ]
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+        InviteMessageTemplate:
+          EmailMessage: Your username is {username} and temporary password is {####}
+          EmailSubject: Your temporary password
+          SMSMessage: Your username is {username} and temporary password is {####}
+      DeletionProtection: !Ref pPoolDeletionProtection
       UsernameAttributes:
         - email
       UsernameConfiguration:
@@ -312,11 +331,16 @@ Resources:
           StringAttributeConstraints:
             MaxLength: '2048'
             MinLength: '0'
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
+        EmailMessage: Your verification code is {####}
+        EmailSubject: Your verification code
+        SmsMessage: Your verification code is {####}
 
   CognitoGroupAdmin:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Admins (inside the app).
       GroupName: Administrators
@@ -325,8 +349,8 @@ Resources:
 
   CognitoGroupCustodians:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Custodians (inside the app).
       GroupName: DataCustodians
@@ -335,8 +359,8 @@ Resources:
 
   CognitoGroupRequestors:
     Type: AWS::Cognito::UserPoolGroup
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       Description: Used by the RASD backend to determine user permission level. RASD Requestors (inside the app).
       GroupName: DataRequestors
@@ -345,8 +369,8 @@ Resources:
 
   CognitoAppClientRasdbackend:
     Type: AWS::Cognito::UserPoolClient
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
+    UpdateReplacePolicy: !Ref pUpdateReplacePolicy
     Properties:
       UserPoolId: !Ref CognitoPool
       PreventUserExistenceErrors: ENABLED
@@ -409,15 +433,11 @@ Resources:
   LambdaBackendService:
     Type: AWS::Lambda::Function
     Properties:
-      # Architectures:
-      #   - String
       Code: ../../../backend/dist/rasd_fastapi
-      # CodeSigningConfigArn: String
-      # DeadLetterConfig: DeadLetterConfig
       Description: Rasd Service Lambda Function
       Environment:
         Variables:
-          RASD_SECRETS_NAME: !Ref RasdSecrets # !Ref pSecretKeyName
+          RASD_SECRETS_NAME: !Ref RasdSecrets
           AWS_COGNITO_CLIENT_ID: !Ref CognitoAppClientRasdbackend
           AWS_COGNITO_POOL_ID: !Ref CognitoPool
           AWS_COGNITO_CLIENT_SECRET_KEY: !GetAtt CognitoAppClientRasdbackend.ClientSecret
@@ -436,8 +456,6 @@ Resources:
       MemorySize: 4096
       Role: !GetAtt IAMRoleiamRoleForLambda.Arn
       Runtime: python3.9
-      # RuntimeManagementConfig: RuntimeManagementConfig
-      # SnapStart: SnapStart
       Timeout: 30
       Tags:
         - Key: Name
@@ -470,7 +488,7 @@ Resources:
 
   ApiGatewayCustomDomainName:
     Type: AWS::ApiGatewayV2::DomainName
-    DeletionPolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
     Properties:
       DomainName: !Sub ${pSubDomain}.${pHostedZone}
       DomainNameConfigurations:
@@ -676,7 +694,7 @@ Resources:
 
   SESDomainIdentity:
     Type: AWS::SES::EmailIdentity
-    DeletionPolicy: Retain
+    DeletionPolicy: !Ref pDeletionPolicy
     Properties:
       DkimAttributes:
         SigningEnabled: true
@@ -736,7 +754,40 @@ Resources:
         - "\"v=spf1 include:amazonses.com -all\""
       Type: TXT
 
+  RasdLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub
+        - /aws/lambda/${FunctionName}
+        - FunctionName: !Ref LambdaBackendService
+      RetentionInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Ref AWS::StackName
+
 Outputs:
+  # CognitoPoolId:
+  #   Description: The Cognito Pool ID
+  #   Value: !Ref CognitoPool
+  # CognitoClientId:
+  #   Description: The Cognito Client ID
+  #   Value: !Ref CognitoAppClientRasdbackend
+  # CognitoClientSecretKey:
+  #   Description: The Cognito Client Secret Key
+  #   Value: !GetAtt CognitoAppClientRasdbackend.ClientSecret
+  # DynamoDBTableAccessRequests:
+  #   Description: The DynamoDB Table for Access Requests
+  #   Value: !Ref DynamoDBTableDataAccessRequests
+  # DynamoDBTableMetadata:
+  #   Description: The DynamoDB Table for Metadata
+  #   Value: !Ref DynamoDBTableMetadata
+  # DynamoDBTableOrganisations:
+  #   Description: The DynamoDB Table for Organisations
+  #   Value: !Ref DynamoDBTableOrganisations
+  # DynamoDBTableRegistrations:
+  #   Description: The DynamoDB Table for Registrations
+  #   Value: !Ref DynamoDBTableRegistrations
   RestApiIdOutput:
     Description: The ID of the REST API
     Value: !Ref ApiGatewayRestApi
